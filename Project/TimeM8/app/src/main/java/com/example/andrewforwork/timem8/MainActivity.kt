@@ -3,8 +3,6 @@ package com.example.andrewforwork.timem8
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.widget.TextView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,9 +13,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         dailyTasksBtn.setOnClickListener{
-            MainText.text="Try again later..."
-            val toast = Toast.makeText(this,"Эта функция будет добавлена позже",Toast.LENGTH_SHORT)
-            toast.show()
+            MainText.text="Time M8"
+            val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)
+            startActivity(dailyTaskIntent)
 
         }
         MainScheduleBtn.setOnClickListener{

@@ -25,7 +25,8 @@
         <activity
             android:name=".MainScheduleWmenu"
             android:label="@string/title_activity_main_schedule_wmenu"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainDailySchedule"></activity>
     </application>
 
 </manifest>
