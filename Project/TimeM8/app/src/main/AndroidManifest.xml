@@ -21,7 +21,11 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".MainSchedule"></activity>
+        <activity android:name=".MainSchedule" />
+        <activity
+            android:name=".MainScheduleWmenu"
+            android:label="@string/title_activity_main_schedule_wmenu"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
