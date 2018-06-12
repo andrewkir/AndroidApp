@@ -13,16 +13,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         dailyTasksBtn.setOnClickListener{
-            MainText.text="Time M8"
             val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)
             startActivity(dailyTaskIntent)
-
         }
         MainScheduleBtn.setOnClickListener{
             val ScheduleIntent = Intent(this,MainSchedule::class.java)
-            MainText.text="Time M8"
             startActivity(ScheduleIntent)
+        }
+        MainScheduleBtnEd.setOnClickListener{
+            val ScheduleIntentEd = Intent(this,MainScheduleEditable::class.java)
+            startActivity(ScheduleIntentEd)
         }
 
     }
+
 }

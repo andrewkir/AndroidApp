@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MainScheduleBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/MainScheduleBtnEd" />
 
     <Button
         android:id="@+id/MainScheduleBtn"
@@ -31,6 +31,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MainText" />
+
+    <Button
+        android:id="@+id/MainScheduleBtnEd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/Btn"
+        android:text="Основное расписание ред"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MainScheduleBtn" />
 
     <TextView
         android:id="@+id/MainText"
@@ -70,6 +83,7 @@
         android:text="Финансовая деятельность"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dailyTasksBtn" />
 
