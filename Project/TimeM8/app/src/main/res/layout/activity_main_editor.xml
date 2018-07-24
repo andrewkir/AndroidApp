@@ -16,21 +16,26 @@
             android:id="@+id/day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:layout_margin="10dp"
+            android:hint="day"
+            android:inputType="number"
             android:padding="10dp" />
+
         <EditText
             android:id="@+id/count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"
             android:layout_margin="10dp"
+            android:hint="count"
+            android:inputType="number"
             android:padding="10dp" />
+
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:hint="name"
             android:padding="10dp" />
 
         <LinearLayout
@@ -38,20 +43,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2">
+
             <EditText
                 android:id="@+id/time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:hint="time"
+                android:inputType="number|numberSigned|numberDecimal"
+                android:padding="10dp" />
+
             <EditText
                 android:id="@+id/type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:padding="10dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:hint="type"
+                android:padding="10dp" />
         </LinearLayout>
 
 

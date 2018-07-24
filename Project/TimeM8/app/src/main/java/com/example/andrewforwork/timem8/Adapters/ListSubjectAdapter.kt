@@ -1,4 +1,4 @@
-package com.example.andrewforwork.timem8.MainScheduleAdapter
+package com.example.andrewforwork.timem8.Adapters
 
 import android.app.Activity
 import android.content.Context

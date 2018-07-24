@@ -19,7 +19,7 @@ val COL_ID="id"
 
 class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
-        val createTable = "CREATE TABLE " + TABLE_NAME +" ("+ COL_ID+" INTEGER PRIMARY KEY," +
+        val createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +" ("+ COL_ID+" INTEGER PRIMARY KEY," +
                 COL_NAME + " text," +
                 COL_DAY + " int," +
                 COL_CNT + " int," +
@@ -50,11 +50,11 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
             Toast.makeText(contex,"Succ",Toast.LENGTH_SHORT).show()
     }
 
-    val allUser:List<Sub>
+    val allSub:List<Sub>
         get()
         {
             val lstSubs = ArrayList<Sub>()
-            val selectQuery = "SELECT * FROM "+ TABLE_NAME
+            val selectQuery = "SELECT * FROM "+ TABLE_NAME+" ORDER BY $COL_DAY*$COL_CNT"
             val db = this.writableDatabase
             val cursor = db.rawQuery(selectQuery,null)
             if(cursor.moveToFirst()){
@@ -102,7 +102,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         return db.update(TABLE_NAME,cv, COL_ID+"=?", arrayOf(sub.id.toString()))
 
     }
-    fun deleteUser(sub:Sub)
+    fun deleteSub(sub:Sub)
     {
         val db = this.writableDatabase
 

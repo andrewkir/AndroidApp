@@ -3,7 +3,7 @@ package com.example.andrewforwork.timem8.MainScheduleEditor
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.example.andrewforwork.timem8.DataBase.DBHandler
-import com.example.andrewforwork.timem8.MainScheduleAdapter.ListSubjectAdapter
+import com.example.andrewforwork.timem8.Adapters.ListSubjectAdapter
 import com.example.andrewforwork.timem8.R
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.activity_main_editor.*
@@ -56,13 +56,13 @@ class MainEditor : AppCompatActivity() {
                     0,
                     type.text.toString()
             )
-            db.deleteUser(sub)
+            db.deleteSub(sub)
             refreshData()
         }
     }
     private fun refreshData(){
-        lstSubs = db.allUser
-        val adapter = ListSubjectAdapter(this@MainEditor,lstSubs,day,name,time,0,count)
+        lstSubs = db.allSub
+        val adapter = ListSubjectAdapter(this@MainEditor, lstSubs, day, name, time, 0, count)
         list_subs.adapter = adapter
     }
 }
