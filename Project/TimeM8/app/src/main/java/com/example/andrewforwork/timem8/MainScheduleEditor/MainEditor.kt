@@ -2,6 +2,7 @@ package com.example.andrewforwork.timem8.MainScheduleEditor
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.Adapters.ListSubjectAdapter
 import com.example.andrewforwork.timem8.R
@@ -34,30 +35,41 @@ class MainEditor : AppCompatActivity() {
             refreshData()
         }
         btn_update.setOnClickListener{
-            val sub = Sub(
-                    Integer.parseInt(day.text.toString()+count.text.toString()),
-                    Integer.parseInt(day.text.toString()),
-                    Integer.parseInt(count.text.toString()),
-                    name.text.toString(),
-                    time.text.toString(),
-                    0,
-                    type.text.toString()
-            )
-            db.updateSub(sub)
-            refreshData()
+            try {
+                val sub = Sub(
+                        Integer.parseInt(day.text.toString() + count.text.toString()),
+                        Integer.parseInt(day.text.toString()),
+                        Integer.parseInt(count.text.toString()),
+                        name.text.toString(),
+                        time.text.toString(),
+                        0,
+                        type.text.toString()
+                )
+
+                db.updateSub(sub)
+                refreshData()
+            }
+            catch(e: Exception) {
+                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+            }
         }
         btn_delete.setOnClickListener{
-            val sub = Sub(
-                    Integer.parseInt(day.text.toString()+count.text.toString()),
-                    Integer.parseInt(day.text.toString()),
-                    Integer.parseInt(count.text.toString()),
-                    name.text.toString(),
-                    time.text.toString(),
-                    0,
-                    type.text.toString()
-            )
-            db.deleteSub(sub)
-            refreshData()
+            try {
+                val sub = Sub(
+                        Integer.parseInt(day.text.toString() + count.text.toString()),
+                        Integer.parseInt(day.text.toString()),
+                        Integer.parseInt(count.text.toString()),
+                        name.text.toString(),
+                        time.text.toString(),
+                        0,
+                        type.text.toString()
+                )
+                db.deleteSub(sub)
+                refreshData()
+            }
+            catch(e: Exception) {
+                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+            }
         }
     }
     private fun refreshData(){

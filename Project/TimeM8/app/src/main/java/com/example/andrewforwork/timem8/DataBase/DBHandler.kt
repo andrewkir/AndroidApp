@@ -54,7 +54,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         get()
         {
             val lstSubs = ArrayList<Sub>()
-            val selectQuery = "SELECT * FROM "+ TABLE_NAME+" ORDER BY $COL_DAY*$COL_CNT"
+            val selectQuery = "SELECT * FROM "+ TABLE_NAME+" ORDER BY $COL_DAY , $COL_CNT"
             val db = this.writableDatabase
             val cursor = db.rawQuery(selectQuery,null)
             if(cursor.moveToFirst()){
@@ -105,8 +105,6 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
     fun deleteSub(sub:Sub)
     {
         val db = this.writableDatabase
-
-
         db.delete(TABLE_NAME,COL_ID+"=?", arrayOf(sub.id.toString()))
         db.close()
     }

@@ -3,5 +3,5 @@
 
     <item
         android:id="@+id/edit_menu"
-        android:title="Edit"></item>
+        android:title="Редактировать"></item>
 </menu>
