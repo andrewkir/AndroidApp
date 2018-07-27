@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import com.example.andrewforwork.timem8.R
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.row_main.view.*
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.row_main.view.*
 class ListSubjectAdapter(
         internal var activity: Activity,
         internal var lstSub:List<Sub>,
-        internal var edit_day:EditText,
+        internal var edit_day_spinner:Spinner,
         internal var edit_name: EditText,
         internal var edit_time: EditText,
         internal var edit_imp: Int,
@@ -35,12 +36,22 @@ class ListSubjectAdapter(
         rowView.txt_row_time.text = lstSub[position].time.toString()
         rowView.txt_row_type.text = lstSub[position].type.toString()
         rowView.txt_row_day.text = lstSub[position].day.toString()
+        when(lstSub[position].day.toString()) {
+            "1" -> rowView.txt_row_day.text = "П"
+            "2" -> rowView.txt_row_day.text = "В"
+            "3" -> rowView.txt_row_day.text = "С"
+            "4" -> rowView.txt_row_day.text = "Ч"
+            "5" -> rowView.txt_row_day.text = "П"
+            "6" -> rowView.txt_row_day.text = "С"
+            "7" -> rowView.txt_row_day.text = "В"
+            else -> rowView.txt_row_day.text = lstSub[position].day.toString()
+        }
 
         rowView.setOnClickListener{
             edit_cnt.setText(rowView.txt_row_count.text.toString())
             edit_name.setText(rowView.txt_row_name.text.toString())
             edit_time.setText(rowView.txt_row_time.text.toString())
-            edit_day.setText(rowView.txt_row_day.text.toString())
+            edit_day_spinner.setSelection(Integer.parseInt(lstSub[position].day.toString())-1)
 
         }
         return rowView

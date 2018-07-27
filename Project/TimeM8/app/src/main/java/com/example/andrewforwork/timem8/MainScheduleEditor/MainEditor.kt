@@ -1,7 +1,13 @@
 package com.example.andrewforwork.timem8.MainScheduleEditor
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.Adapters.ListSubjectAdapter
@@ -9,36 +15,73 @@ import com.example.andrewforwork.timem8.R
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.activity_main_editor.*
 
-class MainEditor : AppCompatActivity() {
+class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    var CurrentDaySelected = 1
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        CurrentDaySelected = position+1
+    }
 
     internal lateinit var db: DBHandler
     internal var lstSubs:List<Sub> = ArrayList<Sub>()
+    var list_days = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        getMenuInflater().inflate(R.menu.activity_main_editor_menu,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        db.deleteAllData()
+        refreshData()
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_editor)
 
+        spinner!!.setOnItemSelectedListener(this)
+        // Create an ArrayAdapter using a simple spinner layout and languages array
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_days)
+        // Set layout to use when the list of choices appear
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Set Adapter to Spinner
+        spinner!!.setAdapter(aa)
+        CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)
         db = DBHandler(this)
-
         refreshData()
         btn_insert.setOnClickListener{
-            val sub = Sub(
-                    Integer.parseInt(day.text.toString()+count.text.toString()),
-                    Integer.parseInt(day.text.toString()),
-                    Integer.parseInt(count.text.toString()),
-                    name.text.toString(),
-                    time.text.toString(),
-                    0,
-                    type.text.toString()
-            )
-            db.addSub(sub)
-            refreshData()
+            try {
+                val sub = Sub(
+                        Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
+                        Integer.parseInt(CurrentDaySelected.toString()),
+                        Integer.parseInt(count.text.toString()),
+                        name.text.toString(),
+                        time.text.toString(),
+                        0,
+                        type.text.toString()
+                )
+                db.addSub(sub)
+                var tmp = count.text.toString()
+                refreshData()
+                count.setText((Integer.parseInt(tmp)+1).toString())
+            }
+            catch(e: Exception) {
+                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+            }
+
         }
         btn_update.setOnClickListener{
             try {
                 val sub = Sub(
-                        Integer.parseInt(day.text.toString() + count.text.toString()),
-                        Integer.parseInt(day.text.toString()),
+                        Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
+                        Integer.parseInt(CurrentDaySelected.toString()),
                         Integer.parseInt(count.text.toString()),
                         name.text.toString(),
                         time.text.toString(),
@@ -56,8 +99,8 @@ class MainEditor : AppCompatActivity() {
         btn_delete.setOnClickListener{
             try {
                 val sub = Sub(
-                        Integer.parseInt(day.text.toString() + count.text.toString()),
-                        Integer.parseInt(day.text.toString()),
+                        Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
+                        Integer.parseInt(CurrentDaySelected.toString()),
                         Integer.parseInt(count.text.toString()),
                         name.text.toString(),
                         time.text.toString(),
@@ -74,7 +117,12 @@ class MainEditor : AppCompatActivity() {
     }
     private fun refreshData(){
         lstSubs = db.allSub
-        val adapter = ListSubjectAdapter(this@MainEditor, lstSubs, day, name, time, 0, count)
+        val adapter = ListSubjectAdapter(this@MainEditor, lstSubs,spinner, name, time, 0, count)
+        spinner.setSelection(CurrentDaySelected-1)
+        name.setText("")
+        time.setText("")
+        count.setText("")
+        type.setText("")
         list_subs.adapter = adapter
     }
 }

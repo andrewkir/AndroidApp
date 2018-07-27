@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.andrewforwork.timem8.MainActivity">
 
 
@@ -12,25 +11,22 @@
         android:id="@+id/list_subs"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_update" />
 
-    <EditText
-        android:id="@+id/day"
+    <Spinner
+        android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:hint="day"
         android:inputType="number"
         android:padding="10dp"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,13 +35,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:hint="count"
         android:inputType="number"
         android:padding="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/type"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day" />
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <EditText
         android:id="@+id/name"
@@ -56,7 +54,7 @@
         android:layout_marginTop="8dp"
         android:hint="name"
         android:padding="10dp"
-        app:layout_constraintStart_toEndOf="@+id/day"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -64,27 +62,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_weight="1"
         android:hint="time"
         android:inputType="number|numberSigned|numberDecimal"
         android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/type"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/type"
-        app:layout_constraintTop_toBottomOf="@+id/day" />
+        app:layout_constraintTop_toTopOf="@+id/type" />
 
     <EditText
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:hint="type"
         android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/count"
+        app:layout_constraintEnd_toStartOf="@+id/time"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/count"
-        app:layout_constraintTop_toBottomOf="@+id/day" />
+        app:layout_constraintTop_toTopOf="@+id/count" />
 
     <Button
         android:id="@+id/btn_insert"
@@ -128,5 +128,14 @@
         app:layout_constraintStart_toEndOf="@+id/btn_update"
         app:layout_constraintTop_toTopOf="@+id/btn_update"
         app:layout_constraintVertical_bias="0.0" />
+
+    <!--<Spinner-->
+    <!--android:id="@+id/spinner"-->
+    <!--android:layout_width="128dp"-->
+    <!--android:layout_height="39dp"-->
+    <!--android:layout_marginStart="36dp"-->
+    <!--android:layout_marginTop="16dp"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/time"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/name" />-->
 
 </android.support.constraint.ConstraintLayout>

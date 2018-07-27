@@ -28,9 +28,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainDailySchedule" />
         <activity android:name=".MainScheduleEditable" />
-        <activity android:name=".MainScheduleEditor.MainEditor"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Subject.Editor"></activity>
+        <activity
+            android:name=".MainScheduleEditor.MainEditor"
+            />
+        <activity android:name=".Subject.Editor" />
+        <activity android:name=".Subject.TestFraments"></activity>
     </application>
 
 </manifest>

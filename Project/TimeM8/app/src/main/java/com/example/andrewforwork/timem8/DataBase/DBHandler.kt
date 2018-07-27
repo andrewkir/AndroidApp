@@ -42,12 +42,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_CNT,sub.count)
         cv.put(COL_TIME,sub.time)
 
-        var result = db.insert(TABLE_NAME,null,cv)
-
-        if(result == (-1).toLong())
-            Toast.makeText(contex,"Fail",Toast.LENGTH_SHORT).show()
-        else
-            Toast.makeText(contex,"Succ",Toast.LENGTH_SHORT).show()
+        var result = db.insertOrThrow(TABLE_NAME,null,cv)
     }
 
     val allSub:List<Sub>
@@ -73,6 +68,29 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
             db.close()
             return lstSubs
         }
+    fun allSubByDay(day: Int):List<Sub>
+        {
+            val lstSubs = ArrayList<Sub>()
+            val selectQuery = "SELECT * FROM "+ TABLE_NAME+" ORDER BY $COL_DAY , $COL_CNT"
+            val db = this.writableDatabase
+            val cursor = db.rawQuery(selectQuery,null)
+            if(cursor.moveToFirst()){
+                do{
+                    val sub = Sub()
+                    sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
+                    sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
+                    sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
+                    sub.importance = cursor.getInt(cursor.getColumnIndex(COL_IMP))
+                    sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
+                    sub.time = cursor.getString(cursor.getColumnIndex(COL_TIME))
+                    if(sub.day == day) {
+                        lstSubs.add(sub)
+                    }
+                }while (cursor.moveToNext())
+            }
+            db.close()
+            return lstSubs
+        }
 
     fun addSub(sub:Sub)
     {
@@ -85,7 +103,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_CNT,sub.count)
         cv.put(COL_TIME,sub.time)
 
-        db.insert(TABLE_NAME,null,cv)
+        db.insertOrThrow(TABLE_NAME,null,cv)
         db.close()
     }
     fun updateSub(sub:Sub):Int
@@ -106,6 +124,12 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
     {
         val db = this.writableDatabase
         db.delete(TABLE_NAME,COL_ID+"=?", arrayOf(sub.id.toString()))
+        db.close()
+    }
+    fun deleteAllData(){
+        val db = this.writableDatabase
+        db.execSQL("DROP TABLE $TABLE_NAME")
+        onCreate(db)
         db.close()
     }
 }
