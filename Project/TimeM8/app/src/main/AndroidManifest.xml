@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.andrewforwork.timem8">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,11 +32,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MainDailySchedule" />
         <activity android:name=".MainScheduleEditable" />
-        <activity
-            android:name=".MainScheduleEditor.MainEditor"
-            />
+        <activity android:name=".Editors.MainEditor" />
         <activity android:name=".Subject.Editor" />
-        <activity android:name=".Subject.TestFraments"></activity>
+        <activity android:name=".Subject.TestFraments" />
+        <activity android:name=".MainScheduleDetail" />
+        <activity android:name=".Editors.MainDetailEditor"></activity>
     </application>
 
 </manifest>

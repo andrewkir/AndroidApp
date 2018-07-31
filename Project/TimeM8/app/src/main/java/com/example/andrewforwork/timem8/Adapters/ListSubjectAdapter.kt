@@ -37,13 +37,13 @@ class ListSubjectAdapter(
         rowView.txt_row_type.text = lstSub[position].type.toString()
         rowView.txt_row_day.text = lstSub[position].day.toString()
         when(lstSub[position].day.toString()) {
-            "1" -> rowView.txt_row_day.text = "П"
-            "2" -> rowView.txt_row_day.text = "В"
-            "3" -> rowView.txt_row_day.text = "С"
-            "4" -> rowView.txt_row_day.text = "Ч"
-            "5" -> rowView.txt_row_day.text = "П"
-            "6" -> rowView.txt_row_day.text = "С"
-            "7" -> rowView.txt_row_day.text = "В"
+            "1" -> rowView.txt_row_day.text = "Пн"
+            "2" -> rowView.txt_row_day.text = "Вт"
+            "3" -> rowView.txt_row_day.text = "Ср"
+            "4" -> rowView.txt_row_day.text = "Чт"
+            "5" -> rowView.txt_row_day.text = "Пт"
+            "6" -> rowView.txt_row_day.text = "Сб"
+            "7" -> rowView.txt_row_day.text = "Вс"
             else -> rowView.txt_row_day.text = lstSub[position].day.toString()
         }
 

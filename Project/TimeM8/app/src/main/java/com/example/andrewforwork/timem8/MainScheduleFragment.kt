@@ -4,44 +4,44 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.Toast
 import com.example.andrewforwork.timem8.Adapters.MainScheduleAdapter
 import com.example.andrewforwork.timem8.DataBase.DBHandler
-import com.example.andrewforwork.timem8.MainScheduleEditor.MainEditor
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.activity_editable.*
-import kotlinx.android.synthetic.main.activity_main_schedule_editable.*
 
 
 class MainScheduleFragment(): Fragment() {
-    var testValue = 0
     var day = 0
+    var date = "1.1.2018"
+    internal lateinit var context: Context
     companion object {
         fun newInstance(): MainScheduleFragment {
             return MainScheduleFragment()
         }
     }
-    internal lateinit var context: Context
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         context = inflater.context
         return inflater.inflate(R.layout.activity_editable,container,false)
     }
 
-
+    override fun onAttach(context1: Context?) {
+        super.onAttach(context1)
+        context = context1!!
+    }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val bundle = this.arguments
         if (bundle != null) {
-            day = bundle.getInt("DAY", 0)
+            day = bundle.getInt("DAY", 0)+1
+            date = bundle.getString("DATE","1.1.2018")
         }
         db = DBHandler(context)
-        adapter = MainScheduleAdapter(context,db.allSubByDay(day)){
+        adapter = MainScheduleAdapter(date,context,db.allSubByDay(day)){
             subject ->
-            Toast.makeText(context,subject.name,Toast.LENGTH_SHORT).show()
         }
         if(db.allSubByDay(day).isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
@@ -72,8 +72,12 @@ class MainScheduleFragment(): Fragment() {
         if(lstSubs.isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
         } else {
-            val adapter = MainScheduleAdapter(context, db.allSubByDay(day)) { subject ->
-                Toast.makeText(context, subject.name, Toast.LENGTH_SHORT).show()
+            val adapter = MainScheduleAdapter(date,context, db.allSubByDay(day)) { subject ->
+                val DetailActivity = Intent(context,MainScheduleDetail::class.java)
+                DetailActivity.putExtra("NAME_SUB",subject.name)
+                DetailActivity.putExtra("DATE",date)
+                DetailActivity.putExtra("COUNT_SUB",subject.count)
+                startActivity(DetailActivity)
             }
             subjectListFragment.adapter = adapter
         }

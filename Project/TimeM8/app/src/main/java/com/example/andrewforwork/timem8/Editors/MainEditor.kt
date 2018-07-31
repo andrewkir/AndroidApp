@@ -1,6 +1,5 @@
-package com.example.andrewforwork.timem8.MainScheduleEditor
+package com.example.andrewforwork.timem8.Editors
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -53,7 +52,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
         spinner!!.setAdapter(aa)
-        CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)
+        CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
         db = DBHandler(this)
         refreshData()
         btn_insert.setOnClickListener{

@@ -3,18 +3,13 @@ package com.example.andrewforwork.timem8
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.example.andrewforwork.timem8.Adapters.MainScheduleAdapter
 import com.example.andrewforwork.timem8.DataBase.DBHandler
-import com.example.andrewforwork.timem8.MainScheduleEditor.MainEditor
+import com.example.andrewforwork.timem8.Editors.MainEditor
 import com.example.andrewforwork.timem8.Subject.Sub
-import kotlinx.android.synthetic.main.activity_main_editor.*
 import kotlinx.android.synthetic.main.activity_main_schedule_editable.*
 import java.util.*
 
@@ -22,7 +17,9 @@ class MainScheduleEditable : AppCompatActivity() {
     internal lateinit var db: DBHandler
     internal var lstSubs:List<Sub> = ArrayList<Sub>()
     lateinit var adapter: MainScheduleAdapter
+    var calendar = Calendar.getInstance()
     var count = 0
+    var currentDay = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_schedule_editable)
@@ -32,27 +29,26 @@ class MainScheduleEditable : AppCompatActivity() {
             val bundle = Bundle()
             count = getDayOfTheWeek()
             bundle.putInt("DAY", getDayOfTheWeek())
+            bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
             fragment.arguments = bundle
             replaceFragment(fragment)
             back_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                if (count - 1 >= 1) {
-                    count -= 1
-                }
-                applyDay()
-                bundle.putInt("DAY", count)
+                count-=1
+                applyDay(-1)
+                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
             forward_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                if (count + 1 <= 7) {
-                    count += 1
-                }
-                applyDay()
-                bundle.putInt("DAY", count)
+                count+=1
+                applyDay(1)
+                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
@@ -62,32 +58,32 @@ class MainScheduleEditable : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
         if (savedInstanceState != null){
-            count = savedInstanceState.getInt("CURRENT_DAY",1)
-            applyDay()
+            count = savedInstanceState.getInt("CURRENT_DAY",0)
+            currentDay = savedInstanceState.getInt("CURRENT_DIFF",0)
+            applyDay(0)
             val fragment = MainScheduleFragment.newInstance()
             val bundle = Bundle()
             bundle.putInt("DAY", count)
+            bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
             fragment.arguments = bundle
             replaceFragment(fragment)
             back_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                if (count - 1 >= 1) {
-                    count -= 1
-                }
-                applyDay()
-                bundle.putInt("DAY", count)
+                count-=1
+                applyDay(-1)
+                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
             forward_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                if (count + 1 <= 7) {
-                    count += 1
-                }
-                applyDay()
-                bundle.putInt("DAY", count)
+                count+=1
+                applyDay(1)
+                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
@@ -97,6 +93,7 @@ class MainScheduleEditable : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putInt("CURRENT_DAY",count)
+        outState?.putInt("CURRENT_DIFF",currentDay)
     }
 
 
@@ -108,19 +105,25 @@ class MainScheduleEditable : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val Editor = Intent(this,MainEditor::class.java)
-        Editor.putExtra("DAY_OF_THE_WEEK",count)
+        Editor.putExtra("DAY_OF_THE_WEEK",if (count>=0) count%7 else (count%7+7)%7)
         startActivity(Editor)
         return true
     }
-    private fun applyDay(){
-        when(count){
-            1 -> textDay.text = "Понедельник"
-            2 -> textDay.text = "Вторник"
-            3 -> textDay.text = "Среда"
-            4 -> textDay.text = "Четверг"
-            5 -> textDay.text = "Пятница"
-            6 -> textDay.text = "Суббота"
-            7 -> textDay.text = "Воскресенье"
+    private fun applyDay(chr: Int){
+        currentDay+=chr
+        calendar = Calendar.getInstance()
+        calendar.add(Calendar.DATE,currentDay)
+        println(calendar.get(Calendar.YEAR).toString()+" "+calendar.get(Calendar.MONTH).toString()+" "+calendar.get(Calendar.DATE).toString())
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH) //if (count<=-7) abs(count)%7 else abs(7+count)%7
+        when(if (count>=0) count%7 else (count%7+7)%7 ){
+            0 -> textDay.text = "Понедельник $day $month, count = $count"
+            1 -> textDay.text = "Вторник $day $month, count = $count"
+            2 -> textDay.text = "Среда $day $month, count = $count"
+            3 -> textDay.text = "Четверг $day $month, count = $count"
+            4 -> textDay.text = "Пятница $day $month, count = $count"
+            5 -> textDay.text = "Суббота $day $month, count = $count"
+            6 -> textDay.text = "Воскресенье $day $month, count = $count"
         }
     }
 
@@ -141,23 +144,25 @@ class MainScheduleEditable : AppCompatActivity() {
     private fun getDayOfTheWeek(): Int {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_WEEK)
+        val month = calendar.get(Calendar.MONTH)
         when(day){
-            2 -> textDay.text = "Понедельник"
-            3 -> textDay.text = "Вторник"
-            4 -> textDay.text = "Среда"
-            5 -> textDay.text = "Четверг"
-            6 -> textDay.text = "Пятница"
-            7 -> textDay.text = "Суббота"
-            1 -> textDay.text = "Воскресенье"
+            2 -> count = 0
+            3 -> count = 1
+            4 -> count = 2
+            5 -> count = 3
+            6 -> count = 4
+            7 -> count = 5
+            1 -> count = 6
         }
+        applyDay(0)
         when(day){
-            2 -> return 1
-            3 -> return 2
-            4 -> return 3
-            5 -> return 4
-            6 -> return 5
-            7 -> return 6
-            1 -> return 7
+            2 -> return 0
+            3 -> return 1
+            4 -> return 2
+            5 -> return 3
+            6 -> return 4
+            7 -> return 5
+            1 -> return 6
         }
         return 1
     }
