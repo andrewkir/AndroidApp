@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(ScheduleIntentEd)
         }
 
-        val bmImg = BitmapFactory.decodeFile("/storage/emulated/0/demonuts/1532988413953.jpg")
-        imageView2.setImageBitmap(bmImg)
 
     }
 

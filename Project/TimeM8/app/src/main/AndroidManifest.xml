@@ -33,10 +33,18 @@
         <activity android:name=".MainDailySchedule" />
         <activity android:name=".MainScheduleEditable" />
         <activity android:name=".Editors.MainEditor" />
-        <activity android:name=".Subject.Editor" />
-        <activity android:name=".Subject.TestFraments" />
         <activity android:name=".MainScheduleDetail" />
-        <activity android:name=".Editors.MainDetailEditor"></activity>
+        <activity android:name=".Editors.MainDetailEditor"
+            android:screenOrientation="portrait"/>
+
+        <provider
+            android:authorities="${applicationId}.fileprovider"
+            android:name="android.support.v4.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:resource="@xml/file_paths"
+                android:name="android.support.FILE_PROVIDER_PATHS" />
+        </provider>
     </application>
 
 </manifest>

@@ -11,7 +11,7 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:background="@color/Txt"
+        android:background="@android:color/darker_gray"
         android:text="Сделать фото/выбрать из галереи"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,10 +25,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:onClick="OnimageAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnDetailEditorPhoto"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
 
     <EditText
         android:id="@+id/editTextHomework"
@@ -43,8 +44,26 @@
         android:singleLine="false"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/DetailEditorBack" />
+
+    <EditText
+        android:id="@+id/editTextTips"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Заметки"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHomework" />
 
     <Switch
         android:id="@+id/switchPhotoAttach"
@@ -64,10 +83,32 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/Txt"
+        android:background="@android:color/darker_gray"
         android:text="СОХРАНИТЬ"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/DetailEditorBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="предыдущее фото"
+        app:layout_constraintEnd_toStartOf="@+id/DetailEditorForward"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
+
+    <Button
+        android:id="@+id/DetailEditorForward"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="следующее фото"
+        app:layout_constraintBottom_toBottomOf="@+id/DetailEditorBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/DetailEditorBack"
+        app:layout_constraintTop_toTopOf="@+id/DetailEditorBack" />
 </android.support.constraint.ConstraintLayout>

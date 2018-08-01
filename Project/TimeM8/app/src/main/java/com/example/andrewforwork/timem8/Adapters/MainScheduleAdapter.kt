@@ -40,7 +40,7 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
             subjectTime?.text = subject.time
             db = DBdetailinfo(context)
             try {
-                var sub = db.allSubDetailByDay(sub_parent = subject.name,date = date)[0]
+                var sub = db.allSubDetailByDay(sub_parent = subject.name,date = date,count = subject.count)[0]
                 subjectHome?.text = sub.homework
             }
             catch (e: Exception){

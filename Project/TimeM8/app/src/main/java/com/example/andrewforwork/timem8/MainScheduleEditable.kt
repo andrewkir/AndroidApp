@@ -116,14 +116,29 @@ class MainScheduleEditable : AppCompatActivity() {
         println(calendar.get(Calendar.YEAR).toString()+" "+calendar.get(Calendar.MONTH).toString()+" "+calendar.get(Calendar.DATE).toString())
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH) //if (count<=-7) abs(count)%7 else abs(7+count)%7
+        var monthText = ""
+        when(month){
+            0 -> monthText = "Янверь"
+            1 -> monthText = "Февраль"
+            2 -> monthText = "Март"
+            3 -> monthText = "Апрель"
+            4 -> monthText = "Май"
+            5 -> monthText = "Июнь"
+            6 -> monthText = "Июль"
+            7 -> monthText = "Август"
+            8 -> monthText = "Сентябрь"
+            9 -> monthText = "Октябрь"
+            10 -> monthText = "Ноябрь"
+            11 -> monthText = "Декабрь"
+        }
         when(if (count>=0) count%7 else (count%7+7)%7 ){
-            0 -> textDay.text = "Понедельник $day $month, count = $count"
-            1 -> textDay.text = "Вторник $day $month, count = $count"
-            2 -> textDay.text = "Среда $day $month, count = $count"
-            3 -> textDay.text = "Четверг $day $month, count = $count"
-            4 -> textDay.text = "Пятница $day $month, count = $count"
-            5 -> textDay.text = "Суббота $day $month, count = $count"
-            6 -> textDay.text = "Воскресенье $day $month, count = $count"
+            0 -> textDay.text = "$monthText\nПонедельник, $day число"
+            1 -> textDay.text = "$monthText\nВторник, $day число"
+            2 -> textDay.text = "$monthText\nСреда, $day число"
+            3 -> textDay.text = "$monthText\nЧетверг, $day число"
+            4 -> textDay.text = "$monthText\nПятница, $day число"
+            5 -> textDay.text = "$monthText\nСуббота, $day число"
+            6 -> textDay.text = "$monthText\nВоскресенье, $day число"
         }
     }
 

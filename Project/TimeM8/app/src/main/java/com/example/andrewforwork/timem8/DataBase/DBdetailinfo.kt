@@ -12,6 +12,8 @@ val COL_DETAIL_SUB_HOMEWORK="homework"
 val COL_DETAIL_IMAGE_ATT="img"
 val COL_DETAIL_IMAGE_PATH="path"
 val COL_DETAIL_DATE="date"
+val COL_DETAIL_TIPS="tips"
+val COL_DETAIL_COUNT="count"
 
 class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
@@ -19,7 +21,9 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
                 COL_DETAIL_SUB_PARENT + " text," +
                 COL_DETAIL_SUB_HOMEWORK + " text," +
                 COL_DETAIL_IMAGE_ATT + " int," +
+                COL_DETAIL_COUNT + " int," +
                 COL_DETAIL_IMAGE_PATH + " text," +
+                COL_DETAIL_TIPS + " text," +
                 COL_DETAIL_DATE + " text)"
         db!!.execSQL(createTable)
     }
@@ -37,7 +41,9 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_SUB_PARENT,sub.parent_sub)
         cv.put(COL_DETAIL_SUB_HOMEWORK,sub.homework)
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
+        cv.put(COL_DETAIL_COUNT,sub.count)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
+        cv.put(COL_DETAIL_TIPS,sub.tips)
         cv.put(COL_DETAIL_DATE,sub.date)
 
         var result = db.insertOrThrow(TABLE_DETAIL_NAME,null,cv)
@@ -66,10 +72,10 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
 ////            db.close()
 ////            return lstSubs
 ////        }
-    fun allSubDetailByDay(sub_parent: String,date: String):List<SubDetail>
+    fun allSubDetailByDay(sub_parent: String,date: String,count: Int):List<SubDetail>
     {
         val lstSubs = ArrayList<SubDetail>()
-        val selectQuery = "SELECT * FROM "+ TABLE_DETAIL_NAME+" WHERE $COL_DETAIL_SUB_PARENT = '$sub_parent' AND $COL_DETAIL_DATE = '$date'"
+        val selectQuery = "SELECT * FROM "+ TABLE_DETAIL_NAME+" WHERE $COL_DETAIL_SUB_PARENT = '$sub_parent' AND $COL_DETAIL_DATE = '$date' AND $COL_DETAIL_COUNT = '$count'"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery,null)
         if(cursor.moveToFirst()){
@@ -78,9 +84,11 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
                 sub_detail.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
                 sub_detail.parent_sub = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_PARENT))
                 sub_detail.hasimage = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_IMAGE_ATT))
+                sub_detail.count = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COUNT))
                 sub_detail.homework = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_HOMEWORK))
                 sub_detail.path = cursor.getString(cursor.getColumnIndex(COL_DETAIL_IMAGE_PATH))
                 sub_detail.date = cursor.getString(cursor.getColumnIndex(COL_DETAIL_DATE))
+                sub_detail.tips = cursor.getString(cursor.getColumnIndex(COL_DETAIL_TIPS))
                 lstSubs.add(sub_detail)
             }while (cursor.moveToNext())
         }
@@ -99,6 +107,8 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
         cv.put(COL_DETAIL_DATE,sub.date)
+        cv.put(COL_DETAIL_COUNT,sub.count)
+        cv.put(COL_DETAIL_TIPS,sub.tips)
 
         db.insertOrThrow(TABLE_DETAIL_NAME,null,cv)
         db.close()
@@ -111,8 +121,10 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_SUB_PARENT,sub.parent_sub)
         cv.put(COL_DETAIL_SUB_HOMEWORK,sub.homework)
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
+        cv.put(COL_DETAIL_COUNT,sub.count)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
         cv.put(COL_DETAIL_DATE,sub.date)
+        cv.put(COL_DETAIL_TIPS,sub.tips)
 
         return db.update(TABLE_DETAIL_NAME,cv, COL_ID+"=?", arrayOf(sub.id.toString()))
 
