@@ -23,7 +23,6 @@ class MainScheduleEditable : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_schedule_editable)
-        //SET DAY TO 1
         if (savedInstanceState == null) {
             val fragment = MainScheduleFragment.newInstance()
             val bundle = Bundle()

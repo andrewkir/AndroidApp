@@ -24,6 +24,8 @@
         android:layout_height="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
         android:onClick="onDetailImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +35,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="120dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="56dp"
         android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -116,5 +118,46 @@
             tools:text="Подготовить доклад. Упражнение 1-1337" />
 
     </ScrollView>
+
+    <Button
+        android:id="@+id/buttonDetBack"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/background_material_light"
+        android:drawableStart="@drawable/ic_keyboard_arrow_left_black_24dp"
+        android:minWidth="0dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:scaleType="center"
+        android:text=""
+        app:layout_constraintStart_toStartOf="@+id/detailImageView"
+        app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+
+    <Button
+        android:id="@+id/buttonDetForw"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/background_material_light"
+        android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:minWidth="0dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:scaleType="center"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="@+id/detailImageView"
+        app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="249dp" />
 
 </android.support.constraint.ConstraintLayout>

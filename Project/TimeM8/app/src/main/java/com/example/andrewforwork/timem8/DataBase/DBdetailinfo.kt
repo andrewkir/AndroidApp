@@ -14,6 +14,7 @@ val COL_DETAIL_IMAGE_PATH="path"
 val COL_DETAIL_DATE="date"
 val COL_DETAIL_TIPS="tips"
 val COL_DETAIL_COUNT="count"
+val COL_DETAIL_COLOR="color"
 
 class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
@@ -22,6 +23,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
                 COL_DETAIL_SUB_HOMEWORK + " text," +
                 COL_DETAIL_IMAGE_ATT + " int," +
                 COL_DETAIL_COUNT + " int," +
+                COL_DETAIL_COLOR + " int," +
                 COL_DETAIL_IMAGE_PATH + " text," +
                 COL_DETAIL_TIPS + " text," +
                 COL_DETAIL_DATE + " text)"
@@ -44,6 +46,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_COUNT,sub.count)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
         cv.put(COL_DETAIL_TIPS,sub.tips)
+        cv.put(COL_DETAIL_COLOR,sub.color)
         cv.put(COL_DETAIL_DATE,sub.date)
 
         var result = db.insertOrThrow(TABLE_DETAIL_NAME,null,cv)
@@ -85,6 +88,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
                 sub_detail.parent_sub = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_PARENT))
                 sub_detail.hasimage = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_IMAGE_ATT))
                 sub_detail.count = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COUNT))
+                sub_detail.color = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COLOR))
                 sub_detail.homework = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_HOMEWORK))
                 sub_detail.path = cursor.getString(cursor.getColumnIndex(COL_DETAIL_IMAGE_PATH))
                 sub_detail.date = cursor.getString(cursor.getColumnIndex(COL_DETAIL_DATE))
@@ -107,6 +111,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
         cv.put(COL_DETAIL_DATE,sub.date)
+        cv.put(COL_DETAIL_COLOR,sub.color)
         cv.put(COL_DETAIL_COUNT,sub.count)
         cv.put(COL_DETAIL_TIPS,sub.tips)
 
@@ -124,6 +129,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_COUNT,sub.count)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
         cv.put(COL_DETAIL_DATE,sub.date)
+        cv.put(COL_DETAIL_COLOR,sub.color)
         cv.put(COL_DETAIL_TIPS,sub.tips)
 
         return db.update(TABLE_DETAIL_NAME,cv, COL_ID+"=?", arrayOf(sub.id.toString()))

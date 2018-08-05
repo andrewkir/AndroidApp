@@ -5,7 +5,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.drawable.GradientDrawable
 import android.media.ExifInterface
 import android.media.MediaScannerConnection
 import android.net.Uri
@@ -23,7 +25,9 @@ import kotlinx.android.synthetic.main.activity_main_detail_editor.*
 import java.util.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
+import android.support.v4.graphics.ColorUtils
 import android.view.View
+import com.skydoves.colorpickerpreference.ColorPickerDialog
 import java.io.*
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
@@ -37,6 +41,7 @@ class MainDetailEditor : AppCompatActivity() {
     var path = ""
     var count = 0
     var imagePos = 0
+    var color = Color.WHITE
     var imageFilePath = ""
     var newImage = false
     private val GALLERY = 1
@@ -60,6 +65,10 @@ class MainDetailEditor : AppCompatActivity() {
         var count = intent.getIntExtra("COUNT_SUB",0)
         try {
             subject = db.allSubDetailByDay(subjectName,date,count)[0]
+            color = subject.color
+            var colorCircle = colorView.background.mutate() as GradientDrawable
+            colorCircle.setColor(color)
+            color = ColorUtils.setAlphaComponent(color, 30)
             when(subject.hasimage){
                 1 -> {
                     switchPhotoAttach.performClick()
@@ -74,13 +83,14 @@ class MainDetailEditor : AppCompatActivity() {
         }
         catch(e: Exception) {
             photosAttached.add(false)
-            Toast.makeText(this,"error",Toast.LENGTH_SHORT).show()
         }
         saveBtn.setOnClickListener {
             if(imagePos==0){
                 DetailEditorForward.performClick()
+                DetailEditorBack.performClick()
             } else {
                 DetailEditorBack.performClick()
+                DetailEditorForward.performClick()
             }
             var dateArr =date.split(".")
             println(dateArr)
@@ -92,16 +102,17 @@ class MainDetailEditor : AppCompatActivity() {
                     parent = subjectName,
                     homework = if(editTextHomework.text.isEmpty()) "" else if(editTextHomework.text.toString().takeLast(1)=="\n")editTextHomework.text.toString() else editTextHomework.text.toString()+"\n",
                     hasimage = if(path.length>3) 1 else 0,
-                    path = path,//if(::adjustedBitmap.isInitialized && switchPhotoAttach.isChecked) saveImage(adjustedBitmap) else if(::subject.isInitialized) subject.path else "", //TODO CHANGE LATER
+                    path = path,
                     tips = if(editTextTips.text.isEmpty()) "" else editTextTips.text.toString()+"\n",
-                    count = count
+                    count = count,
+                    color = color
 
             )
             try {
                 db.addSub_detail(subdt)
                 Toast.makeText(this,"добавлено",Toast.LENGTH_SHORT).show()
             } catch (e: Exception){
-                Toast.makeText(this,"сохранено",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,"обновлено",Toast.LENGTH_SHORT).show()
                 db.updateSub_detail(subdt)
             }
         }
@@ -178,6 +189,9 @@ class MainDetailEditor : AppCompatActivity() {
     fun OnimageAdd(view: View){
         switchPhotoAttach.visibility = View.VISIBLE
         showPictureDialog()
+    }
+    fun onColorClick(view: View){
+        showColorDialog()
     }
     fun decodePath(d_path:String): HashMap<Bitmap, String> {
         var res_path = ArrayList<String>()
@@ -298,7 +312,7 @@ class MainDetailEditor : AppCompatActivity() {
         {
             if (data != null)
             {
-                val contentURI = data!!.data
+                val contentURI = data.data
                 try
                 {
                     imageFilePath=getRealPathFromURI(contentURI)
@@ -337,7 +351,7 @@ class MainDetailEditor : AppCompatActivity() {
         {
             val file = File(imageFilePath)
             val exifData = Uri.fromFile( File(imageFilePath))
-            var exif =ExifInterface(exifData.path);
+            var exif =ExifInterface(exifData.path)
             val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
             var rotationInDegrees =
                 when (rotation) {
@@ -399,10 +413,26 @@ class MainDetailEditor : AppCompatActivity() {
         menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
         return true
     }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         db.deleteAllData()
+        recreate()
         editTextHomework.setText("")
+        editTextTips.setText("")
+        switchPhotoAttach.isChecked = false
         return true
+    }
+    fun showColorDialog(){
+        val builder = ColorPickerDialog.Builder(this)
+        builder.setTitle("ColorPicker Dialog")
+        builder.colorPickerView.setSavedColor(color)
+        builder.setPreferenceName(subjectName+date)
+        builder.setPositiveButton("выбрать") { colorEnvelope ->
+            color = colorEnvelope.color
+            var colorCircle = colorView.background.mutate() as GradientDrawable
+            color = ColorUtils.setAlphaComponent(color, 30)
+            colorCircle.setColor(color)
+        }
+        builder.setNegativeButton("отмена") { dialogInterface, i -> dialogInterface.dismiss() }
+        builder.show()
     }
 }

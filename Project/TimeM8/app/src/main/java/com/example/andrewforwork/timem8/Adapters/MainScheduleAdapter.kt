@@ -42,12 +42,11 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
             try {
                 var sub = db.allSubDetailByDay(sub_parent = subject.name,date = date,count = subject.count)[0]
                 subjectHome?.text = sub.homework
+                itemView.setBackgroundColor(sub.color)
             }
             catch (e: Exception){
                 subjectHome?.text = ""
             }
-            //TODO изменить важность
-            //itemView.setBackgroundColor(Color.parseColor("#ff9966"))
 
             itemView.setOnClickListener { itemClick(subject) }
         }

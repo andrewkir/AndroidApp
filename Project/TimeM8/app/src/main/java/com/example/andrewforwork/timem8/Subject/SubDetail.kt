@@ -1,5 +1,7 @@
 package com.example.andrewforwork.timem8.Subject
 
+import android.graphics.Color
+
 class SubDetail {
     var id: Int = 0
     var date: String = ""
@@ -9,8 +11,9 @@ class SubDetail {
     var path: String = ""
     var count: Int = 0
     var tips: String = ""
+    var color: Int = Color.WHITE
 
-    constructor(id:Int,date: String, parent: String,homework: String, hasimage: Int,path: String,tips: String,count: Int){
+    constructor(id:Int,date: String, parent: String,homework: String, hasimage: Int,path: String,tips: String,count: Int,color: Int){
         this.id = id
         this.date = date
         this.parent_sub = parent
@@ -19,6 +22,7 @@ class SubDetail {
         this.path = path
         this.tips = tips
         this.count = count
+        this.color = color
     }
 
     constructor(){
