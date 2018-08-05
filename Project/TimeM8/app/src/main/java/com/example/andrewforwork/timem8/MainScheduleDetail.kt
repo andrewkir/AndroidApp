@@ -59,14 +59,18 @@ class MainScheduleDetail : AppCompatActivity() {
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
+                detailImageView.visibility = View.VISIBLE
                 photopathMap = decodePath(currSub.path)
                 path = currSub.path
                 hasimage = currSub.hasimage
+            } else {
+                detailImageView.visibility = View.GONE
             }
         }
         catch(e: Exception) {
             buttonDetForw.visibility = View.GONE
             buttonDetBack.visibility = View.GONE
+            detailImageView.visibility = View.GONE
         }
 
         buttonDetBack.setOnClickListener {
@@ -201,14 +205,15 @@ class MainScheduleDetail : AppCompatActivity() {
                 photopathMap = decodePath(currSub.path)
                 path = currSub.path
                 hasimage = currSub.hasimage
+                detailImageView.visibility = View.VISIBLE
             } else {
                 buttonDetForw.visibility = View.GONE
                 buttonDetBack.visibility = View.GONE
-                detailImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_photo_black_24dp))
+                detailImageView.visibility = View.GONE
             }
         }
         catch(e: Exception) {
-            detailImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_photo_black_24dp))
+            detailImageView.visibility = View.GONE
             buttonDetForw.visibility = View.GONE
             buttonDetBack.visibility = View.GONE
         }

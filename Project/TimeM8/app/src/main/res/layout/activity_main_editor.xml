@@ -88,11 +88,10 @@
 
     <Button
         android:id="@+id/btn_insert"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="#ced0d4"
         android:padding="10dp"
         android:text="Добавить"
         app:layout_constraintEnd_toStartOf="@+id/btn_update"
@@ -103,11 +102,10 @@
 
     <Button
         android:id="@+id/btn_update"
-        style="@style/Widget.AppCompat.Button.Borderless"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#ced0d4"
         android:text="Обновить"
         app:layout_constraintBottom_toBottomOf="@+id/btn_insert"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete"
@@ -120,7 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#ced0d4"
+        style="@style/AppTheme.Button"
         android:text="Удалить"
         app:layout_constraintBottom_toBottomOf="@+id/btn_update"
         app:layout_constraintEnd_toEndOf="parent"

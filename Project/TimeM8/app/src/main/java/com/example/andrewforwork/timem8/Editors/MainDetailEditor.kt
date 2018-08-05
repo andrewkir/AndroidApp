@@ -28,6 +28,7 @@ import android.support.v4.content.FileProvider
 import android.support.v4.graphics.ColorUtils
 import android.view.View
 import com.skydoves.colorpickerpreference.ColorPickerDialog
+import com.skydoves.colorpickerpreference.FlagView
 import java.io.*
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
@@ -68,7 +69,6 @@ class MainDetailEditor : AppCompatActivity() {
             color = subject.color
             var colorCircle = colorView.background.mutate() as GradientDrawable
             colorCircle.setColor(color)
-            color = ColorUtils.setAlphaComponent(color, 30)
             when(subject.hasimage){
                 1 -> {
                     switchPhotoAttach.performClick()
@@ -418,18 +418,20 @@ class MainDetailEditor : AppCompatActivity() {
         recreate()
         editTextHomework.setText("")
         editTextTips.setText("")
+
         switchPhotoAttach.isChecked = false
         return true
     }
     fun showColorDialog(){
-        val builder = ColorPickerDialog.Builder(this)
-        builder.setTitle("ColorPicker Dialog")
-        builder.colorPickerView.setSavedColor(color)
+        val builder = ColorPickerDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK)
+        builder.setTitle("Выберите цвет")
+        builder.colorPickerView.setPaletteDrawable(ContextCompat.getDrawable(this,R.drawable.palette))
+        builder.setFlagView(com.example.andrewforwork.timem8.FlagView(this, R.layout.flag_view))
         builder.setPreferenceName(subjectName+date)
         builder.setPositiveButton("выбрать") { colorEnvelope ->
             color = colorEnvelope.color
+            color = ColorUtils.setAlphaComponent(color, 100)
             var colorCircle = colorView.background.mutate() as GradientDrawable
-            color = ColorUtils.setAlphaComponent(color, 30)
             colorCircle.setColor(color)
         }
         builder.setNegativeButton("отмена") { dialogInterface, i -> dialogInterface.dismiss() }
