@@ -6,29 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".Editors.MainDetailEditor">
 
-    <Button
-        android:id="@+id/btnDetailEditorPhoto"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="@android:color/darker_gray"
-        android:text="Сделать фото/выбрать из галереи"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/detailEditorImageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="40dp"
         android:onClick="OnimageAdd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDetailEditorPhoto"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
 
     <EditText
@@ -46,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/DetailEditorBack" />
+        app:layout_constraintTop_toBottomOf="@+id/switchPhotoAttach" />
 
     <EditText
         android:id="@+id/editTextTips"
@@ -67,13 +55,15 @@
 
     <Switch
         android:id="@+id/switchPhotoAttach"
-        android:layout_width="wrap_content"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="8dp"
         android:text="прикрепить"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDetailEditorPhoto" />
+        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
 
     <Button
         android:id="@+id/saveBtn"
@@ -92,23 +82,39 @@
 
     <Button
         android:id="@+id/DetailEditorBack"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="предыдущее фото"
-        app:layout_constraintEnd_toStartOf="@+id/DetailEditorForward"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="70dp"
+        android:background="#f8f8f9"
+        android:drawableStart="@drawable/ic_keyboard_arrow_left_black_24dp"
+        android:minWidth="0dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="16dp"
+        android:scaleType="center"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/detailEditorImageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/DetailEditorForward"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="следующее фото"
-        app:layout_constraintBottom_toBottomOf="@+id/DetailEditorBack"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="70dp"
+        android:background="#f8f8f9"
+        android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:minWidth="0dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="16dp"
+        android:scaleType="center"
+        android:text=""
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/DetailEditorBack"
-        app:layout_constraintTop_toTopOf="@+id/DetailEditorBack" />
+        app:layout_constraintStart_toEndOf="@+id/detailEditorImageView"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
