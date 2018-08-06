@@ -103,7 +103,7 @@ class MainDetailEditor : AppCompatActivity() {
                     homework = if(editTextHomework.text.isEmpty()) "" else if(editTextHomework.text.toString().takeLast(1)=="\n")editTextHomework.text.toString() else editTextHomework.text.toString()+"\n",
                     hasimage = if(path.length>3) 1 else 0,
                     path = path,
-                    tips = if(editTextTips.text.isEmpty()) "" else editTextTips.text.toString()+"\n",
+                    tips = if(editTextTips.text.isEmpty()) "" else if(editTextTips.text.toString().takeLast(1)=="\n")editTextTips.text.toString() else editTextTips.text.toString()+"\n",
                     count = count,
                     color = color
 

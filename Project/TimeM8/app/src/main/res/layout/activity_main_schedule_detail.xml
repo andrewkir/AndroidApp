@@ -48,7 +48,7 @@
             android:layout_height="fill_parent"
             android:layout_margin="8dp"
             android:layout_marginTop="56dp"
-
+            android:autoLink="all"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -65,6 +65,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textSize="24sp"
+        android:autoLink="all"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailTextSubName"
         tools:text="01.01.2018" />

@@ -206,6 +206,7 @@ class MainScheduleDetail : AppCompatActivity() {
                 path = currSub.path
                 hasimage = currSub.hasimage
                 detailImageView.visibility = View.VISIBLE
+                detailImageView.setImageBitmap(photos[currentImage])
             } else {
                 buttonDetForw.visibility = View.GONE
                 buttonDetBack.visibility = View.GONE
