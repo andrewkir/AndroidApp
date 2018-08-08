@@ -57,21 +57,18 @@ class MainScheduleFragment(): Fragment() {
     internal var lstSubs:List<Sub> = ArrayList<Sub>()
     lateinit var adapter: MainScheduleAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onResume() {
-        refreshData()
         super.onResume()
+        refreshData()
     }
 
     private fun refreshData(){
-        lstSubs = db.allSubByDay(day)
+        var  dbTmp = DBHandler(context)
+        lstSubs = dbTmp.allSubByDay(day)
         if(lstSubs.isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
         } else {
-            val adapter = MainScheduleAdapter(date,context, db.allSubByDay(day)) { subject ->
+            val adapter = MainScheduleAdapter(date,context, dbTmp.allSubByDay(day)) { subject ->
                 val DetailActivity = Intent(context,MainScheduleDetail::class.java)
                 DetailActivity.putExtra("NAME_SUB",subject.name)
                 DetailActivity.putExtra("DATE",date)

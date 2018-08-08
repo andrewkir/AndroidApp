@@ -44,6 +44,9 @@ class MainScheduleDetail : AppCompatActivity() {
                 requestPermissions(permissions, PERMISSION_REQUEST)
             }
         }
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         setContentView(R.layout.activity_main_schedule_detail)
         SubName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
@@ -55,7 +58,6 @@ class MainScheduleDetail : AppCompatActivity() {
             var currSub = db.allSubDetailByDay(SubName, date,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
-            //detailTextHomework.movementMethod = ScrollingMovementMethod()
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
@@ -214,18 +216,24 @@ class MainScheduleDetail : AppCompatActivity() {
             }
         }
         catch(e: Exception) {
-            detailImageView.visibility = View.GONE
+            detailTextHomework.text = ""
+            detailTextTips.text = ""
+                    detailImageView.visibility = View.GONE
             buttonDetForw.visibility = View.GONE
             buttonDetBack.visibility = View.GONE
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val DetailEditor = Intent(this,MainDetailEditor::class.java)
-        DetailEditor.putExtra("NAME_SUB",SubName)
-        DetailEditor.putExtra("DATE",date)
-        DetailEditor.putExtra("COUNT_SUB",count)
-        startActivity(DetailEditor)
+        if(item?.itemId == R.id.edit_menu) {
+            val DetailEditor = Intent(this, MainDetailEditor::class.java)
+            DetailEditor.putExtra("NAME_SUB", SubName)
+            DetailEditor.putExtra("DATE", date)
+            DetailEditor.putExtra("COUNT_SUB", count)
+            startActivity(DetailEditor)
+        } else {
+            this.finish()
+        }
         return true
     }
 }

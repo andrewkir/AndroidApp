@@ -2,10 +2,13 @@ package com.example.andrewforwork.timem8.Adapters
 
 import android.app.Activity
 import android.content.Context
+import kotlin.reflect.KMutableProperty0
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.andrewforwork.timem8.R
@@ -17,9 +20,11 @@ class ListSubjectAdapter(
         internal var lstSub:List<Sub>,
         internal var edit_day_spinner:Spinner,
         internal var edit_name: EditText,
-        internal var edit_time: EditText,
-        internal var edit_imp: Int,
-        internal var edit_cnt:EditText):BaseAdapter() {
+        internal var timeB_btn: Button,
+        internal var timeE_btn: Button,
+        internal var edit_cnt:EditText,
+        internal var edit_type: EditText,
+        var isedit: KMutableProperty0<Int>):BaseAdapter() {
     internal var inflater:LayoutInflater
 
     init {
@@ -32,10 +37,12 @@ class ListSubjectAdapter(
         //rowView.txt_row_id.text = lstSub[position].id.toString() разобраться с днем недели
 
         rowView.txt_row_count.text = lstSub[position].count.toString()
-        rowView.txt_row_name.text = lstSub[position].name.toString()
-        rowView.txt_row_time.text = lstSub[position].time.toString()
-        rowView.txt_row_type.text = lstSub[position].type.toString()
+        rowView.txt_row_name.text = lstSub[position].name
+        rowView.txt_row_time.text = lstSub[position].timeBegin+"-"+lstSub[position].timeEnd
+        rowView.txt_row_type.text = lstSub[position].type
         rowView.txt_row_day.text = lstSub[position].day.toString()
+        rowView.txt_row_type.text = lstSub[position].type
+
         when(lstSub[position].day.toString()) {
             "1" -> rowView.txt_row_day.text = "Пн"
             "2" -> rowView.txt_row_day.text = "Вт"
@@ -48,10 +55,13 @@ class ListSubjectAdapter(
         }
 
         rowView.setOnClickListener{
+            isedit.set(1)
+            edit_day_spinner.setSelection(Integer.parseInt(lstSub[position].day.toString())-1)
             edit_cnt.setText(rowView.txt_row_count.text.toString())
             edit_name.setText(rowView.txt_row_name.text.toString())
-            edit_time.setText(rowView.txt_row_time.text.toString())
-            edit_day_spinner.setSelection(Integer.parseInt(lstSub[position].day.toString())-1)
+            timeB_btn.setText(rowView.txt_row_time.text.toString().split("-")[0].toString())
+            timeE_btn.setText(rowView.txt_row_time.text.toString().split("-")[1].toString())
+            edit_type.setText(rowView.txt_row_type.text.toString())
 
         }
         return rowView

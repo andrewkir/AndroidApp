@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainScheduleDetail">
-
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".MainScheduleDetail">
     <TextView
         android:id="@+id/detailTextSubName"
         android:layout_width="250dp"
@@ -29,9 +37,9 @@
         android:onClick="onDetailImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_photo_black_24dp" />
+        app:srcCompat="@drawable/ic_add_new_photo_50dp" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="120dp"
@@ -56,7 +64,7 @@
             app:layout_constraintTop_toBottomOf="@+id/detailImageView"
             tools:text="Подготовить доклад. Упражнение 1-1337" />
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <TextView
         android:id="@+id/detailTextDate"
@@ -93,7 +101,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollViewTips"
         android:layout_width="0dp"
         android:layout_height="120dp"
@@ -112,13 +120,14 @@
             android:fillViewport="true"
             android:scrollbars="vertical"
             android:textSize="18sp"
+            android:autoLink="all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailImageView"
             tools:text="Подготовить доклад. Упражнение 1-1337" />
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <Button
         android:id="@+id/buttonDetBack"
@@ -128,7 +137,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_keyboard_arrow_left_black_24dp"
+        android:drawableStart="@drawable/ic_action_chevron_left"
         android:minWidth="0dp"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
@@ -145,7 +154,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:drawableStart="@drawable/ic_action_chevron_right"
         android:minWidth="0dp"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
@@ -154,11 +163,6 @@
         app:layout_constraintEnd_toEndOf="@+id/detailImageView"
         app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="249dp" />
-
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>

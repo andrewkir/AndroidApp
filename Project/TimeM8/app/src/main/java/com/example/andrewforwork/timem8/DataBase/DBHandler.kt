@@ -13,9 +13,10 @@ val TABLE_NAME="subjects"
 val COL_NAME="name"
 val COL_CNT="count"
 val COL_DAY="day"
-val COL_IMP="imp"
-val COL_TIME="time"
+val COL_TIME_BEGIN="time_begin"
+val COL_TIME_END="time_end"
 val COL_ID="id"
+val COL_TYPE="type"
 
 class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
@@ -23,8 +24,9 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                 COL_NAME + " text," +
                 COL_DAY + " int," +
                 COL_CNT + " int," +
-                COL_IMP + " int," +
-                COL_TIME +" text)"
+                COL_TYPE + " text," +
+                COL_TIME_BEGIN + " text," +
+                COL_TIME_END +" text)"
         db!!.execSQL(createTable)
     }
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -38,9 +40,10 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
-        cv.put(COL_IMP,sub.importance)
+        cv.put(COL_TIME_BEGIN,sub.timeBegin)
+        cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
-        cv.put(COL_TIME,sub.time)
+        cv.put(COL_TYPE,sub.type)
 
         var result = db.insertOrThrow(TABLE_NAME,null,cv)
     }
@@ -58,9 +61,10 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                     sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
                     sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
                     sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
-                    sub.importance = cursor.getInt(cursor.getColumnIndex(COL_IMP))
+                    sub.timeBegin = cursor.getString(cursor.getColumnIndex(COL_TIME_BEGIN))
+                    sub.timeEnd = cursor.getString(cursor.getColumnIndex(COL_TIME_END))
                     sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
-                    sub.time = cursor.getString(cursor.getColumnIndex(COL_TIME))
+                    sub.type = cursor.getString(cursor.getColumnIndex(COL_TYPE))
 
                     lstSubs.add(sub)
                 }while (cursor.moveToNext())
@@ -80,9 +84,10 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                     sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
                     sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
                     sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
-                    sub.importance = cursor.getInt(cursor.getColumnIndex(COL_IMP))
+                    sub.timeBegin = cursor.getString(cursor.getColumnIndex(COL_TIME_BEGIN))
+                    sub.timeEnd = cursor.getString(cursor.getColumnIndex(COL_TIME_END))
                     sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
-                    sub.time = cursor.getString(cursor.getColumnIndex(COL_TIME))
+                    sub.type = cursor.getString(cursor.getColumnIndex(COL_TYPE))
                     if(sub.day == day) {
                         lstSubs.add(sub)
                     }
@@ -99,9 +104,10 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
-        cv.put(COL_IMP,sub.importance)
+        cv.put(COL_TIME_BEGIN,sub.timeBegin)
+        cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
-        cv.put(COL_TIME,sub.time)
+        cv.put(COL_TYPE,sub.type)
 
         db.insertOrThrow(TABLE_NAME,null,cv)
         db.close()
@@ -113,9 +119,10 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
-        cv.put(COL_IMP,sub.importance)
+        cv.put(COL_TIME_BEGIN,sub.timeBegin)
+        cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
-        cv.put(COL_TIME,sub.time)
+        cv.put(COL_TYPE,sub.type)
 
         return db.update(TABLE_NAME,cv, COL_ID+"=?", arrayOf(sub.id.toString()))
 

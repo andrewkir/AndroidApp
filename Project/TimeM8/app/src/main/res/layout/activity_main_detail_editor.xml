@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
+        app:srcCompat="@drawable/ic_add_new_photo_50dp" />
 
     <EditText
         android:id="@+id/editTextHomework"
@@ -55,16 +55,14 @@
 
     <Switch
         android:id="@+id/switchPhotoAttach"
-        android:layout_width="130dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="прикрепить"
         android:textColor="@color/Txt"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <Button
         android:id="@+id/saveBtn"
@@ -89,7 +87,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="70dp"
         android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_keyboard_arrow_left_black_24dp"
+        android:drawableStart="@drawable/ic_action_chevron_left"
         android:minWidth="0dp"
         android:paddingEnd="8dp"
         android:paddingStart="16dp"
@@ -108,7 +106,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="70dp"
         android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_keyboard_arrow_right_black_24dp"
+        android:drawableStart="@drawable/ic_action_chevron_right"
         android:minWidth="0dp"
         android:paddingEnd="8dp"
         android:paddingStart="16dp"
@@ -135,12 +133,26 @@
         android:id="@+id/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Цвет:"
         android:layout_marginRight="5dp"
+        android:text="Цвет:"
         app:layout_constraintBottom_toBottomOf="@+id/colorView"
         app:layout_constraintEnd_toStartOf="@+id/colorView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/colorView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="прикрепить"
+        android:textColor="@color/Txt"
+        app:layout_constraintEnd_toStartOf="@+id/switchPhotoAttach"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailEditorImageView" />
 </android.support.constraint.ConstraintLayout>

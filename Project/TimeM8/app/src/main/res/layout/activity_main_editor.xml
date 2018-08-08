@@ -7,6 +7,21 @@
     tools:context="com.example.andrewforwork.timem8.MainActivity">
 
 
+    <Button
+        android:id="@+id/timeEndBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="63dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_btn"
+        android:text="1:00"
+        android:textColor="@color/Txt"
+        app:layout_constraintBottom_toBottomOf="@+id/timeBeginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timeBeginBtn"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ListView
         android:id="@+id/list_subs"
         android:layout_width="0dp"
@@ -31,11 +46,11 @@
 
     <EditText
         android:id="@+id/count"
-        android:layout_width="60dp"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_marginTop="8dp"
-        android:hint="count"
+        android:hint="номер"
         android:inputType="number"
         android:padding="10dp"
         app:layout_constraintEnd_toStartOf="@+id/type"
@@ -51,45 +66,30 @@
         android:layout_margin="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:hint="name"
+        android:hint="название"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/spinner"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/time"
-        android:layout_width="60dp"
+        android:id="@+id/type"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="1"
-        android:hint="time"
-        android:inputType="number|numberSigned|numberDecimal"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/type"
-        app:layout_constraintTop_toTopOf="@+id/type" />
-
-    <EditText
-        android:id="@+id/type"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:hint="type"
+        android:hint="тип"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/count"
-        app:layout_constraintEnd_toStartOf="@+id/time"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/timeBeginBtn"
         app:layout_constraintStart_toEndOf="@+id/count"
         app:layout_constraintTop_toTopOf="@+id/count" />
 
     <Button
         android:id="@+id/btn_insert"
         style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="10dp"
@@ -103,7 +103,7 @@
     <Button
         android:id="@+id/btn_update"
         style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Обновить"
@@ -115,10 +115,10 @@
 
     <Button
         android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        style="@style/AppTheme.Button"
         android:text="Удалить"
         app:layout_constraintBottom_toBottomOf="@+id/btn_update"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,6 +126,34 @@
         app:layout_constraintStart_toEndOf="@+id/btn_update"
         app:layout_constraintTop_toTopOf="@+id/btn_update"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/timeBeginBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="63dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_btn"
+        android:text="00:00"
+        android:textColor="@color/Txt"
+        app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <TextView
+        android:id="@+id/staticTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text=":"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/timeBeginBtn"
+        app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
+        app:layout_constraintStart_toEndOf="@+id/timeBeginBtn"
+        app:layout_constraintTop_toTopOf="@+id/timeBeginBtn" />
 
     <!--<Spinner-->
     <!--android:id="@+id/spinner"-->

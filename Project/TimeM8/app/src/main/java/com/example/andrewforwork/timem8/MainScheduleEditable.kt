@@ -15,39 +15,42 @@ import java.util.*
 
 class MainScheduleEditable : AppCompatActivity() {
     internal lateinit var db: DBHandler
-    internal var lstSubs:List<Sub> = ArrayList<Sub>()
+    internal var lstSubs: List<Sub> = ArrayList<Sub>()
     lateinit var adapter: MainScheduleAdapter
     var calendar = Calendar.getInstance()
     var count = 0
+    var pause = 0
     var currentDay = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_schedule_editable)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         if (savedInstanceState == null) {
             val fragment = MainScheduleFragment.newInstance()
             val bundle = Bundle()
             count = getDayOfTheWeek()
             bundle.putInt("DAY", getDayOfTheWeek())
-            bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+            bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
             fragment.arguments = bundle
             replaceFragment(fragment)
             back_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                count-=1
+                count -= 1
                 applyDay(-1)
-                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
-                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+                bundle.putInt("DAY", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
             forward_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                count+=1
+                count += 1
                 applyDay(1)
-                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
-                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+                bundle.putInt("DAY", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
@@ -56,33 +59,33 @@ class MainScheduleEditable : AppCompatActivity() {
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null){
-            count = savedInstanceState.getInt("CURRENT_DAY",0)
-            currentDay = savedInstanceState.getInt("CURRENT_DIFF",0)
+        if (savedInstanceState != null) {
+            count = savedInstanceState.getInt("CURRENT_DAY", 0)
+            currentDay = savedInstanceState.getInt("CURRENT_DIFF", 0)
             applyDay(0)
             val fragment = MainScheduleFragment.newInstance()
             val bundle = Bundle()
-            bundle.putInt("DAY", count)
-            bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+            bundle.putInt("DAY", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+            bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
             fragment.arguments = bundle
             replaceFragment(fragment)
             back_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                count-=1
+                count -= 1
                 applyDay(-1)
-                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
-                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+                bundle.putInt("DAY", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
             forward_btn.setOnClickListener {
                 val fragment = MainScheduleFragment.newInstance()
                 val bundle = Bundle()
-                count+=1
+                count += 1
                 applyDay(1)
-                bundle.putInt("DAY", if (count>=0) count%7 else (count%7+7)%7)
-                bundle.putString("DATE", calendar.get(Calendar.DATE).toString()+"."+(calendar.get(Calendar.MONTH)).toString()+"."+calendar.get(Calendar.YEAR).toString())
+                bundle.putInt("DAY", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+                bundle.putString("DATE", calendar.get(Calendar.DATE).toString() + "." + (calendar.get(Calendar.MONTH)).toString() + "." + calendar.get(Calendar.YEAR).toString())
                 fragment.arguments = bundle
                 replaceFragment(fragment)
             }
@@ -91,32 +94,37 @@ class MainScheduleEditable : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.putInt("CURRENT_DAY",count)
-        outState?.putInt("CURRENT_DIFF",currentDay)
+        outState?.putInt("CURRENT_DAY", count)
+        outState?.putInt("CURRENT_DIFF", currentDay)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        getMenuInflater().inflate(R.menu.activity_main_schedule_menu,menu)
+        getMenuInflater().inflate(R.menu.activity_main_schedule_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val Editor = Intent(this,MainEditor::class.java)
-        Editor.putExtra("DAY_OF_THE_WEEK",if (count>=0) count%7 else (count%7+7)%7)
-        startActivity(Editor)
+        if (item?.itemId == R.id.edit_menu) {
+            val Editor = Intent(this, MainEditor::class.java)
+            Editor.putExtra("DAY_OF_THE_WEEK", if (count >= 0) count % 7 else (count % 7 + 7) % 7)
+            startActivity(Editor)
+        } else {
+            this.finish()
+        }
         return true
     }
-    private fun applyDay(chr: Int){
-        currentDay+=chr
+
+    private fun applyDay(chr: Int) {
+        currentDay += chr
         calendar = Calendar.getInstance()
-        calendar.add(Calendar.DATE,currentDay)
-        println(calendar.get(Calendar.YEAR).toString()+" "+calendar.get(Calendar.MONTH).toString()+" "+calendar.get(Calendar.DATE).toString())
+        calendar.add(Calendar.DATE, currentDay)
+        println("apply day "+calendar.get(Calendar.YEAR).toString() + " " + calendar.get(Calendar.MONTH).toString() + " " + calendar.get(Calendar.DATE).toString())
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH) //if (count<=-7) abs(count)%7 else abs(7+count)%7
         var monthText = ""
-        when(month){
+        when (month) {
             0 -> monthText = "Янверь"
             1 -> monthText = "Февраль"
             2 -> monthText = "Март"
@@ -130,7 +138,7 @@ class MainScheduleEditable : AppCompatActivity() {
             10 -> monthText = "Ноябрь"
             11 -> monthText = "Декабрь"
         }
-        when(if (count>=0) count%7 else (count%7+7)%7 ){
+        when (if (count >= 0) count % 7 else (count % 7 + 7) % 7) {
             0 -> textDay.text = "$monthText\nПонедельник, $day число"
             1 -> textDay.text = "$monthText\nВторник, $day число"
             2 -> textDay.text = "$monthText\nСреда, $day число"
@@ -141,25 +149,17 @@ class MainScheduleEditable : AppCompatActivity() {
         }
     }
 
-//    private fun refreshData(){
-//        lstSubs = db.allSub
-//        val adapter = MainScheduleAdapter(this,db.allSub){
-//            subject ->
-//            Toast.makeText(this,subject.name,Toast.LENGTH_SHORT).show()
-//        }
-//        subjectList.adapter = adapter
-//    }
-
-    private fun replaceFragment(fragment: Fragment){
+    private fun replaceFragment(fragment: Fragment) {
         val FragmentTransaction = supportFragmentManager.beginTransaction()
-        FragmentTransaction.replace(R.id.fragmentsView,fragment)
+        FragmentTransaction.replace(R.id.fragmentsView, fragment)
         FragmentTransaction.commit()
     }
+
     private fun getDayOfTheWeek(): Int {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_WEEK)
         val month = calendar.get(Calendar.MONTH)
-        when(day){
+        when (day) {
             2 -> count = 0
             3 -> count = 1
             4 -> count = 2
@@ -169,7 +169,7 @@ class MainScheduleEditable : AppCompatActivity() {
             1 -> count = 6
         }
         applyDay(0)
-        when(day){
+        when (day) {
             2 -> return 0
             3 -> return 1
             4 -> return 2
@@ -180,4 +180,5 @@ class MainScheduleEditable : AppCompatActivity() {
         }
         return 1
     }
+
 }

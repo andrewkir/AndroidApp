@@ -4,13 +4,8 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
-import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-import android.widget.Toast
-import java.io.File
-import java.nio.file.Files.exists
-import android.os.Environment.getExternalStorageDirectory
-import android.widget.ImageView
+import com.example.andrewforwork.timem8.DataBase.DBHandler
+import com.example.andrewforwork.timem8.DataBase.DBdetailinfo
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,7 +13,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        DebugDeleteDetail.setOnClickListener {
+            var db = DBdetailinfo(this)
+            db.deleteAllData()
+        }
+        debugDeleteMain.setOnClickListener {
+            var db = DBHandler(this)
+            db.deleteAllData()
+        }
         dailyTasksBtn.setOnClickListener{
             //TODO change later
             val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)

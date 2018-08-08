@@ -62,7 +62,8 @@ class MainDetailEditor : AppCompatActivity() {
         subjectName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
         count = intent.getIntExtra("COUNT_SUB",0)
-
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         var count = intent.getIntExtra("COUNT_SUB",0)
         try {
             subject = db.allSubDetailByDay(subjectName,date,count)[0]
@@ -177,7 +178,7 @@ class MainDetailEditor : AppCompatActivity() {
                         if(photosAttached[imagePos-1]){
                             switchPhotoAttach.performClick()
                         }
-                        detailEditorImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add_a_photo_black_24dp))
+                        detailEditorImageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_add_new_photo_50dp))
                         newImage = true
                     }
                 }
@@ -414,12 +415,16 @@ class MainDetailEditor : AppCompatActivity() {
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        db.deleteAllData()
-        recreate()
-        editTextHomework.setText("")
-        editTextTips.setText("")
+        if(item?.itemId != R.id.edit_menu_delete){
+            this.finish()
+        } else {
+            db.deleteAllData()
+            recreate()
+            editTextHomework.setText("")
+            editTextTips.setText("")
 
-        switchPhotoAttach.isChecked = false
+            switchPhotoAttach.isChecked = false
+        }
         return true
     }
     fun showColorDialog(){

@@ -143,7 +143,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
     }
     fun deleteAllData(){
         val db = this.writableDatabase
-        db.execSQL("DROP TABLE $TABLE_DETAIL_NAME")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_DETAIL_NAME")
         onCreate(db)
         db.close()
     }
