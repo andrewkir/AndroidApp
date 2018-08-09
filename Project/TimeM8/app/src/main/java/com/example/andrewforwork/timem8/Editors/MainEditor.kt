@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.Adapters.ListSubjectAdapter
+import com.example.andrewforwork.timem8.Notifications.NotificationsHandler
 import com.example.andrewforwork.timem8.R
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.activity_main_editor.*
@@ -116,6 +117,15 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                 )
                 db.addSub(sub)
                 var tmp = count.text.toString()
+                NotificationsHandler(context = this).makeNotification(
+                        hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
+                        minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
+                        text = "начинается в ${sub.timeBegin}",
+                        textTitle = name.text.toString(),
+                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                        dayOfweek = sub.day,
+                        cancel = false
+                )
                 refreshData()
                 count.setText((Integer.parseInt(tmp)+1).toString())
             }
@@ -135,7 +145,24 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         timeEnd = timeEndBtn.text.toString(),
                         type = type.text.toString()
                 )
-
+                NotificationsHandler(context = this).makeNotification(
+                        hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
+                        minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
+                        text = "начинается в ${sub.timeBegin}",
+                        textTitle = name.text.toString(),
+                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                        dayOfweek = sub.day,
+                        cancel = true
+                )
+                NotificationsHandler(context = this).makeNotification(
+                        hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
+                        minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
+                        text = "начинается в ${sub.timeBegin}",
+                        textTitle = name.text.toString(),
+                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                        dayOfweek = sub.day,
+                        cancel = false
+                )
                 db.updateSub(sub)
                 refreshData()
             }
@@ -155,6 +182,15 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         type = type.text.toString()
                 )
                 db.deleteSub(sub)
+                NotificationsHandler(context = this).makeNotification(
+                        hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
+                        minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
+                        text = "начинается в ${sub.timeBegin}",
+                        textTitle = name.text.toString(),
+                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                        dayOfweek = sub.day,
+                        cancel = true
+                )
                 refreshData()
             }
             catch(e: Exception) {
@@ -166,6 +202,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         lstSubs = db.allSub
         val adapter = ListSubjectAdapter(this@MainEditor, lstSubs,spinner, name, timeBeginBtn,timeEndBtn, count,type,::editSelection)
         spinner.setSelection(CurrentDaySelected-1)
+        println(CurrentDaySelected)
         name.setText("")
         timeBeginBtn.setText("9:00")
         timeEndBtn.setText("10:00")

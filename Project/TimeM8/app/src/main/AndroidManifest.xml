@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -45,6 +46,6 @@
             <meta-data android:resource="@xml/file_paths"
                 android:name="android.support.FILE_PROVIDER_PATHS" />
         </provider>
+        <receiver android:name=".Notifications.Notification_reciever"/>
     </application>
-
 </manifest>

@@ -1,11 +1,18 @@
 package com.example.andrewforwork.timem8
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.DataBase.DBdetailinfo
+import com.example.andrewforwork.timem8.Notifications.Notification_reciever
+import com.example.andrewforwork.timem8.Notifications.NotificationsHandler
+import kotlinx.android.synthetic.main.activity_main_editor.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +29,6 @@ class MainActivity : AppCompatActivity() {
             db.deleteAllData()
         }
         dailyTasksBtn.setOnClickListener{
-            //TODO change later
             val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)
             startActivity(dailyTaskIntent)
         }
@@ -34,8 +40,6 @@ class MainActivity : AppCompatActivity() {
             val ScheduleIntentEd = Intent(this,MainScheduleEditable::class.java)
             startActivity(ScheduleIntentEd)
         }
-
-
     }
 
 }

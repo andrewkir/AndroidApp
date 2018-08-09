@@ -40,8 +40,13 @@ class MainScheduleFragment(): Fragment() {
             date = bundle.getString("DATE","1.1.2018")
         }
         db = DBHandler(context)
-        adapter = MainScheduleAdapter(date,context,db.allSubByDay(day)){
-            subject ->
+        try {
+            adapter = MainScheduleAdapter(date, context, db.allSubByDay(day)) { subject ->
+            }
+        } catch (e:Exception){
+            db.deleteAllData()
+            adapter = MainScheduleAdapter(date, context, db.allSubByDay(day)) { subject ->
+            }
         }
         if(db.allSubByDay(day).isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
