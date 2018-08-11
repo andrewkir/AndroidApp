@@ -24,10 +24,12 @@ class Notification_reciever: BroadcastReceiver() {
         var hour = intent!!.getIntExtra("HOUR",0)
         var minute = intent!!.getIntExtra("MINUTE",0)
         var id = intent!!.getIntExtra("ID",0)
+        var count = intent!!.getIntExtra("COUNT",0)
 
-        val channelId = "channel-"+title
-        val channelName = "Channel "+title
-        val importance = NotificationManager.IMPORTANCE_LOW
+        println("make notification")
+        val channelId = "channel-"+title+hour.toString()+minute.toString()+count
+        val channelName = "Channel "+title+hour.toString()+minute.toString()+count
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val mChannel = NotificationChannel(
@@ -41,8 +43,11 @@ class Notification_reciever: BroadcastReceiver() {
                 .setSmallIcon(R.drawable.ic_stat_all_inclusive)
                 .setContentTitle(title)
                 //.setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentText(text)
                 .setAutoCancel(true)
+                .setStyle(NotificationCompat.InboxStyle()
+                        .addLine("Начинается в ${text.split(";;;")[0]}")
+                        .addLine("Кабинет: ${text.split(";;;")[2]}")
+                        .addLine("Преподаватель: ${text.split(";;;")[1]}"))
         notificationManager.notify(id,builder.build())
         NotificationsHandler(context = context).makeNotification(
                 hour = hour,
@@ -53,7 +58,8 @@ class Notification_reciever: BroadcastReceiver() {
                 dayOfweek = day,
                 cancel = false,
                 diff = true,
-                dayYear = dayYear
+                dayYear = dayYear,
+                count = count
         )
 
     }

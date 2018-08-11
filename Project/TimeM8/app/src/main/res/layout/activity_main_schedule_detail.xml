@@ -5,163 +5,213 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainScheduleDetail">
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MainScheduleDetail">
-    <TextView
-        android:id="@+id/detailTextSubName"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Программирование" />
 
-    <ImageView
-        android:id="@+id/detailImageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:onClick="onDetailImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_add_new_photo_50dp" />
+            <TextView
+                android:id="@+id/detailTextSubName"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Программирование" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="84dp"
-        android:fillViewport="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailTextDate">
+            <ImageView
+                android:id="@+id/detailImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:onClick="onDetailImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_new_photo_50dp" />
 
-        <TextView
-            android:id="@+id/detailTextHomework"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="8dp"
-            android:layout_marginTop="56dp"
-            android:autoLink="all"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailImageView"
-            tools:text="Подготовить доклад. Упражнение 1-1337" />
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="84dp"
+                android:fillViewport="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailTextDate">
 
-    </android.support.v4.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/detailTextHomework"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="56dp"
+                    android:autoLink="all"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailImageView"
+                    tools:text="Подготовить доклад. Упражнение 1-1337" />
 
-    <TextView
-        android:id="@+id/detailTextDate"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:textSize="24sp"
-        android:autoLink="all"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailTextSubName"
-        tools:text="01.01.2018" />
+            </android.support.v4.widget.NestedScrollView>
 
-    <TextView
-        android:id="@+id/homeworkStatic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Домашнее задание:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/detailTextDate"
+                android:layout_width="75dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailTextSubName"
+                tools:text="01.01.2018" />
 
-    <TextView
-        android:id="@+id/tipsStatic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Заметки:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+            <TextView
+                android:id="@+id/homeworkStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Домашнее задание:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollViewTips"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tipsStatic">
+            <TextView
+                android:id="@+id/tipsStatic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Заметки:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
-        <TextView
-            android:id="@+id/detailTextTips"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="8dp"
-            android:layout_marginTop="56dp"
-            android:fillViewport="true"
-            android:scrollbars="vertical"
-            android:textSize="18sp"
-            android:autoLink="all"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailImageView"
-            tools:text="Подготовить доклад. Упражнение 1-1337" />
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollViewTips"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tipsStatic">
 
-    </android.support.v4.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/detailTextTips"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_margin="8dp"
+                    android:layout_marginTop="56dp"
+                    android:autoLink="all"
+                    android:fillViewport="true"
+                    android:scrollbars="vertical"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailImageView"
+                    tools:text="Подготовить доклад. Упражнение 1-1337" />
 
-    <Button
-        android:id="@+id/buttonDetBack"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_action_chevron_left"
-        android:minWidth="0dp"
-        android:paddingEnd="0dp"
-        android:paddingStart="0dp"
-        android:scaleType="center"
-        android:text=""
-        app:layout_constraintStart_toStartOf="@+id/detailImageView"
-        app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+            </android.support.v4.widget.NestedScrollView>
 
-    <Button
-        android:id="@+id/buttonDetForw"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_action_chevron_right"
-        android:minWidth="0dp"
-        android:paddingEnd="0dp"
-        android:paddingStart="0dp"
-        android:scaleType="center"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="@+id/detailImageView"
-        app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+            <Button
+                android:id="@+id/buttonDetBack"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background_material_light"
+                android:drawableStart="@drawable/ic_action_chevron_left"
+                android:minWidth="0dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="0dp"
+                android:scaleType="center"
+                android:text=""
+                app:layout_constraintStart_toStartOf="@+id/detailImageView"
+                app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+
+            <Button
+                android:id="@+id/buttonDetForw"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/background_material_light"
+                android:drawableStart="@drawable/ic_action_chevron_right"
+                android:minWidth="0dp"
+                android:paddingEnd="0dp"
+                android:paddingStart="0dp"
+                android:scaleType="center"
+                android:text=""
+                app:layout_constraintEnd_toEndOf="@+id/detailImageView"
+                app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailTextDate">
+
+            </android.support.v4.widget.NestedScrollView>
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nestedScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailTextDate">
+
+                <TextView
+                    android:id="@+id/detailTeacher"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    android:text="Мария Ивановна"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/detailTextDate" />
+            </android.support.v4.widget.NestedScrollView>
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nestedScrollView">
+
+                <TextView
+                    android:id="@+id/detailRoom"
+                    android:layout_width="150dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="0dp"
+                    android:text="202a"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="120dp" />
+            </android.support.v4.widget.NestedScrollView>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

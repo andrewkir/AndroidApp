@@ -35,11 +35,17 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
         val subjectTime = itemView?.findViewById<TextView>(R.id.subjectTime)
         val subjectHome = itemView?.findViewById<TextView>(R.id.HomeworkText)
         val subjectType = itemView?.findViewById<TextView>(R.id.subjectType)
-
+        val subjectRoom = itemView?.findViewById<TextView>(R.id.subjectRoom)
+        val subjectTeacher = itemView?.findViewById<TextView>(R.id.subjectTeacher)
         fun bindSubject(subject: Sub, context: Context){
+
             subjectName?.text = subject.name
             subjectTime?.text = subject.timeBegin+"-"+subject.timeEnd
             subjectType?.text = subject.type
+            subjectRoom?.text = subject.room
+            subjectTeacher?.text = subject.teacher
+
+
             db = DBdetailinfo(context)
             try {
                 var sub = db.allSubDetailByDay(sub_parent = subject.name,date = date,count = subject.count)[0]

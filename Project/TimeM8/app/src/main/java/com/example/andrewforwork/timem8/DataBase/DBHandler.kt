@@ -16,7 +16,9 @@ val COL_DAY="day"
 val COL_TIME_BEGIN="time_begin"
 val COL_TIME_END="time_end"
 val COL_ID="id"
+val COL_ROOM="room"
 val COL_TYPE="type"
+val COL_TEACHER="teacher"
 
 class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
@@ -25,6 +27,8 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                 COL_DAY + " int," +
                 COL_CNT + " int," +
                 COL_TYPE + " text," +
+                COL_ROOM + " text," +
+                COL_TEACHER + " text," +
                 COL_TIME_BEGIN + " text," +
                 COL_TIME_END +" text)"
         db!!.execSQL(createTable)
@@ -40,6 +44,8 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
+        cv.put(COL_TEACHER,sub.teacher)
+        cv.put(COL_ROOM,sub.room)
         cv.put(COL_TIME_BEGIN,sub.timeBegin)
         cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
@@ -62,6 +68,8 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                     sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
                     sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
                     sub.timeBegin = cursor.getString(cursor.getColumnIndex(COL_TIME_BEGIN))
+                    sub.teacher = cursor.getString(cursor.getColumnIndex(COL_TEACHER))
+                    sub.room = cursor.getString(cursor.getColumnIndex(COL_ROOM))
                     sub.timeEnd = cursor.getString(cursor.getColumnIndex(COL_TIME_END))
                     sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
                     sub.type = cursor.getString(cursor.getColumnIndex(COL_TYPE))
@@ -84,13 +92,39 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
                     sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
                     sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
                     sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
+                    sub.room = cursor.getString(cursor.getColumnIndex(COL_ROOM))
                     sub.timeBegin = cursor.getString(cursor.getColumnIndex(COL_TIME_BEGIN))
                     sub.timeEnd = cursor.getString(cursor.getColumnIndex(COL_TIME_END))
+                    sub.teacher = cursor.getString(cursor.getColumnIndex(COL_TEACHER))
                     sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
                     sub.type = cursor.getString(cursor.getColumnIndex(COL_TYPE))
                     if(sub.day == day) {
                         lstSubs.add(sub)
                     }
+                }while (cursor.moveToNext())
+            }
+            db.close()
+            return lstSubs
+        }
+    fun SubByDayCount(day: Int,count:Int):List<Sub>
+        {
+            val lstSubs = ArrayList<Sub>()
+            val selectQuery = "SELECT * FROM "+ TABLE_NAME+" WHERE $COL_DAY='$day' AND $COL_CNT='$count'"
+            val db = this.writableDatabase
+            val cursor = db.rawQuery(selectQuery,null)
+            if(cursor.moveToFirst()){
+                do{
+                    val sub = Sub()
+                    sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
+                    sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
+                    sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
+                    sub.room = cursor.getString(cursor.getColumnIndex(COL_ROOM))
+                    sub.timeBegin = cursor.getString(cursor.getColumnIndex(COL_TIME_BEGIN))
+                    sub.timeEnd = cursor.getString(cursor.getColumnIndex(COL_TIME_END))
+                    sub.teacher = cursor.getString(cursor.getColumnIndex(COL_TEACHER))
+                    sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
+                    sub.type = cursor.getString(cursor.getColumnIndex(COL_TYPE))
+                    lstSubs.add(sub)
                 }while (cursor.moveToNext())
             }
             db.close()
@@ -104,6 +138,8 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
+        cv.put(COL_TEACHER,sub.teacher)
+        cv.put(COL_ROOM,sub.room)
         cv.put(COL_TIME_BEGIN,sub.timeBegin)
         cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
@@ -119,6 +155,8 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
         cv.put(COL_ID,sub.id)
         cv.put(COL_NAME,sub.name)
         cv.put(COL_DAY,sub.day)
+        cv.put(COL_TEACHER,sub.teacher)
+        cv.put(COL_ROOM,sub.room)
         cv.put(COL_TIME_BEGIN,sub.timeBegin)
         cv.put(COL_TIME_END,sub.timeEnd)
         cv.put(COL_CNT,sub.count)
@@ -135,7 +173,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
     }
     fun deleteAllData(){
         val db = this.writableDatabase
-        db.execSQL("DROP TABLE $TABLE_NAME")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db)
         db.close()
     }

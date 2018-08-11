@@ -21,12 +21,16 @@ import com.example.andrewforwork.timem8.Editors.MainDetailEditor
 import kotlinx.android.synthetic.main.activity_main_schedule_detail.*
 import java.io.File
 import android.support.v4.content.FileProvider
+import com.example.andrewforwork.timem8.DataBase.DBHandler
 
 private const val PERMISSION_REQUEST = 10
 
 class MainScheduleDetail : AppCompatActivity() {
     internal lateinit var db: DBdetailinfo
+    internal lateinit var dbMain: DBHandler
     var date = ""
+    var viewDate = ""
+    var day = 0
     var SubName = ""
     var count = 0
     var path = ""
@@ -50,14 +54,22 @@ class MainScheduleDetail : AppCompatActivity() {
         setContentView(R.layout.activity_main_schedule_detail)
         SubName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
+        viewDate = date.split(".")[0]+"."+Integer.parseInt(date.split(".")[1]).toString()+"."+date.split(".")[2]
         count = intent.getIntExtra("COUNT_SUB",0)
+        day = intent.getIntExtra("DAY",0)
+        println(day)
         detailTextSubName.text = SubName
-        detailTextDate.text = date
+        detailTextDate.text = viewDate
         db = DBdetailinfo(this)
+        dbMain = DBHandler(this)
         try {
             var currSub = db.allSubDetailByDay(SubName, date,count)[0]
+            var schSub = dbMain.SubByDayCount(day,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
+            detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
+            detailTeacher.text = if(schSub.teacher.isEmpty()) "" else schSub.teacher
+
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
@@ -197,9 +209,13 @@ class MainScheduleDetail : AppCompatActivity() {
         super.onResume()
         try {
             db = DBdetailinfo(this)
+            dbMain = DBHandler(this)
             var currSub = db.allSubDetailByDay(SubName, date,count)[0]
+            var schSub = dbMain.SubByDayCount(day,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
+            detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
+            detailTeacher.text = if(schSub.teacher.isEmpty()) "" else schSub.teacher
             photos.clear()
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
@@ -216,6 +232,9 @@ class MainScheduleDetail : AppCompatActivity() {
             }
         }
         catch(e: Exception) {
+            var schSub = dbMain.SubByDayCount(day,count)[0]
+            detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
+            detailTeacher.text = if(schSub.teacher.isEmpty()) "" else schSub.teacher
             detailTextHomework.text = ""
             detailTextTips.text = ""
                     detailImageView.visibility = View.GONE

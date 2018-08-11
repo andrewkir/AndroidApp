@@ -116,6 +116,7 @@ class MainScheduleEditable : AppCompatActivity() {
         return true
     }
 
+
     private fun applyDay(chr: Int) {
         currentDay += chr
         calendar = Calendar.getInstance()

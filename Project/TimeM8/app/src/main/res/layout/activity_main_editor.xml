@@ -12,15 +12,13 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="63dp"
         android:layout_height="43dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_btn"
         android:text="1:00"
         android:textColor="@color/Txt"
-        app:layout_constraintBottom_toBottomOf="@+id/timeBeginBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/timeBeginBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/timeBeginBtn"
+        app:layout_constraintTop_toTopOf="@+id/timeBeginBtn" />
 
     <ListView
         android:id="@+id/list_subs"
@@ -34,11 +32,10 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:inputType="number"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,44 +44,52 @@
     <EditText
         android:id="@+id/count"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="45dp"
         android:hint="номер"
         android:inputType="number"
         android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/type"
         app:layout_constraintEnd_toStartOf="@+id/type"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/name"
+        app:layout_constraintTop_toTopOf="@+id/type" />
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:hint="название"
+        android:padding="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <EditText
+        android:id="@+id/teacher"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="учитель"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:hint="название"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
         android:id="@+id/type"
         android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:hint="тип"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/count"
-        app:layout_constraintEnd_toStartOf="@+id/timeBeginBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/count"
-        app:layout_constraintTop_toTopOf="@+id/count" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Button
         android:id="@+id/btn_insert"
@@ -98,7 +103,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type" />
+        app:layout_constraintTop_toBottomOf="@+id/teacher" />
 
     <Button
         android:id="@+id/btn_update"
@@ -132,13 +137,16 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="63dp"
         android:layout_height="43dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rounded_btn"
         android:text="00:00"
         android:textColor="@color/Txt"
         app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/staticTime"
@@ -154,6 +162,19 @@
         app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
         app:layout_constraintStart_toEndOf="@+id/timeBeginBtn"
         app:layout_constraintTop_toTopOf="@+id/timeBeginBtn" />
+
+    <EditText
+        android:id="@+id/room"
+        android:layout_width="168dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="кабинет"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/teacher"
+        app:layout_constraintTop_toBottomOf="@+id/type" />
 
     <!--<Spinner-->
     <!--android:id="@+id/spinner"-->

@@ -40,17 +40,17 @@ class MainScheduleFragment(): Fragment() {
             date = bundle.getString("DATE","1.1.2018")
         }
         db = DBHandler(context)
-        try {
-            adapter = MainScheduleAdapter(date, context, db.allSubByDay(day)) { subject ->
-            }
-        } catch (e:Exception){
-            db.deleteAllData()
-            adapter = MainScheduleAdapter(date, context, db.allSubByDay(day)) { subject ->
-            }
-        }
         if(db.allSubByDay(day).isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
         } else {
+            adapter = MainScheduleAdapter(date,context, lstSubs) { subject ->
+                val DetailActivity = Intent(context,MainScheduleDetail::class.java)
+                DetailActivity.putExtra("NAME_SUB",subject.name)
+                DetailActivity.putExtra("DATE",date)
+                DetailActivity.putExtra("COUNT_SUB",subject.count)
+                DetailActivity.putExtra("DAY",subject.day)
+                startActivity(DetailActivity)
+            }
             subjectListFragment.adapter = adapter
             val layoutManager = LinearLayoutManager(context)
             subjectListFragment.layoutManager = layoutManager
@@ -73,14 +73,20 @@ class MainScheduleFragment(): Fragment() {
         if(lstSubs.isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
         } else {
-            val adapter = MainScheduleAdapter(date,context, dbTmp.allSubByDay(day)) { subject ->
+            hintToAddSmth.text=""
+            var adapter = MainScheduleAdapter(date,context, lstSubs) { subject ->
                 val DetailActivity = Intent(context,MainScheduleDetail::class.java)
                 DetailActivity.putExtra("NAME_SUB",subject.name)
                 DetailActivity.putExtra("DATE",date)
                 DetailActivity.putExtra("COUNT_SUB",subject.count)
+                DetailActivity.putExtra("DAY",subject.day)
                 startActivity(DetailActivity)
             }
             subjectListFragment.adapter = adapter
+            val layoutManager = LinearLayoutManager(context)
+            subjectListFragment.layoutManager = layoutManager
+            subjectListFragment.addItemDecoration(DividerItemDecoration(context,1))
+            subjectListFragment.setHasFixedSize(true)
         }
     }
 

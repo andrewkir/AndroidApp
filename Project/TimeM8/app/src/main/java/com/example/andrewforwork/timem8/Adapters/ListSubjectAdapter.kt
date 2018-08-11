@@ -24,6 +24,8 @@ class ListSubjectAdapter(
         internal var timeE_btn: Button,
         internal var edit_cnt:EditText,
         internal var edit_type: EditText,
+        internal var edit_teacher: EditText,
+        internal var edit_room: EditText,
         var isedit: KMutableProperty0<Int>):BaseAdapter() {
     internal var inflater:LayoutInflater
 
@@ -42,6 +44,8 @@ class ListSubjectAdapter(
         rowView.txt_row_type.text = lstSub[position].type
         rowView.txt_row_day.text = lstSub[position].day.toString()
         rowView.txt_row_type.text = lstSub[position].type
+        rowView.txt_row_room.text = lstSub[position].room
+        rowView.txt_row_teacher.text = lstSub[position].teacher
 
         when(lstSub[position].day.toString()) {
             "1" -> rowView.txt_row_day.text = "Пн"
@@ -62,6 +66,8 @@ class ListSubjectAdapter(
             timeB_btn.setText(rowView.txt_row_time.text.toString().split("-")[0].toString())
             timeE_btn.setText(rowView.txt_row_time.text.toString().split("-")[1].toString())
             edit_type.setText(rowView.txt_row_type.text.toString())
+            edit_room.setText(rowView.txt_row_room.text.toString())
+            edit_teacher.setText(rowView.txt_row_teacher.text.toString())
 
         }
         return rowView

@@ -15,15 +15,5 @@ class MainDailySchedule : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_daily_schedule)
-
-        var calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY,7)
-        calendar.set(Calendar.MINUTE,21)
-
-        var intent = Intent(this, Notification_reciever::class.java)
-        var pendingIntent = PendingIntent.getBroadcast(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT)
-
-        var alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.timeInMillis,AlarmManager.INTERVAL_DAY,pendingIntent)
     }
 }

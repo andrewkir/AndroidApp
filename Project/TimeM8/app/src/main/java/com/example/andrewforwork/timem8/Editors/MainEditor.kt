@@ -13,6 +13,7 @@ import com.example.andrewforwork.timem8.Notifications.NotificationsHandler
 import com.example.andrewforwork.timem8.R
 import com.example.andrewforwork.timem8.Subject.Sub
 import kotlinx.android.synthetic.main.activity_main_editor.*
+import java.util.*
 
 class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, TimePickerDialog.OnTimeSetListener{
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -27,7 +28,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         CurrentDaySelected = position+1
-        if(editSelection == 0){
+        if(editSelection == 0) {
             refreshData()
         } else {
             editSelection = 0
@@ -72,6 +73,19 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                 } else{
                     minute.toString()
                 })
+                var calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY,hourOfDay)
+                calendar.set(Calendar.MINUTE,minute)
+                calendar.add(Calendar.MINUTE,45)
+                timeEndBtn.text = (if(calendar.get(Calendar.HOUR_OF_DAY).toString().length<2){
+                    "0${calendar.get(Calendar.HOUR_OF_DAY)}"
+                } else{
+                    calendar.get(Calendar.HOUR_OF_DAY).toString()
+                } +":"+ if(minute.toString().length<2){
+                    "0${calendar.get(Calendar.MINUTE)}"
+                } else{
+                    calendar.get(Calendar.MINUTE).toString()
+                })
             },Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),true)
             TimePick.show()
         }
@@ -113,18 +127,21 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         name = name.text.toString(),
                         timeBegin = timeBeginBtn.text.toString(),
                         timeEnd = timeEndBtn.text.toString(),
-                        type = type.text.toString()
+                        type = type.text.toString(),
+                        room = room.text.toString(),
+                        teacher = teacher.text.toString()
                 )
                 db.addSub(sub)
                 var tmp = count.text.toString()
                 NotificationsHandler(context = this).makeNotification(
                         hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
                         minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
-                        text = "начинается в ${sub.timeBegin}",
+                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
                         dayOfweek = sub.day,
-                        cancel = false
+                        cancel = false,
+                        count = sub.count
                 )
                 refreshData()
                 count.setText((Integer.parseInt(tmp)+1).toString())
@@ -143,25 +160,30 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         name = name.text.toString(),
                         timeBegin = timeBeginBtn.text.toString(),
                         timeEnd = timeEndBtn.text.toString(),
-                        type = type.text.toString()
+                        type = type.text.toString(),
+                        room = room.text.toString(),
+                        teacher = teacher.text.toString()
                 )
                 NotificationsHandler(context = this).makeNotification(
                         hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
                         minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
-                        text = "начинается в ${sub.timeBegin}",
+                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
                         dayOfweek = sub.day,
-                        cancel = true
+                        cancel = true,
+                        delete = true,
+                        count = sub.count
                 )
                 NotificationsHandler(context = this).makeNotification(
                         hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
                         minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
-                        text = "начинается в ${sub.timeBegin}",
+                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
                         dayOfweek = sub.day,
-                        cancel = false
+                        cancel = false,
+                        count = sub.count
                 )
                 db.updateSub(sub)
                 refreshData()
@@ -179,17 +201,21 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         name = name.text.toString(),
                         timeBegin = timeBeginBtn.text.toString(),
                         timeEnd = timeEndBtn.text.toString(),
-                        type = type.text.toString()
+                        type = type.text.toString(),
+                        room = room.text.toString(),
+                        teacher = teacher.text.toString()
                 )
                 db.deleteSub(sub)
                 NotificationsHandler(context = this).makeNotification(
                         hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
                         minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
-                        text = "начинается в ${sub.timeBegin}",
+                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
                         dayOfweek = sub.day,
-                        cancel = true
+                        cancel = true,
+                        delete = true,
+                        count = sub.count
                 )
                 refreshData()
             }
@@ -200,7 +226,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
     }
     private fun refreshData(){
         lstSubs = db.allSub
-        val adapter = ListSubjectAdapter(this@MainEditor, lstSubs,spinner, name, timeBeginBtn,timeEndBtn, count,type,::editSelection)
+        val adapter = ListSubjectAdapter(this@MainEditor, lstSubs,spinner, name, timeBeginBtn,timeEndBtn, count,type,teacher,room,::editSelection)
         spinner.setSelection(CurrentDaySelected-1)
         println(CurrentDaySelected)
         name.setText("")
@@ -208,6 +234,8 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         timeEndBtn.setText("10:00")
         count.setText("")
         type.setText("")
+        teacher.setText("")
+        room.setText("")
         list_subs.adapter = adapter
     }
 }
