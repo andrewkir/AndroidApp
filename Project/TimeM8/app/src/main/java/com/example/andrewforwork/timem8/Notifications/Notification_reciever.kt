@@ -27,8 +27,8 @@ class Notification_reciever: BroadcastReceiver() {
         var count = intent!!.getIntExtra("COUNT",0)
 
         println("make notification")
-        val channelId = "channel-"+title+hour.toString()+minute.toString()+count
-        val channelName = "Channel "+title+hour.toString()+minute.toString()+count
+        val channelId = "channel-"+day.toString()+count
+        val channelName = "Channel "+title+day.toString()+count
         val importance = NotificationManager.IMPORTANCE_DEFAULT
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

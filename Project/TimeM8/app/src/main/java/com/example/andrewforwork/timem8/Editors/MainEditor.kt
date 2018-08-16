@@ -81,7 +81,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                     "0${calendar.get(Calendar.HOUR_OF_DAY)}"
                 } else{
                     calendar.get(Calendar.HOUR_OF_DAY).toString()
-                } +":"+ if(minute.toString().length<2){
+                } +":"+ if(calendar.get(Calendar.MINUTE).toString().length<2){
                     "0${calendar.get(Calendar.MINUTE)}"
                 } else{
                     calendar.get(Calendar.MINUTE).toString()
@@ -182,6 +182,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
                         dayOfweek = sub.day,
+                        delete = false,
                         cancel = false,
                         count = sub.count
                 )
