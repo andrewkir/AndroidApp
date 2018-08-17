@@ -1,18 +1,11 @@
 package com.example.andrewforwork.timem8
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
 import kotlinx.android.synthetic.main.activity_main_schedule.*
-import android.content.SharedPreferences
-import android.widget.Toast
-import android.R.id.edit
-
-
-
+import com.example.andrewforwork.timem8.R
 
 
 class MainSchedule : AppCompatActivity() {

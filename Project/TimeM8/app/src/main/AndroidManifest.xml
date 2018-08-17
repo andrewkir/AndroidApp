@@ -28,10 +28,10 @@
 
         <activity android:name=".MainSchedule" />
         <activity android:name=".MainDailySchedule" />
-        <activity android:name=".MainScheduleEditable" />
+        <activity android:name=".MainScheduleEdit.MainScheduleEditable" />
         <activity android:name=".Editors.MainEditor"
             android:screenOrientation="portrait"/>
-        <activity android:name=".MainScheduleDetail" />
+        <activity android:name=".MainScheduleEdit.MainScheduleDetail" />
         <activity android:name=".Editors.MainDetailEditor"
             android:screenOrientation="portrait"/>
 

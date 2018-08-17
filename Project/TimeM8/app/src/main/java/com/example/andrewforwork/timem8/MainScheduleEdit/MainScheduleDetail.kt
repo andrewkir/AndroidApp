@@ -1,4 +1,4 @@
-package com.example.andrewforwork.timem8
+package com.example.andrewforwork.timem8.MainScheduleEdit
 
 import android.Manifest
 import android.content.Context
@@ -11,7 +11,6 @@ import android.media.ExifInterface
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -22,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_main_schedule_detail.*
 import java.io.File
 import android.support.v4.content.FileProvider
 import com.example.andrewforwork.timem8.DataBase.DBHandler
+import com.example.andrewforwork.timem8.R
 
 private const val PERMISSION_REQUEST = 10
 
@@ -54,7 +54,7 @@ class MainScheduleDetail : AppCompatActivity() {
         setContentView(R.layout.activity_main_schedule_detail)
         SubName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
-        viewDate = date.split(".")[0]+"."+Integer.parseInt(date.split(".")[1]).toString()+"."+date.split(".")[2]
+        viewDate = date.split(".")[0]+"."+(Integer.parseInt(date.split(".")[1])+1).toString()+"."+date.split(".")[2]
         count = intent.getIntExtra("COUNT_SUB",0)
         day = intent.getIntExtra("DAY",0)
         println(day)

@@ -54,7 +54,7 @@ class NotificationsHandler(var context:Context) {
             if(cancel){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && delete) {
                     var notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    val channelId = "channel-"+day.toString()+count
+                    val channelId = "channel-"+dayOfweek.toString()+count
                     notificationManager.deleteNotificationChannel(channelId)
                     println("deleted $channelId")
                 }

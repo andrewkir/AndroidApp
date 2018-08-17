@@ -4,67 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainScheduleEditable">
+    tools:context=".MainScheduleEdit.MainScheduleEditable">
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pagerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/forward_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_action_chevron_right"
-        android:minWidth="0dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="16dp"
-        android:scaleType="center"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/textDay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textDay"
-        app:layout_constraintTop_toTopOf="@+id/textDay" />
-
-    <Button
-        android:id="@+id/back_btn"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/background_material_light"
-        android:drawableStart="@drawable/ic_action_chevron_left"
-        android:minWidth="0dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="16dp"
-        android:scaleType="center"
-        android:text=""
-        app:layout_constraintEnd_toStartOf="@+id/textDay"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/fragmentsView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_btn">
-
-    </android.support.constraint.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textDay"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/back_btn"
-        app:layout_constraintEnd_toStartOf="@+id/forward_btn"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/back_btn"
-        app:layout_constraintTop_toTopOf="@+id/back_btn"
-        tools:text="Понедельник" />
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagerTabStrip"
+            style="@style/CustomTabPageIndicator.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:layout_gravity="top" />
+    </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

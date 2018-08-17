@@ -53,6 +53,7 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
                 itemView.setBackgroundColor(sub.color)
             }
             catch (e: Exception){
+                itemView.setBackgroundColor(1694433022)
                 subjectHome?.text = ""
             }
 

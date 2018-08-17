@@ -109,6 +109,7 @@ class MainDetailEditor : AppCompatActivity() {
                     color = color
 
             )
+            println("color $color")
             try {
                 db.addSub_detail(subdt)
                 Toast.makeText(this,"добавлено",Toast.LENGTH_SHORT).show()
@@ -408,8 +409,6 @@ class MainDetailEditor : AppCompatActivity() {
     companion object {
         private val IMAGE_DIRECTORY = "/timem8"
     }
-
-    //TODO сделать своё menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
         return true
