@@ -69,7 +69,7 @@ class MainScheduleEditable : AppCompatActivity() {
         calendar.set(Calendar.DAY_OF_YEAR,0)
         calendar.add(Calendar.DATE,position_day)
         when(calendar.get(Calendar.MONTH)){
-            0 -> return "Янверь"
+            0 -> return "Январь"
             1 -> return "Февраль"
             2 -> return "Март"
             3 -> return "Апрель"
