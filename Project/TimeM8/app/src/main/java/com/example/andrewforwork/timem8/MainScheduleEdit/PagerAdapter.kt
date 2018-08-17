@@ -4,9 +4,10 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import java.lang.Math.abs
 import java.util.*
 
-class PagerAdapter(fragmentManager: FragmentManager, val page:Int, var day:Int) :
+class PagerAdapter(fragmentManager: FragmentManager, var day:Int) :
         FragmentStatePagerAdapter(fragmentManager) {
 
     override fun getItem(position: Int): Fragment {
@@ -37,7 +38,9 @@ class PagerAdapter(fragmentManager: FragmentManager, val page:Int, var day:Int) 
     }
 
     override fun getCount(): Int {
-        return page
+        var calendar = Calendar.getInstance()
+        var tmp = calendar.get(Calendar.YEAR)-2018
+        return 365*(abs(tmp)+3)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

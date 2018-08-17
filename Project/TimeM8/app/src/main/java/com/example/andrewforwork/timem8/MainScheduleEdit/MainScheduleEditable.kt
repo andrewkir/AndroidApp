@@ -19,14 +19,17 @@ class MainScheduleEditable : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_schedule_editable)
+
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        pagerAdapter = PagerAdapter(supportFragmentManager, 800, 0)
+
+        pagerAdapter = PagerAdapter(supportFragmentManager, 0)
         pagerView.adapter = pagerAdapter
         pagerView.currentItem = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         position_day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         applyDay()
+
         supportActionBar?.title = getMonth()
         pagerTabStrip.tabIndicatorColor = resources.getColor(R.color.colorAccent)
         pagerTabStrip.setTextColor(resources.getColor(R.color.Txt))
@@ -48,7 +51,6 @@ class MainScheduleEditable : AppCompatActivity() {
                 supportActionBar?.title = getMonth()
                 applyDay()
             }
-
         })
     }
     fun applyDay(){
@@ -85,8 +87,7 @@ class MainScheduleEditable : AppCompatActivity() {
         return ""
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        getMenuInflater().inflate(R.menu.activity_main_schedule_menu, menu)
+        menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
         return true
     }
 
