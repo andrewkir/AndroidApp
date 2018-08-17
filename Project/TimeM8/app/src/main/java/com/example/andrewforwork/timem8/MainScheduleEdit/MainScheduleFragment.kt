@@ -43,7 +43,9 @@ class MainScheduleFragment(): Fragment() {
         subjectListFragment.addItemDecoration(DividerItemDecoration(context,1))
         if(db.allSubByDay(day).isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
+            subjectListFragment.visibility = View.GONE
         } else {
+            subjectListFragment.visibility = View.VISIBLE
             adapter = MainScheduleAdapter(date,context, lstSubs) { subject ->
                 val DetailActivity = Intent(context, MainScheduleDetail::class.java)
                 DetailActivity.putExtra("NAME_SUB",subject.name)
@@ -72,7 +74,9 @@ class MainScheduleFragment(): Fragment() {
         lstSubs = dbTmp.allSubByDay(day)
         if(lstSubs.isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
+            subjectListFragment.visibility = View.GONE
         } else {
+            subjectListFragment.visibility = View.VISIBLE
             hintToAddSmth.text=""
             var adapter = MainScheduleAdapter(date,context, lstSubs) { subject ->
                 val DetailActivity = Intent(context, MainScheduleDetail::class.java)
