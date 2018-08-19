@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
 import com.example.andrewforwork.timem8.DataBase.DBHandler
+import com.example.andrewforwork.timem8.DataBase.DBdaily
 import com.example.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.example.andrewforwork.timem8.MainScheduleEdit.MainScheduleEditable
 
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         DebugDeleteDetail.setOnClickListener {
             var db = DBdetailinfo(this)
             db.deleteAllData()
+            var dbtmp = DBdaily(this)
+            dbtmp.deleteAllData()
         }
         debugDeleteMain.setOnClickListener {
             var db = DBHandler(this)

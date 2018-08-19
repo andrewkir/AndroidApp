@@ -1,16 +1,14 @@
 package com.example.andrewforwork.timem8.Adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import com.example.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.example.andrewforwork.timem8.R
-import com.example.andrewforwork.timem8.Subject.Sub
+import com.example.andrewforwork.timem8.Models.Sub
 
 
 class MainScheduleAdapter(val date: String, val context: Context, val subjects: List<Sub>, val itemClick: (Sub) -> Unit) : RecyclerView.Adapter<MainScheduleAdapter.Holder>() {

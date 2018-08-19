@@ -3,7 +3,6 @@ package com.example.andrewforwork.timem8.Adapters
 import android.app.Activity
 import android.content.Context
 import kotlin.reflect.KMutableProperty0
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import com.example.andrewforwork.timem8.R
-import com.example.andrewforwork.timem8.Subject.Sub
+import com.example.andrewforwork.timem8.Models.Sub
 import kotlinx.android.synthetic.main.row_main.view.*
 
 class ListSubjectAdapter(

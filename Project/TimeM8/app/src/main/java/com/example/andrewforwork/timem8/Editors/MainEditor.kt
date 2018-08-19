@@ -11,7 +11,7 @@ import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.Adapters.ListSubjectAdapter
 import com.example.andrewforwork.timem8.Notifications.NotificationsHandler
 import com.example.andrewforwork.timem8.R
-import com.example.andrewforwork.timem8.Subject.Sub
+import com.example.andrewforwork.timem8.Models.Sub
 import kotlinx.android.synthetic.main.activity_main_editor.*
 import java.util.*
 

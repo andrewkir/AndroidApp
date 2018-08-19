@@ -10,7 +10,7 @@ import android.view.*
 import com.example.andrewforwork.timem8.Adapters.MainScheduleAdapter
 import com.example.andrewforwork.timem8.DataBase.DBHandler
 import com.example.andrewforwork.timem8.R
-import com.example.andrewforwork.timem8.Subject.Sub
+import com.example.andrewforwork.timem8.Models.Sub
 import kotlinx.android.synthetic.main.activity_editable.*
 
 

@@ -4,8 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
-import com.example.andrewforwork.timem8.Subject.Sub
+import com.example.andrewforwork.timem8.Models.Sub
 
 val DATABASE_NAME="Subjects"
 val DATABASE_VERSION=1
@@ -85,6 +84,7 @@ class DBHandler(var contex: Context):SQLiteOpenHelper(contex, DATABASE_NAME,null
             val lstSubs = ArrayList<Sub>()
             val selectQuery = "SELECT * FROM "+ TABLE_NAME+" ORDER BY $COL_DAY , $COL_CNT"
             val db = this.writableDatabase
+            onCreate(db)
             val cursor = db.rawQuery(selectQuery,null)
             if(cursor.moveToFirst()){
                 do{

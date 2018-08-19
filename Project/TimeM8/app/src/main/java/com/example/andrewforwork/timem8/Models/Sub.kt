@@ -1,4 +1,4 @@
-package com.example.andrewforwork.timem8.Subject
+package com.example.andrewforwork.timem8.Models
 
 class Sub{
     var id: Int = 0

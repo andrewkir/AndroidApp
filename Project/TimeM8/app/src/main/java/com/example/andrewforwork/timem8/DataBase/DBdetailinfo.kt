@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.andrewforwork.timem8.Subject.SubDetail
+import com.example.andrewforwork.timem8.Models.SubDetail
 
 val TABLE_DETAIL_NAME="subjects_detail_info"
 val COL_DETAIL_SUB_PARENT="sub_name"

@@ -20,7 +20,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.example.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.example.andrewforwork.timem8.R
-import com.example.andrewforwork.timem8.Subject.SubDetail
+import com.example.andrewforwork.timem8.Models.SubDetail
 import kotlinx.android.synthetic.main.activity_main_detail_editor.*
 import java.util.*
 import android.support.v4.content.ContextCompat
@@ -28,7 +28,6 @@ import android.support.v4.content.FileProvider
 import android.support.v4.graphics.ColorUtils
 import android.view.View
 import com.skydoves.colorpickerpreference.ColorPickerDialog
-import com.skydoves.colorpickerpreference.FlagView
 import java.io.*
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
