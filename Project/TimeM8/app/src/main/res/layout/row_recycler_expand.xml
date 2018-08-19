@@ -18,9 +18,9 @@
         >
 
         <View
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:background="@drawable/ic_stat_all_inclusive"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_action_arrow_drop_down"
             />
     </RelativeLayout>
 
