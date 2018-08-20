@@ -1,11 +1,15 @@
 package com.andrewkir.andrewforwork.timem8
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.DividerItemDecoration
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
+import com.andrewkir.andrewforwork.timem8.Editors.DailyEditor
 import com.andrewkir.andrewforwork.timem8.Models.dailyFrog
 import com.github.aakira.expandablelayout.Utils
 import kotlinx.android.synthetic.main.activity_main_daily_schedule.*
@@ -26,7 +30,7 @@ class MainDailySchedule : AppCompatActivity() {
         isdone.add(false)
         data.add(dailyFrog(
                 id = 1,
-                name = "test 2",
+                name = "test",
                 count = 2,
                 date = "1.1.1.1",
                 isDone =isdone,
@@ -46,11 +50,23 @@ class MainDailySchedule : AppCompatActivity() {
                 colorId2 = R.color.LightGrey,
                 tasks = "asd;;;test;;;qwerty;;;"))
         try {
-            db.addFrog(data[1])
             db.addFrog(data[0])
         } catch (e:Exception){
             Toast.makeText(this,"already added",Toast.LENGTH_SHORT).show()
         }
         expandRecycler.adapter = expandAdapter(db.allFrogByDay("1.1.1.1"))
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
+        return true
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.edit_menu) {
+            val Editor = Intent(this, DailyEditor::class.java)
+            startActivity(Editor)
+        } else {
+            this.finish()
+        }
+        return true
     }
 }

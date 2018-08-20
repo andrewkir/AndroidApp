@@ -10,8 +10,8 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -29,20 +29,27 @@
         <activity android:name=".MainSchedule" />
         <activity android:name=".MainDailySchedule" />
         <activity android:name=".MainScheduleEdit.MainScheduleEditable" />
-        <activity android:name=".Editors.MainEditor"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Editors.MainEditor"
+            android:screenOrientation="portrait" />
         <activity android:name=".MainScheduleEdit.MainScheduleDetail" />
-        <activity android:name=".Editors.MainDetailEditor"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Editors.MainDetailEditor"
+            android:screenOrientation="portrait" />
 
         <provider
-            android:authorities="${applicationId}.fileprovider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <meta-data android:resource="@xml/file_paths"
-                android:name="android.support.FILE_PROVIDER_PATHS" />
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
         </provider>
-        <receiver android:name=".Notifications.Notification_reciever"/>
+
+        <receiver android:name=".Notifications.Notification_reciever" />
+
+        <activity android:name=".Editors.DailyEditor"></activity>
     </application>
+
 </manifest>

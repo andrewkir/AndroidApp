@@ -78,7 +78,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
     fun allSubDetailByDay(sub_parent: String,date: String,count: Int):List<SubDetail>
     {
         val lstSubs = ArrayList<SubDetail>()
-        val selectQuery = "SELECT * FROM "+ TABLE_DETAIL_NAME+" WHERE $COL_DETAIL_SUB_PARENT = '$sub_parent' AND $COL_DETAIL_DATE = '$date' AND $COL_DETAIL_COUNT = '$count'"
+        val selectQuery = "SELECT * FROM $TABLE_DETAIL_NAME WHERE $COL_DETAIL_SUB_PARENT = '$sub_parent' AND $COL_DETAIL_DATE = '$date' AND $COL_DETAIL_COUNT = '$count'"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery,null)
         if(cursor.moveToFirst()){
