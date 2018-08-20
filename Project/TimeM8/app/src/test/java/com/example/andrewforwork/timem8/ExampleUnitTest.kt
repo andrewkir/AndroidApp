@@ -1,4 +1,4 @@
-package com.example.andrewforwork.timem8
+package com.andrewkir.andrewforwork.timem8
 
 import org.junit.Test
 
