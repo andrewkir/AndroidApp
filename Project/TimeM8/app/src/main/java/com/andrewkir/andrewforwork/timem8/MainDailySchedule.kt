@@ -56,6 +56,12 @@ class MainDailySchedule : AppCompatActivity() {
         }
         expandRecycler.adapter = expandAdapter(db.allFrogByDay("1.1.1.1"))
     }
+
+    override fun onResume() {
+        super.onResume()
+        val db =  DBdaily(this)
+        expandRecycler.adapter = expandAdapter(db.allFrogByDay("1.1.1.1"))
+    }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
         return true
