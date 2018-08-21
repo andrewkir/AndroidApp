@@ -1,4 +1,4 @@
-package com.andrewkir.andrewforwork.timem8
+package com.andrewkir.andrewforwork.timem8.Adapters
 
 import android.animation.ObjectAnimator
 import com.github.aakira.expandablelayout.ExpandableLinearLayout
@@ -8,7 +8,6 @@ import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter
 import android.support.v4.content.ContextCompat
 import android.content.Context
 import android.graphics.Paint
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.util.SparseBooleanArray
@@ -16,8 +15,8 @@ import android.view.View
 import android.widget.*
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.Models.dailyFrog
+import com.andrewkir.andrewforwork.timem8.R
 import com.github.aakira.expandablelayout.Utils
-import kotlinx.android.synthetic.main.activity_main_detail_editor.view.*
 
 
 class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
@@ -49,11 +48,11 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
             tasks.add(task[i])
         }
         holder.setIsRecyclable(false)
-        holder.textView.text = item.description
+        holder.textView.text = item.name
         holder.itemView.setBackgroundColor(ContextCompat.getColor(context!!, item.colorId1))
         holder.expandableLayout.setInRecyclerView(true)
         holder.expandableLayout.setBackgroundColor(ContextCompat.getColor(context!!, item.colorId2))
-        holder.nameText.text = item.name
+        holder.nameText.text = item.description
         //настройка анимации expand
         holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.DECELERATE_INTERPOLATOR))
         //
@@ -83,7 +82,6 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
                 cb.paintFlags = cb.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
             cb.setOnClickListener {
-                Toast.makeText(this.context, "click$i", Toast.LENGTH_SHORT).show()
                 item.isDone[i] = cb.isChecked
                 if(item.isDone[i]){
                     cb.paintFlags = cb.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG

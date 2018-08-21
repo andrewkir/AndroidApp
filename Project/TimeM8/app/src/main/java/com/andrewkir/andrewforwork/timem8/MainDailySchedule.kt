@@ -8,10 +8,10 @@ import android.support.v7.widget.DividerItemDecoration
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import com.andrewkir.andrewforwork.timem8.Adapters.expandAdapter
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.Editors.DailyEditor
 import com.andrewkir.andrewforwork.timem8.Models.dailyFrog
-import com.github.aakira.expandablelayout.Utils
 import kotlinx.android.synthetic.main.activity_main_daily_schedule.*
 
 

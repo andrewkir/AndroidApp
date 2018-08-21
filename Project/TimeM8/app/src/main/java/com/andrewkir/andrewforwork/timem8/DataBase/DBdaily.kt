@@ -95,6 +95,37 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
         db.close()
         return lstFrogs
     }
+    fun allFrogs(): List<dailyFrog> {
+        val lstFrogs = ArrayList<dailyFrog>()
+        val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val frog = dailyFrog()
+                frog.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
+                frog.name = cursor.getString(cursor.getColumnIndex(COL_DAILY_NAME))
+                frog.count = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COUNT))
+                frog.date = cursor.getString(cursor.getColumnIndex(COL_DAILY_DATE))
+                frog.tasks = cursor.getString(cursor.getColumnIndex(COL_DAILY_TASKS))
+                var tmp = cursor.getString(cursor.getColumnIndex(COL_DAILY_ISDONE))
+                frog.isDone = ArrayList<Boolean>()
+                for(i in tmp){
+                    if(i == '0'){
+                        frog.isDone.add(false)
+                    } else {
+                        frog.isDone.add(true)
+                    }
+                }
+                frog.description = cursor.getString(cursor.getColumnIndex(COL_DAILY_DESC))
+                frog.colorId1 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_1))
+                frog.colorId2 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_2))
+                lstFrogs.add(frog)
+            } while (cursor.moveToNext())
+        }
+        db.close()
+        return lstFrogs
+    }
     fun allFrogByDayName(date: String,name:String): List<dailyFrog> {
         val lstFrogs = ArrayList<dailyFrog>()
         val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME WHERE $COL_DAILY_DATE = '$date' AND $COL_DAILY_NAME = '$name'"

@@ -113,7 +113,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         spinner!!.setOnItemSelectedListener(this)
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_days)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner!!.setAdapter(aa)
+        spinner!!.adapter = aa
 
         CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
         db = DBHandler(this)

@@ -3,31 +3,83 @@ package com.andrewkir.andrewforwork.timem8.Editors
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.Adapters.DailyCheckBoxAdapter
+import com.andrewkir.andrewforwork.timem8.Adapters.DailyEditorFrogs
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.Models.dailyFrog
 import com.andrewkir.andrewforwork.timem8.R
 import kotlinx.android.synthetic.main.activity_daily_editor.*
+import java.util.*
+import kotlin.collections.ArrayList
 
-class DailyEditor : AppCompatActivity() {
+class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+        frog.colorId1 = R.color.material_red_400
+        frog.colorId2 = R.color.material_red_200
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        when(position){
+            0 -> {
+                frog.colorId1 = R.color.material_red_400
+                frog.colorId2 = R.color.material_red_200
+            }
+            1 -> {
+                frog.colorId1 = R.color.material_blue_400
+                frog.colorId2 = R.color.material_blue_200
+            }
+            2 -> {
+                frog.colorId1 = R.color.material_green_400
+                frog.colorId2 = R.color.material_green_200
+            }
+            3 -> {
+                frog.colorId1 = R.color.material_orange_400
+                frog.colorId2 = R.color.material_orange_200
+            }
+            4 -> {
+                frog.colorId1 = R.color.material_grey_400
+                frog.colorId2 = R.color.material_grey_200
+            }
+
+        }
+    }
+
     var name = "test"
     var date = "1.1.1.1"
-    lateinit var frog:dailyFrog
+    var frog = dailyFrog()
     lateinit var db: DBdaily
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_editor)
         db = DBdaily(this)
         //recyclerCheckBox.adapter = DailyCheckBoxAdapter(this,name,date)
-        frog = db.allFrogByDayName(date = date,name = name)[0]
+        //frog = db.allFrogByDayName(date = date,name = name)[0]
+        recyclerCheckBox.addItemDecoration(DividerItemDecoration(this,1))
+        recyclerFrogs.addItemDecoration(DividerItemDecoration(this,1))
+        spinnerDaily!!.setOnItemSelectedListener(this)
+        var list_colors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый")
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,list_colors)
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerDaily!!.adapter = aa
         refresh()
         dailyAddBtn.setOnClickListener {
             frog.tasks = frog.tasks+taskEdit.text.toString()+";;;"
             frog.count++
-            frog.isDone.add(false)
+            try {
+                frog.isDone.add(false)
+            } catch (e:Exception){
+                var tmp = ArrayList<Boolean>()
+                tmp.add(false)
+                frog.isDone = tmp
+            }
             println(frog.tasks)
             db.updateFrog(frog)
             refresh()
@@ -46,12 +98,85 @@ class DailyEditor : AppCompatActivity() {
                 refresh()
             }
         }
+        addFrog.setOnClickListener {
+            if(dailyName.text.toString() != "") {
+                try {
+                    if (frog.id != 0) {
+                        frog.name = dailyName.text.toString()
+                        frog.description = dailyDesc.text.toString()
+                        frog.date = "1.1.1.1"
+                    } else {
+                        frog.id = Calendar.getInstance().timeInMillis.toInt()
+                        frog.name = dailyName.text.toString()
+                        frog.description = dailyDesc.text.toString()
+                        frog.date = "1.1.1.1"
+                        frog.colorId1 = R.color.colorPrimary
+                        frog.colorId2 = R.color.LightGrey
+                        try {
+                            frog.isDone.add(false)
+                        } catch (e: Exception) {
+                            var tmp = ArrayList<Boolean>()
+                            tmp.add(false)
+                            frog.isDone = tmp
+                        }
+                    }
+                    db.addFrog(frog)
+                } catch (e: Exception) {
+                    db.updateFrog(frog)
+                }
+                refresh()
+            } else {
+                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+            }
+        }
+        clearFrog.setOnClickListener {
+            frog = dailyFrog()
+            dailyName.setText("")
+            dailyDesc.setText("")
+            taskEdit.setText("")
+            spinnerDaily.setSelection(0)
+            refresh()
+        }
+        dailyDeleteBtn.setOnClickListener {
+            if(frog.id != 0){
+                db.deleteFrog(frog)
+                dailyName.setText("")
+                dailyDesc.setText("")
+                taskEdit.setText("")
+                spinnerDaily.setSelection(0)
+                refresh()
+            } else {
+                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun refresh(){
         recyclerCheckBox.adapter = DailyCheckBoxAdapter(context = this,frog = frog)
+        recyclerFrogs.adapter = DailyEditorFrogs(context = this, itemClick = { Frog ->
+            frog = Frog
+            dailyName.setText(Frog.name)
+            dailyDesc.setText(Frog.description)
+            spinnerDaily.setSelection(
+                    when(frog.colorId1){
+                        R.color.material_red_400 -> 0
+                        R.color.material_blue_400 -> 1
+                        R.color.material_green_400 -> 2
+                        R.color.material_deep_orange_400 -> 3
+                        R.color.material_grey_400 -> 4
+                        else -> 0
+                    }
+            )
+            recyclerCheckBox.adapter = DailyCheckBoxAdapter(context = this,frog = frog)
+            val layoutManager = LinearLayoutManager(this)
+            recyclerCheckBox.layoutManager = layoutManager
+            recyclerCheckBox.setHasFixedSize(true)
+        })
         val layoutManager = LinearLayoutManager(this)
         recyclerCheckBox.layoutManager = layoutManager
         recyclerCheckBox.setHasFixedSize(true)
+        val layoutManagerFrog = LinearLayoutManager(this)
+        recyclerFrogs.layoutManager = layoutManagerFrog
+        recyclerFrogs.setHasFixedSize(true)
     }
 }
