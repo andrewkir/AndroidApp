@@ -1,12 +1,11 @@
 package com.andrewkir.andrewforwork.timem8.Editors
 
-import android.content.Intent
+import android.content.DialogInterface
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -41,12 +40,16 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 frog.colorId2 = R.color.material_green_200
             }
             3 -> {
-                frog.colorId1 = R.color.material_orange_400
-                frog.colorId2 = R.color.material_orange_200
+                frog.colorId1 = R.color.material_deep_orange_400
+                frog.colorId2 = R.color.material_deep_orange_200
             }
             4 -> {
                 frog.colorId1 = R.color.material_grey_400
                 frog.colorId2 = R.color.material_grey_200
+            }
+            5 -> {
+                frog.colorId1 = R.color.material_deep_purple_400
+                frog.colorId2 = R.color.material_deep_purple_200
             }
 
         }
@@ -56,7 +59,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var date = "1.1.1.1"
     var frog = dailyFrog()
     lateinit var db: DBdaily
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_editor)
         db = DBdaily(this)
@@ -64,8 +67,8 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //frog = db.allFrogByDayName(date = date,name = name)[0]
         recyclerCheckBox.addItemDecoration(DividerItemDecoration(this,1))
         recyclerFrogs.addItemDecoration(DividerItemDecoration(this,1))
-        spinnerDaily!!.setOnItemSelectedListener(this)
-        var list_colors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый")
+        spinnerDaily!!.onItemSelectedListener = this
+        var list_colors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый","Фиолетовый")
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,list_colors)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerDaily!!.adapter = aa
@@ -131,6 +134,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
         clearFrog.setOnClickListener {
             frog = dailyFrog()
+            showDialog()
             dailyName.setText("")
             dailyDesc.setText("")
             taskEdit.setText("")
@@ -151,7 +155,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    fun refresh(){
+    private fun refresh(){
         recyclerCheckBox.adapter = DailyCheckBoxAdapter(context = this,frog = frog)
         recyclerFrogs.adapter = DailyEditorFrogs(context = this, itemClick = { Frog ->
             frog = Frog
@@ -164,6 +168,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         R.color.material_green_400 -> 2
                         R.color.material_deep_orange_400 -> 3
                         R.color.material_grey_400 -> 4
+                        R.color.material_deep_purple_400 -> 5
                         else -> 0
                     }
             )
@@ -178,5 +183,28 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val layoutManagerFrog = LinearLayoutManager(this)
         recyclerFrogs.layoutManager = layoutManagerFrog
         recyclerFrogs.setHasFixedSize(true)
+    }
+    private fun showDialog(){
+        val listItems = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+        val checkedItems = BooleanArray(listItems.size)
+        checkedItems.fill(false)
+        checkedItems[1]=true
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Выберите дни повтора")
+        builder.setMultiChoiceItems(listItems,checkedItems) { dialog:DialogInterface, which:Int, isChecked:Boolean->
+        }
+        builder.setCancelable(false)
+        builder.setPositiveButton("Ок"){ dialog:DialogInterface, which:Int->
+            for (i in 0 until checkedItems.size){
+                if(checkedItems[i]){
+                    Toast.makeText(this,listItems[i],Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+        builder.setNegativeButton("Отмена"){ dialog:DialogInterface, _:Int->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }
