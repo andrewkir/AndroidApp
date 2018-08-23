@@ -1,8 +1,9 @@
-package com.andrewkir.andrewforwork.timem8
+package com.andrewkir.andrewforwork.timem8.Editors
 
 import android.content.Context
 import android.view.View
 import android.widget.TextView
+import com.andrewkir.andrewforwork.timem8.R
 import com.skydoves.colorpickerpreference.ColorEnvelope
 import com.skydoves.colorpickerpreference.FlagView
 

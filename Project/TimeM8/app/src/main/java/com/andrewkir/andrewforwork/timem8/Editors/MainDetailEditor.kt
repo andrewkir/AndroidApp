@@ -429,7 +429,7 @@ class MainDetailEditor : AppCompatActivity() {
         val builder = ColorPickerDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK)
         builder.setTitle("Выберите цвет")
         builder.colorPickerView.setPaletteDrawable(ContextCompat.getDrawable(this,R.drawable.palette))
-        builder.setFlagView(com.andrewkir.andrewforwork.timem8.FlagView(this, R.layout.flag_view))
+        builder.setFlagView(FlagView(this, R.layout.flag_view))
         builder.setPreferenceName(subjectName+date)
         builder.setPositiveButton("выбрать") { colorEnvelope ->
             color = colorEnvelope.color

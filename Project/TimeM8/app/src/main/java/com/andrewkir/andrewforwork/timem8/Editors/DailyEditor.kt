@@ -21,8 +21,8 @@ import kotlin.collections.ArrayList
 
 class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        frog.colorId1 = R.color.material_red_400
-        frog.colorId2 = R.color.material_red_200
+        frog.colorId1 = R.color.material_grey_400
+        frog.colorId2 = R.color.material_grey_200
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -63,8 +63,6 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_daily_editor)
         db = DBdaily(this)
-        //recyclerCheckBox.adapter = DailyCheckBoxAdapter(this,name,date)
-        //frog = db.allFrogByDayName(date = date,name = name)[0]
         recyclerCheckBox.addItemDecoration(DividerItemDecoration(this,1))
         recyclerFrogs.addItemDecoration(DividerItemDecoration(this,1))
         spinnerDaily!!.onItemSelectedListener = this
@@ -73,6 +71,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerDaily!!.adapter = aa
         refresh()
+        spinnerDaily.setSelection(3)
         dailyAddBtn.setOnClickListener {
             frog.tasks = frog.tasks+taskEdit.text.toString()+";;;"
             frog.count++
@@ -86,6 +85,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             println(frog.tasks)
             db.updateFrog(frog)
             refresh()
+            taskEdit.setText("")
         }
         dailyDelBtn.setOnClickListener {
             if (frog.count >= 1) {
@@ -102,44 +102,47 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         }
         addFrog.setOnClickListener {
-            if(dailyName.text.toString() != "") {
-                try {
-                    if (frog.id != 0) {
-                        frog.name = dailyName.text.toString()
-                        frog.description = dailyDesc.text.toString()
-                        frog.date = "1.1.1.1"
-                    } else {
-                        frog.id = Calendar.getInstance().timeInMillis.toInt()
-                        frog.name = dailyName.text.toString()
-                        frog.description = dailyDesc.text.toString()
-                        frog.date = "1.1.1.1"
-                        frog.colorId1 = R.color.colorPrimary
-                        frog.colorId2 = R.color.LightGrey
-                        try {
-                            frog.isDone.add(false)
-                        } catch (e: Exception) {
-                            var tmp = ArrayList<Boolean>()
-                            tmp.add(false)
-                            frog.isDone = tmp
+            if(frog.date != "") {
+                if (dailyName.text.toString() != "") {
+                    try {
+                        if (frog.id != 0) {
+                            frog.name = dailyName.text.toString()
+                            frog.description = dailyDesc.text.toString()
+                        } else {
+                            frog.id = Calendar.getInstance().timeInMillis.toInt()
+                            frog.name = dailyName.text.toString()
+                            frog.description = dailyDesc.text.toString()
+                            try {
+                                frog.isDone.add(false)
+                            } catch (e: Exception) {
+                                var tmp = ArrayList<Boolean>()
+                                tmp.add(false)
+                                frog.isDone = tmp
+                            }
                         }
+                        db.addFrog(frog)
+                        Toast.makeText(this,"Добавлено",Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(this,"Обновлено",Toast.LENGTH_SHORT).show()
+                        db.updateFrog(frog)
                     }
-                    db.addFrog(frog)
-                } catch (e: Exception) {
-                    db.updateFrog(frog)
+                    refresh()
+                } else {
+                    Toast.makeText(this, "Пожалуйста, введите корректные данные", Toast.LENGTH_SHORT).show()
                 }
-                refresh()
             } else {
-                Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Пожалуйста, выберите дни повтора", Toast.LENGTH_SHORT).show()
             }
         }
         clearFrog.setOnClickListener {
             frog = dailyFrog()
-            showDialog()
             dailyName.setText("")
             dailyDesc.setText("")
             taskEdit.setText("")
-            spinnerDaily.setSelection(0)
+            editDays.text = "Дни повтора"
             refresh()
+            frog.colorId1 = R.color.material_deep_orange_400
+            frog.colorId2 = R.color.material_deep_orange_200
         }
         dailyDeleteBtn.setOnClickListener {
             if(frog.id != 0){
@@ -147,8 +150,11 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 dailyName.setText("")
                 dailyDesc.setText("")
                 taskEdit.setText("")
-                spinnerDaily.setSelection(0)
+                editDays.text = "Дни повтора"
                 refresh()
+                spinnerDaily.setSelection(3)
+                frog.colorId1 = R.color.material_deep_orange_400
+                frog.colorId2 = R.color.material_deep_orange_200
             } else {
                 Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
             }
@@ -161,6 +167,16 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             frog = Frog
             dailyName.setText(Frog.name)
             dailyDesc.setText(Frog.description)
+            if(frog.date!="") {
+                var tmp = frog.date.split(";;;") as ArrayList
+                println(tmp)
+                tmp.removeAt(tmp.lastIndex)
+                var res = ""
+                for (i in tmp) {
+                    res += ", $i"
+                }
+                editDays.text = res.removeRange(0, 2)
+            }
             spinnerDaily.setSelection(
                     when(frog.colorId1){
                         R.color.material_red_400 -> 0
@@ -184,22 +200,41 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         recyclerFrogs.layoutManager = layoutManagerFrog
         recyclerFrogs.setHasFixedSize(true)
     }
+    fun daysView(view: View?){
+        showDialog()
+    }
     private fun showDialog(){
         val listItems = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
+        val resList = arrayOf("Пн","Вт","Ср","Чт","Пт","Сб","Вс")
         val checkedItems = BooleanArray(listItems.size)
         checkedItems.fill(false)
-        checkedItems[1]=true
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Выберите дни повтора")
         builder.setMultiChoiceItems(listItems,checkedItems) { dialog:DialogInterface, which:Int, isChecked:Boolean->
         }
         builder.setCancelable(false)
-        builder.setPositiveButton("Ок"){ dialog:DialogInterface, which:Int->
-            for (i in 0 until checkedItems.size){
-                if(checkedItems[i]){
-                    Toast.makeText(this,listItems[i],Toast.LENGTH_SHORT).show()
+        if(frog.date!=""){
+            var tmp = frog.date.split(";;;")
+            var res = ""
+            for(i in resList){
+                if(i in tmp){
+                    checkedItems[resList.indexOf(i)] = true
+                    res += ", $i"
                 }
             }
+            editDays.text = res.removeRange(0, 2)
+        }
+        builder.setPositiveButton("Ок"){ dialog:DialogInterface, which:Int->
+            frog.date = ""
+            editDays.text = ""
+            var res = ""
+            for (i in 0 until checkedItems.size){
+                if(checkedItems[i]){
+                    frog.date +=resList[i]+";;;"
+                    res += ", ${resList[i]}"
+                }
+            }
+            editDays.text = res.removeRange(0, 2)
         }
         builder.setNegativeButton("Отмена"){ dialog:DialogInterface, _:Int->
             dialog.dismiss()

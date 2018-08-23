@@ -21,12 +21,12 @@ import com.github.aakira.expandablelayout.Utils
 
 class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
 
-    private lateinit var data: List<dailyFrog>
+    private lateinit var data: ArrayList<dailyFrog>
     private var context: Context? = null
     private val expandState = SparseBooleanArray()
     private lateinit var db: DBdaily
 
-    constructor(data: List<dailyFrog>){
+    constructor(data: ArrayList<dailyFrog>){
         this.data = data
         for (i in data.indices) {
             expandState.append(i, false)
@@ -38,7 +38,11 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
         return ViewHolder(LayoutInflater.from(context)
                 .inflate(R.layout.row_recycler_expand, parent, false))
     }
-
+    fun removeAt(position: Int) {
+        db.deleteFrog(data[position])
+        data.removeAt(position)
+        notifyItemRemoved(position)
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         db = DBdaily(this.context!!)
         val item = data[position]

@@ -66,7 +66,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
 ////        }
     fun allFrogByDay(date: String): List<dailyFrog> {
         val lstFrogs = ArrayList<dailyFrog>()
-        val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME WHERE $COL_DAILY_DATE = '$date'"
+        val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME"
         val db = this.writableDatabase
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
@@ -89,7 +89,9 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.description = cursor.getString(cursor.getColumnIndex(COL_DAILY_DESC))
                 frog.colorId1 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_1))
                 frog.colorId2 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_2))
-                lstFrogs.add(frog)
+                if(date in frog.date) {
+                    lstFrogs.add(frog)
+                }
             } while (cursor.moveToNext())
         }
         db.close()
