@@ -11,6 +11,7 @@ val TABLE_DAILY_NAME="frogs"
 val COL_DAILY_NAME="name"
 val COL_DAILY_COUNT="count"
 val COL_DAILY_ISDONE="isdone"
+val COL_DAILY_DONE="done"
 val COL_DAILY_DATE="date"
 val COL_DAILY_DESC="desc"
 val COL_DAILY_COLOR_1="color1"
@@ -25,6 +26,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 COL_DAILY_ISDONE + " text," +
                 COL_DAILY_COLOR_1 + " int," +
                 COL_DAILY_COLOR_2 + " int," +
+                COL_DAILY_DONE + " int," +
                 COL_DAILY_DESC + " text," +
                 COL_DAILY_TASKS + " text," +
                 COL_DAILY_DATE + " text)"
@@ -35,35 +37,6 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
         db!!.execSQL("drop table if exists $TABLE_DAILY_NAME")
         onCreate(db)
     }
-
-    fun test(): String {
-        return "OK"
-    }
-
-    //TODO решить че с этим делать
-//    val allSub:List<SubDetail>
-////        get()
-////        {
-////            val lstSubs = ArrayList<SubDetail>()
-////            val selectQuery = "SELECT * FROM "+ TABLE_DETAIL_NAME+" ORDER BY $COL_DAY , $COL_CNT"
-////            val db = this.writableDatabase
-////            val cursor = db.rawQuery(selectQuery,null)
-////            if(cursor.moveToFirst()){
-////                do{
-////                    val sub = SubDetail()
-////                    sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
-////                    sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
-////                    sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
-////                    sub.importance = cursor.getInt(cursor.getColumnIndex(COL_IMP))
-////                    sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
-////                    sub.time = cursor.getString(cursor.getColumnIndex(COL_TIME))
-////
-////                    lstSubs.add(sub)
-////                }while (cursor.moveToNext())
-////            }
-////            db.close()
-////            return lstSubs
-////        }
     fun allFrogByDay(date: String): List<dailyFrog> {
         val lstFrogs = ArrayList<dailyFrog>()
         val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME"
@@ -75,6 +48,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
                 frog.name = cursor.getString(cursor.getColumnIndex(COL_DAILY_NAME))
                 frog.count = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COUNT))
+                frog.done = cursor.getInt(cursor.getColumnIndex(COL_DAILY_DONE)) != 0
                 frog.date = cursor.getString(cursor.getColumnIndex(COL_DAILY_DATE))
                 frog.tasks = cursor.getString(cursor.getColumnIndex(COL_DAILY_TASKS))
                 var tmp = cursor.getString(cursor.getColumnIndex(COL_DAILY_ISDONE))
@@ -89,7 +63,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.description = cursor.getString(cursor.getColumnIndex(COL_DAILY_DESC))
                 frog.colorId1 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_1))
                 frog.colorId2 = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COLOR_2))
-                if(date in frog.date) {
+                if(date in frog.date && !frog.done) {
                     lstFrogs.add(frog)
                 }
             } while (cursor.moveToNext())
@@ -109,6 +83,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.name = cursor.getString(cursor.getColumnIndex(COL_DAILY_NAME))
                 frog.count = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COUNT))
                 frog.date = cursor.getString(cursor.getColumnIndex(COL_DAILY_DATE))
+                frog.done = cursor.getInt(cursor.getColumnIndex(COL_DAILY_DONE)) != 0
                 frog.tasks = cursor.getString(cursor.getColumnIndex(COL_DAILY_TASKS))
                 var tmp = cursor.getString(cursor.getColumnIndex(COL_DAILY_ISDONE))
                 frog.isDone = ArrayList<Boolean>()
@@ -140,6 +115,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.name = cursor.getString(cursor.getColumnIndex(COL_DAILY_NAME))
                 frog.count = cursor.getInt(cursor.getColumnIndex(COL_DAILY_COUNT))
                 frog.date = cursor.getString(cursor.getColumnIndex(COL_DAILY_DATE))
+                frog.done = cursor.getInt(cursor.getColumnIndex(COL_DAILY_DONE)) != 0
                 frog.tasks = cursor.getString(cursor.getColumnIndex(COL_DAILY_TASKS))
                 var tmp = cursor.getString(cursor.getColumnIndex(COL_DAILY_ISDONE))
                 frog.isDone = ArrayList<Boolean>()
@@ -178,6 +154,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
         cv.put(COL_DAILY_COUNT, frog.count)
         cv.put(COL_DAILY_DATE, frog.date)
         cv.put(COL_DAILY_ISDONE, res)
+        cv.put(COL_DAILY_DONE, if(frog.done) 1 else 0)
         cv.put(COL_DAILY_COLOR_1, frog.colorId1)
         cv.put(COL_DAILY_COLOR_2, frog.colorId2)
         cv.put(COL_DAILY_DESC, frog.description)
@@ -204,6 +181,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
         cv.put(COL_DAILY_COUNT, frog.count)
         cv.put(COL_DAILY_DATE, frog.date)
         cv.put(COL_DAILY_ISDONE, res)
+        cv.put(COL_DAILY_DONE, if(frog.done) 1 else 0)
         cv.put(COL_DAILY_COLOR_1, frog.colorId1)
         cv.put(COL_DAILY_COLOR_2, frog.colorId2)
         cv.put(COL_DAILY_DESC, frog.description)

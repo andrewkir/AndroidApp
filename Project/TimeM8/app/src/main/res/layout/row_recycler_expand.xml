@@ -25,7 +25,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/row_daily_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
@@ -39,24 +39,23 @@
         android:id="@+id/expandableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView"
+        android:layout_below="@id/row_daily_name"
         android:orientation="vertical"
         app:ael_duration="400"
         app:ael_expanded="false"
         >
 
         <TextView
-            android:id="@+id/row_daily_name"
+            android:id="@+id/row_daily_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:textAlignment="center"
             android:padding="5dp"
             android:text=""
+            android:textAlignment="center"
             android:textColor="@color/Txt"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
         <LinearLayout
             android:id="@+id/linearExpand"
             android:orientation="vertical"

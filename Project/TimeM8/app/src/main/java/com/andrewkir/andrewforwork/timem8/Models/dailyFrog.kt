@@ -14,8 +14,9 @@ class dailyFrog {
     var colorId1: Int = 0
     var colorId2: Int = 0
     var tasks: String = ""
+    var done: Boolean = false
 
-    constructor(id:Int,name:String,count:Int,date:String,isDone:ArrayList<Boolean>,description: String, colorId1: Int, colorId2: Int,tasks:String){
+    constructor(id:Int,name:String,count:Int,date:String,isDone:ArrayList<Boolean>,description: String, colorId1: Int, colorId2: Int,tasks:String,done:Boolean){
         this.id = id
         this.name = name
         this.count = count
@@ -25,6 +26,7 @@ class dailyFrog {
         this.colorId1 = colorId1
         this.colorId2 = colorId2
         this.tasks = tasks
+        this.done = done
     }
     constructor(){
 

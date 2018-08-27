@@ -43,6 +43,13 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
         data.removeAt(position)
         notifyItemRemoved(position)
     }
+    fun doneAt(position: Int){
+        var frog = data[position]
+        frog.done = true
+        db.updateFrog(frog)
+        data.removeAt(position)
+        notifyItemRemoved(position)
+    }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         db = DBdaily(this.context!!)
         val item = data[position]
@@ -52,14 +59,13 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
             tasks.add(task[i])
         }
         holder.setIsRecyclable(false)
-        holder.textView.text = item.name
+        holder.textName.text = item.name
         holder.itemView.setBackgroundColor(ContextCompat.getColor(context!!, item.colorId1))
         holder.expandableLayout.setInRecyclerView(true)
         holder.expandableLayout.setBackgroundColor(ContextCompat.getColor(context!!, item.colorId2))
-        holder.nameText.text = item.description
-        //настройка анимации expand
+        holder.textDesc.text = item.description
+        //настройка анимации
         holder.expandableLayout.setInterpolator(Utils.createInterpolator(Utils.DECELERATE_INTERPOLATOR))
-        //
         holder.expandableLayout.isExpanded = expandState.get(position)
         holder.expandableLayout.setListener(object : ExpandableLayoutListenerAdapter() {
             override fun onPreOpen() {
@@ -76,21 +82,21 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
         })
 
         for(i in 0 until item.count) {
-            var cb = CheckBox(this.context)
-            cb.id = i
-            cb.text = tasks[i]
-            var tmp = cb.paintFlags
-            holder.expandLiner.addView(cb)
+            var checkBox = CheckBox(this.context)
+            checkBox.id = i
+            checkBox.text = tasks[i]
+            var tmp = checkBox.paintFlags
+            holder.expandLiner.addView(checkBox)
             if(item.isDone[i]){
-                cb.isChecked = true
-                cb.paintFlags = cb.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                checkBox.isChecked = true
+                checkBox.paintFlags = checkBox.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-            cb.setOnClickListener {
-                item.isDone[i] = cb.isChecked
+            checkBox.setOnClickListener {
+                item.isDone[i] = checkBox.isChecked
                 if(item.isDone[i]){
-                    cb.paintFlags = cb.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    checkBox.paintFlags = checkBox.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 } else {
-                    cb.paintFlags = tmp
+                    checkBox.paintFlags = tmp
                 }
                 db.updateFrog(item)
             }
@@ -98,7 +104,6 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
 
         holder.buttonLayout.rotation = if (expandState.get(position)) 180f else 0f
         holder.relativeExpand.setOnClickListener { onClickButton(holder.expandableLayout) }
-//        holder.buttonLayout.setOnClickListener {  }
     }
 
     private fun onClickButton(expandableLayout: ExpandableLayout) {
@@ -110,19 +115,19 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var textView: TextView
+        var textName: TextView
         var buttonLayout: RelativeLayout
         var expandLiner: LinearLayout
         var expandableLayout: ExpandableLinearLayout
         var relativeExpand: RelativeLayout
-        var nameText: TextView
+        var textDesc: TextView
 
         init {
-            textView = v.findViewById(R.id.textView)
+            textName = v.findViewById(R.id.row_daily_name)
             buttonLayout = v.findViewById(R.id.button)
             expandableLayout = v.findViewById(R.id.expandableLayout)
             expandLiner = v.findViewById(R.id.linearExpand)
-            nameText = v.findViewById(R.id.row_daily_name)
+            textDesc = v.findViewById(R.id.row_daily_desc)
             relativeExpand = v.findViewById(R.id.relativeExpand)
         }
     }
