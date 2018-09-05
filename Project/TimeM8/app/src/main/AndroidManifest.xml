@@ -49,7 +49,10 @@
 
         <receiver android:name=".Notifications.Notification_reciever" />
 
-        <activity android:name=".Editors.DailyEditor"></activity>
+        <activity
+            android:name=".Editors.DailyEditor"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -20,10 +20,15 @@ import kotlinx.android.synthetic.main.activity_main_daily_schedule.*
 import java.util.*
 import kotlin.collections.ArrayList
 import android.R.id.edit
+import android.app.ActivityManager
 import android.content.SharedPreferences.Editor
 import android.content.DialogInterface
+import android.content.SharedPreferences
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.support.v7.app.AlertDialog
 import android.os.CountDownTimer
+import android.util.TypedValue
 import android.widget.Toast
 
 
@@ -31,8 +36,18 @@ class MainDailySchedule : AppCompatActivity(){
     var day = ""
     val CHECK_DAY = "day"
     var currentVisiblePosition = 0
+    lateinit var sPref: SharedPreferences
+    var stat: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
+        stat = sPref.getString("THEME", "ORANGE")
+        when (stat) {
+            "ORANGE" -> setTheme(R.style.AppTheme)
+            "GREEN" -> setTheme(R.style.AppThemeGreen)
+            "PURPLE" -> setTheme(R.style.AppThemePurple)
+            "BLUE" -> setTheme(R.style.AppThemeBlue)
+        }
         checkDay()
         setContentView(R.layout.activity_main_daily_schedule)
         expandRecycler.addItemDecoration(DividerItemDecoration(this,1))
@@ -86,6 +101,12 @@ class MainDailySchedule : AppCompatActivity(){
     }
     override fun onResume() {
         super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var typedValue = TypedValue()
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
         val db =  DBdaily(this)
         expandRecycler.adapter = expandAdapter(db.allFrogByDay(day) as ArrayList<dailyFrog>)
 
@@ -104,7 +125,7 @@ class MainDailySchedule : AppCompatActivity(){
         return true
     }
 
-    fun checkDay(){
+    private fun checkDay(){
         var sPref = getPreferences(Context.MODE_PRIVATE)
         var savedDay = sPref.getInt(CHECK_DAY, -1)
         if(savedDay != -1){

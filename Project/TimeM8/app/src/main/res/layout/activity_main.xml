@@ -10,11 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
             tools:context=".MainDailySchedule">
 
             <Button
@@ -22,7 +21,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@color/Btn"
+                android:background="?attr/colorPrimary"
                 android:text="ежедневные задания "
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +34,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@color/Btn"
+                android:background="?attr/colorPrimary"
                 android:text="Основное расписание"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@color/Btn"
+                android:background="?attr/colorPrimary"
                 android:text="Основное расписание ред"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -77,21 +76,21 @@
                 android:layout_height="25dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="100dp"
                 android:text="Your own time management helper"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.495"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/debugDeleteMain" />
+                app:layout_constraintTop_toBottomOf="@+id/button" />
 
             <Button
                 android:id="@+id/button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@color/Btn"
+                android:background="?attr/colorPrimary"
                 android:text="Финансовая деятельность"
                 android:textColor="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,25 +98,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dailyTasksBtn" />
 
-            <Button
-                android:id="@+id/debugDeleteMain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="main"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
-
-            <Button
-                android:id="@+id/DebugDeleteDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="8dp"
-                android:text="detail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
 

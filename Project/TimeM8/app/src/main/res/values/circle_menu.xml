@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="icons">
+        <item>@drawable/ic_stat_all_inclusive</item>
+        <item>@drawable/ic_stat_all_inclusive</item>
+        <item>@drawable/ic_stat_all_inclusive</item>
+        <item>@drawable/ic_stat_all_inclusive</item>
+    </array>
+    <array name="colors">
+        <item>#e15f41</item>
+        <item>@color/material_green_500</item>
+        <item>@color/material_deep_purple_500</item>
+        <item>@color/material_blue_500</item>
+    </array>
+</resources>

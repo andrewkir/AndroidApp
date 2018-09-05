@@ -20,14 +20,14 @@
             <TextView
                 android:id="@+id/detailTextSubName"
                 android:layout_width="250dp"
-                android:layout_height="30dp"
+                android:layout_height="62dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Программирование" />
+                tools:text="Русский язык / литература" />
 
             <ImageView
                 android:id="@+id/detailImageView"
@@ -45,7 +45,7 @@
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="124dp"
                 android:layout_marginTop="84dp"
                 android:fillViewport="true"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +60,7 @@
                     android:layout_margin="8dp"
                     android:layout_marginTop="56dp"
                     android:autoLink="all"
+                    android:paddingBottom="10dp"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -119,6 +120,7 @@
                     android:layout_height="fill_parent"
                     android:layout_margin="8dp"
                     android:layout_marginTop="56dp"
+                    android:paddingBottom="10dp"
                     android:autoLink="all"
                     android:fillViewport="true"
                     android:scrollbars="vertical"

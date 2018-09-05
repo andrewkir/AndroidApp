@@ -1,11 +1,17 @@
 package com.andrewkir.andrewforwork.timem8.Editors
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -58,9 +64,19 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var name = "test"
     var date = "1.1.1.1"
     var frog = dailyFrog()
+    lateinit var sPref: SharedPreferences
+    var stat: String = ""
     lateinit var db: DBdaily
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+        sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        stat = sPref.getString("THEME", "ORANGE")
+        when (stat) {
+            "ORANGE" -> setTheme(R.style.AppTheme)
+            "GREEN" -> setTheme(R.style.AppThemeGreen)
+            "PURPLE" -> setTheme(R.style.AppThemePurple)
+            "BLUE" -> setTheme(R.style.AppThemeBlue)
+        }
         setContentView(R.layout.activity_daily_editor)
         db = DBdaily(this)
         recyclerCheckBox.addItemDecoration(DividerItemDecoration(this,1))
@@ -241,5 +257,15 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var typedValue = TypedValue()
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
     }
 }

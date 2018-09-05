@@ -1,8 +1,10 @@
 package com.andrewkir.andrewforwork.timem8.MainScheduleEdit
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -20,6 +22,7 @@ import com.andrewkir.andrewforwork.timem8.Editors.MainDetailEditor
 import kotlinx.android.synthetic.main.activity_main_schedule_detail.*
 import java.io.File
 import android.support.v4.content.FileProvider
+import android.util.TypedValue
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.R
 
@@ -40,13 +43,22 @@ class MainScheduleDetail : AppCompatActivity() {
     var photopathMap = hashMapOf<Bitmap,String>()
     private var photos = ArrayList<Bitmap>()
     private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
+    lateinit var sPref: SharedPreferences
+    var stat: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!checkPermission(this, permissions)) {
                 requestPermissions(permissions, PERMISSION_REQUEST)
             }
+        }
+        sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
+        stat = sPref.getString("THEME", "ORANGE")
+        when (stat) {
+            "ORANGE" -> setTheme(R.style.AppTheme)
+            "GREEN" -> setTheme(R.style.AppThemeGreen)
+            "PURPLE" -> setTheme(R.style.AppThemePurple)
+            "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -207,6 +219,12 @@ class MainScheduleDetail : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var typedValue = TypedValue()
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
         try {
             db = DBdetailinfo(this)
             dbMain = DBHandler(this)

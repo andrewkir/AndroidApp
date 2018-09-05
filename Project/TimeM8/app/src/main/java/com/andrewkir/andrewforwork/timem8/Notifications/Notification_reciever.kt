@@ -17,14 +17,14 @@ class Notification_reciever: BroadcastReceiver() {
 
         val repeating_intent = Intent(context, MainActivity::class.java)
         repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        var text = intent!!.getStringExtra("TEXT")
-        var title = intent!!.getStringExtra("TITLE")
-        var dayYear = intent!!.getIntExtra("DAYOFYEAR",0)
-        var day = intent!!.getIntExtra("DAY",0)
-        var hour = intent!!.getIntExtra("HOUR",0)
-        var minute = intent!!.getIntExtra("MINUTE",0)
-        var id = intent!!.getIntExtra("ID",0)
-        var count = intent!!.getIntExtra("COUNT",0)
+        val text = intent!!.getStringExtra("TEXT")
+        val title = intent!!.getStringExtra("TITLE")
+        val dayYear = intent!!.getIntExtra("DAYOFYEAR",0)
+        val day = intent!!.getIntExtra("DAY",0)
+        val hour = intent!!.getIntExtra("HOUR",0)
+        val minute = intent!!.getIntExtra("MINUTE",0)
+        val id = intent!!.getIntExtra("ID",0)
+        val count = intent!!.getIntExtra("COUNT",0)
 
         println("make notification")
         val channelId = "channel-"+day.toString()+count

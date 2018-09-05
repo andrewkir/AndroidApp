@@ -14,7 +14,7 @@ class NotificationsHandler(var context:Context) {
             var day = 0
             var calendar = Calendar.getInstance()
             if(diff){
-                calendar.set(Calendar.DAY_OF_WEEK,dayYear)
+                calendar.set(Calendar.DAY_OF_YEAR,dayYear)
             } else {
                 calendar = Calendar.getInstance()
             }
@@ -28,10 +28,13 @@ class NotificationsHandler(var context:Context) {
                 7 -> day =1
             }
 
+            var tmp = context.getSharedPreferences("NotifMin", Context.MODE_PRIVATE)
+            var minutesDiff = tmp.getInt("MINUTES",10)
+
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.DAY_OF_WEEK,day)
             calendar.set(Calendar.MINUTE, minute)
-            calendar.add(Calendar.MINUTE,-10)
+            calendar.add(Calendar.MINUTE,-minutesDiff)
             calendar.set(Calendar.SECOND,0)
 
             if(diff){
@@ -60,7 +63,12 @@ class NotificationsHandler(var context:Context) {
                 }
                 alarmManager.cancel(pendingIntent)
             } else {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis , pendingIntent) //week = 604800000
+                if(calendar.timeInMillis<Calendar.getInstance().timeInMillis) {
+                    calendar.add(Calendar.WEEK_OF_YEAR,1)
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent) //week = 604800000
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent) //week = 604800000
+                }
             }
         }
 

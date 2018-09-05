@@ -1,8 +1,11 @@
 package com.andrewkir.andrewforwork.timem8.Editors
 
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -11,6 +14,7 @@ import android.graphics.drawable.GradientDrawable
 import android.media.ExifInterface
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
@@ -26,6 +30,7 @@ import java.util.*
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
 import android.support.v4.graphics.ColorUtils
+import android.util.TypedValue
 import android.view.View
 import com.skydoves.colorpickerpreference.ColorPickerDialog
 import java.io.*
@@ -52,9 +57,18 @@ class MainDetailEditor : AppCompatActivity() {
     var photos = ArrayList<Bitmap>()
     var photosAttached = ArrayList<Boolean>()
     internal lateinit var db: DBdetailinfo
-
+    lateinit var sPref: SharedPreferences
+    var stat: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        stat = sPref.getString("THEME", "ORANGE")
+        when (stat) {
+            "ORANGE" -> setTheme(R.style.AppTheme)
+            "GREEN" -> setTheme(R.style.AppThemeGreen)
+            "PURPLE" -> setTheme(R.style.AppThemePurple)
+            "BLUE" -> setTheme(R.style.AppThemeBlue)
+        }
         setContentView(R.layout.activity_main_detail_editor)
         //switchPhotoAttach.visibility = View.GONE
         db = DBdetailinfo(this)
@@ -100,10 +114,10 @@ class MainDetailEditor : AppCompatActivity() {
                     id=Integer.parseInt(dateArr[0]+dateArr[1]+dateArr[2]+count.toString()),
                     date = date,
                     parent = subjectName,
-                    homework = if(editTextHomework.text.isEmpty()) "" else if(editTextHomework.text.toString().takeLast(1)=="\n")editTextHomework.text.toString() else editTextHomework.text.toString()+"\n",
+                    homework = if(editTextHomework.text.isEmpty()) "" else editTextHomework.text.toString(),
                     hasimage = if(path.length>3) 1 else 0,
                     path = path,
-                    tips = if(editTextTips.text.isEmpty()) "" else if(editTextTips.text.toString().takeLast(1)=="\n")editTextTips.text.toString() else editTextTips.text.toString()+"\n",
+                    tips = if(editTextTips.text.isEmpty()) "" else editTextTips.text.toString(),
                     count = count,
                     color = color
 
@@ -247,7 +261,6 @@ class MainDetailEditor : AppCompatActivity() {
             if(photosAttached[index]){
                 if(photos[index] !in alreadySavedPhotos.keys) {
                     tmpPath += saveImage(photos[index]) + ";;;"
-                    println("сохранена фотка $index")
                 } else {
                     tmpPath +=  alreadySavedPhotos[photos[index]]+";;;"
                 }
@@ -278,7 +291,7 @@ class MainDetailEditor : AppCompatActivity() {
         val imageFile = createImageFile()
         val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if(callCameraIntent.resolveActivity(packageManager) != null) {
-            val authorities = packageName + ".fileprovider"
+            val authorities = "$packageName.fileprovider"
             val imageUri = FileProvider.getUriForFile(this, authorities, imageFile)
             callCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
             startActivityForResult(callCameraIntent, CAMERA)
@@ -439,5 +452,15 @@ class MainDetailEditor : AppCompatActivity() {
         }
         builder.setNegativeButton("отмена") { dialogInterface, i -> dialogInterface.dismiss() }
         builder.show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var typedValue = TypedValue()
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
     }
 }

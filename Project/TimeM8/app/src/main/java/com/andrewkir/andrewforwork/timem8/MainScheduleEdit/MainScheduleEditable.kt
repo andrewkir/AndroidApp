@@ -1,23 +1,50 @@
 package com.andrewkir.andrewforwork.timem8.MainScheduleEdit
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import com.andrewkir.andrewforwork.timem8.Editors.MainEditor
 import com.andrewkir.andrewforwork.timem8.R
 import kotlinx.android.synthetic.main.activity_main_schedule_editable.*
 import java.util.*
+import android.content.res.TypedArray
+import android.graphics.BitmapFactory
+import android.os.Build
+
 
 class MainScheduleEditable : AppCompatActivity() {
     private lateinit var pagerAdapter: PagerAdapter
     var day = 0
     var position_day = 0
     var count = 0
+    lateinit var sPref: SharedPreferences
+    var stat: String = ""
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            var typedValue = TypedValue()
+            theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
+            val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+            setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        stat = sPref.getString("THEME", "ORANGE")
+        when (stat) {
+            "ORANGE" -> setTheme(R.style.AppTheme)
+            "GREEN" -> setTheme(R.style.AppThemeGreen)
+            "PURPLE" -> setTheme(R.style.AppThemePurple)
+            "BLUE" -> setTheme(R.style.AppThemeBlue)
+        }
         setContentView(R.layout.activity_main_schedule_editable)
 
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -31,7 +58,9 @@ class MainScheduleEditable : AppCompatActivity() {
         applyDay()
 
         supportActionBar?.title = getMonth()
-        pagerTabStrip.tabIndicatorColor = resources.getColor(R.color.colorAccent)
+        var typedValue = TypedValue()
+        theme.resolveAttribute(R.attr.colorAccent, typedValue,true)
+        pagerTabStrip.tabIndicatorColor = typedValue?.data
         pagerTabStrip.setTextColor(resources.getColor(R.color.Txt))
         pagerView?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

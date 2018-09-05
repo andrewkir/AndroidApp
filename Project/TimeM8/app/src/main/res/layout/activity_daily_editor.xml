@@ -42,9 +42,10 @@
 
     <Button
         android:id="@+id/dailyAddBtn"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="add"
+        android:text="добавить"
         app:layout_constraintBottom_toBottomOf="@+id/dailyDelBtn"
         app:layout_constraintEnd_toStartOf="@+id/dailyDelBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -53,10 +54,11 @@
 
     <Button
         android:id="@+id/dailyDelBtn"
+        style="@style/AppTheme.Button"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text="del"
+        android:text="удалить"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/dailyAddBtn"
@@ -97,11 +99,12 @@
 
     <Button
         android:id="@+id/addFrog"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="add/update frog"
+        android:text="Добавить"
         app:layout_constraintEnd_toStartOf="@+id/clearFrog"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -109,9 +112,10 @@
 
     <Button
         android:id="@+id/clearFrog"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="clear"
+        android:text="очистить"
         app:layout_constraintBottom_toBottomOf="@+id/addFrog"
         app:layout_constraintEnd_toStartOf="@+id/dailyDeleteBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -120,10 +124,11 @@
 
     <Button
         android:id="@+id/dailyDeleteBtn"
-        android:layout_width="wrap_content"
+        style="@style/AppTheme.Button"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="DELETE"
+        android:text="удалить"
         app:layout_constraintBottom_toBottomOf="@+id/clearFrog"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -134,9 +139,10 @@
         android:id="@+id/spinnerDaily"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerCheckBox"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerCheckBox" />
 
     <TextView
         android:id="@+id/editDays"
@@ -146,6 +152,8 @@
         android:layout_marginTop="8dp"
         android:onClick="daysView"
         android:text="Дни повтора"
+        android:padding="3dp"
+        android:background="@drawable/rounded_btn"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/spinnerDaily"
         app:layout_constraintTop_toBottomOf="@+id/recyclerCheckBox" />
