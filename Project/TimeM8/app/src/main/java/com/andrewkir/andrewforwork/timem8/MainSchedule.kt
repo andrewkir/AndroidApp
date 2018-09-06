@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main_schedule.*
 import com.andrewkir.andrewforwork.timem8.R
 
@@ -37,6 +38,7 @@ class MainSchedule : AppCompatActivity() {
         progressBarchk.setProgress(0)
         ProgressText.text="Процесс..."
         loadText()
+        Toast.makeText(this,"Решил пока оставить, будет с чем сравнить в конце) А так, тут ловить нечего, уходи",Toast.LENGTH_LONG).show()
         println("svd text is $SvdTxt")
 
     }

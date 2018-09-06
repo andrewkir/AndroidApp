@@ -17,10 +17,12 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
+import com.andrewkir.andrewforwork.timem8.Notifications.NotificationsHandler
 import kotlinx.android.synthetic.main.activity_settings.*
 
 
@@ -41,6 +43,16 @@ class SettingsActivity : AppCompatActivity() {
         }
         setContentView(R.layout.activity_settings)
 
+        var prefNotif = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
+        if(prefNotif.getBoolean("ENABLED",true)){
+            settings_switch.performClick()
+            minutesSettings.isEnabled = true
+            saveMinutes.isEnabled = true
+        } else {
+            minutesSettings.isEnabled = false
+            saveMinutes.isEnabled = false
+        }
+
         var tmp= getSharedPreferences("NotifMin", Context.MODE_PRIVATE)
         var tMin = tmp.getInt("MINUTES",-1)
         if(tMin !=-1){
@@ -54,7 +66,7 @@ class SettingsActivity : AppCompatActivity() {
             } else {
                 circleMenu.visibility = View.VISIBLE
                 val handler = Handler()
-                handler.postDelayed(Runnable {
+                handler.postDelayed({
                     circleMenu.open(true)
                 }, 100)
             }
@@ -105,13 +117,112 @@ class SettingsActivity : AppCompatActivity() {
             if(minutesSettings.text.toString() != "" && minutesSettings.text.toString() != "0") {
                 var pref = getSharedPreferences("NotifMin", Context.MODE_PRIVATE)
                 var ed = pref.edit()
-                ed.putInt("MINUTES", Integer.parseInt(minutesSettings.text.toString()))
+                var min =  Integer.parseInt(minutesSettings.text.toString())
+                ed.putInt("MINUTES", min)
                 ed.apply()
+
+                var db = DBHandler(this)
+                var subs = db.allSub
+                for(sub in subs){
+                    NotificationsHandler(context = this).makeNotification(
+                            hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                            minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                            text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                            textTitle = sub.name,
+                            id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                            dayOfweek = sub.day,
+                            cancel = true,
+                            delete = true,
+                            count = sub.count
+                    )
+                    NotificationsHandler(context = this).makeNotification(
+                            hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                            minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                            text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                            textTitle = sub.name,
+                            id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                            dayOfweek = sub.day,
+                            delete = false,
+                            cancel = false,
+                            count = sub.count
+                    )
+                }
                 Toast.makeText(this,"Сохранено",Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
             }
         }
+        settings_switch.setOnClickListener {
+            if (settings_switch.isChecked){
+                static_notif.text = "выключить уведомления"
+                var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
+                var ed = tmpPr.edit()
+                ed.putBoolean("ENABLED",true)
+                ed.apply()
+                minutesSettings.isEnabled = true
+                saveMinutes.isEnabled = true
+                var db = DBHandler(this)
+                var subs = db.allSub
+                for(sub in subs){
+                    NotificationsHandler(context = this).makeNotification(
+                            hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                            minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                            text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                            textTitle = sub.name,
+                            id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                            dayOfweek = sub.day,
+                            delete = false,
+                            cancel = false,
+                            count = sub.count
+                    )
+                }
+            } else {
+                static_notif.text = "включить уведомления"
+                var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
+                var ed = tmpPr.edit()
+                ed.putBoolean("ENABLED",false)
+                ed.apply()
+                minutesSettings.isEnabled = false
+                saveMinutes.isEnabled = false
+                var db = DBHandler(this)
+                var subs = db.allSub
+                for(sub in subs){
+                    NotificationsHandler(context = this).makeNotification(
+                            hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                            minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                            text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                            textTitle = sub.name,
+                            id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                            dayOfweek = sub.day,
+                            cancel = true,
+                            delete = true,
+                            count = sub.count
+                    )
+                }
+            }
+        }
+        exportButton.setOnClickListener {
+            setClipboard(this,"Эта функция будет добавлена позже :)")
+        }
+        importButton.setOnClickListener {
+            var input = EditText(this)
+            var text = ""
+            AlertDialog.Builder(this@SettingsActivity)
+                    .setMessage("Введите полученный текст")
+                    .setCancelable(false)
+                    .setView(input)
+                    .setPositiveButton("Ок") { _, _ ->
+                        text = input.text.toString()
+                        Toast.makeText(this,"Вы ввели: $text",Toast.LENGTH_SHORT).show()
+                    }
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle("Импорт основного расписания")
+                    .setNegativeButton("Отмена"){ _, _ ->
+
+                    }
+                    .show()
+        }
+
         val menu = circleMenu
         menu.eventListener = object : CircleMenuView.EventListener() {
             override fun onMenuOpenAnimationStart(view: CircleMenuView) {
@@ -157,5 +268,15 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setClipboard(context: Context, text: String) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.text.ClipboardManager
+            clipboard.text = text
+        } else {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Copied Text", text)
+            clipboard.primaryClip = clip
+        }
+    }
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }
