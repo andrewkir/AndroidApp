@@ -41,6 +41,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
         val lstFrogs = ArrayList<dailyFrog>()
         val selectQuery = "SELECT * FROM $TABLE_DAILY_NAME"
         val db = this.writableDatabase
+        onCreate(db)
         val cursor = db.rawQuery(selectQuery, null)
         if (cursor.moveToFirst()) {
             do {

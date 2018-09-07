@@ -66,7 +66,12 @@ class MainDailySchedule : AppCompatActivity(){
             7 -> day = "Сб"
             1 -> day = "Вс"
         }
-        expandRecycler.adapter = expandAdapter(data = db.allFrogByDay(day) as ArrayList<dailyFrog>)
+        if(!db.allFrogByDay(day).isEmpty()) {
+            expandRecycler.adapter = expandAdapter(data = db.allFrogByDay(day) as ArrayList<dailyFrog>)
+            hintToAddSmthDaily.text = ""
+        } else {
+            hintToAddSmthDaily.text = "Вы ещё не добавили задания на этот день"
+        }
 
         val swipeHandler = object : SwipeToDeleteAdapter(this) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -108,7 +113,12 @@ class MainDailySchedule : AppCompatActivity(){
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
         val db =  DBdaily(this)
-        expandRecycler.adapter = expandAdapter(db.allFrogByDay(day) as ArrayList<dailyFrog>)
+        if(!db.allFrogByDay(day).isEmpty()){
+            hintToAddSmthDaily.text = ""
+            expandRecycler.adapter = expandAdapter(db.allFrogByDay(day) as ArrayList<dailyFrog>)
+        } else {
+            hintToAddSmthDaily.text = "Вы ещё не добавили задания на этот день"
+        }
 
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

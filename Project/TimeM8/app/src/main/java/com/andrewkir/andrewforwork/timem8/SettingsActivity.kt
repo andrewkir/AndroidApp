@@ -14,16 +14,23 @@ import com.ramotion.circlemenu.CircleMenuView
 import android.support.annotation.NonNull
 import android.support.constraint.Constraints
 import android.support.v7.app.AlertDialog
+import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
+import com.andrewkir.andrewforwork.timem8.Models.Sub
 import com.andrewkir.andrewforwork.timem8.Notifications.NotificationsHandler
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_settings.*
+import java.nio.charset.StandardCharsets
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -77,6 +84,20 @@ class SettingsActivity : AppCompatActivity() {
                     .setCancelable(false)
                     .setPositiveButton("Удалить") { _, _ ->
                         var db = DBHandler(this)
+                        var subs = db.allSub
+                        for(sub in subs) {
+                            NotificationsHandler(context = this).makeNotification(
+                                    hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                                    minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                                    text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                                    textTitle = sub.name,
+                                    id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
+                                    dayOfweek = sub.day,
+                                    cancel = true,
+                                    delete = true,
+                                    count = sub.count
+                            )
+                        }
                         db.deleteAllData()
                         Toast.makeText(this,"Основное расписание удалено",Toast.LENGTH_SHORT).show()
                     }
@@ -202,18 +223,63 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         exportButton.setOnClickListener {
-            setClipboard(this,"Эта функция будет добавлена позже :)")
+            val gson = Gson()
+            val json = gson.toJson(DBHandler(this).allSub)
+            //val res = Base64.encodeToString(json.toByteArray(),Base64.DEFAULT)
+            setClipboard(this,json)
         }
         importButton.setOnClickListener {
             var input = EditText(this)
+            input.height = 80.toPx()
+            input.width = 150.toPx()
+            input.gravity = Gravity.LEFT;
             var text = ""
             AlertDialog.Builder(this@SettingsActivity)
                     .setMessage("Введите полученный текст")
                     .setCancelable(false)
                     .setView(input)
                     .setPositiveButton("Ок") { _, _ ->
-                        text = input.text.toString()
-                        Toast.makeText(this,"Вы ввели: $text",Toast.LENGTH_SHORT).show()
+                        try {
+                            text = input.text.toString()
+                            val gson = Gson()
+                            val obj = gson.fromJson(text, Array<Sub>::class.java)
+                            var db = DBHandler(this)
+                            var tmp = db.allSub
+                            //удаление уведомлений
+                            for(sub in tmp){
+                                NotificationsHandler(context = this).makeNotification(
+                                        hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                                        minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                                        textTitle = sub.name,
+                                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                                        dayOfweek = sub.day,
+                                        cancel = true,
+                                        delete = true,
+                                        count = sub.count
+                                )
+                            }
+                            db.deleteAllData()
+                            for(sub in obj){
+                                db.addSub(sub)
+                                NotificationsHandler(context = this).makeNotification(
+                                        hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                                        minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                                        textTitle = sub.name,
+                                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
+                                        dayOfweek = sub.day,
+                                        delete = false,
+                                        cancel = false,
+                                        count = sub.count
+                                )
+                            }
+                            Toast.makeText(this,"Готово",Toast.LENGTH_SHORT).show()
+                        }
+                        catch (e:Exception){
+                            Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle("Импорт основного расписания")

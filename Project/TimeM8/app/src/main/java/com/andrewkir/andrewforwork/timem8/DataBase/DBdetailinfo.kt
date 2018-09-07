@@ -80,6 +80,7 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         val lstSubs = ArrayList<SubDetail>()
         val selectQuery = "SELECT * FROM $TABLE_DETAIL_NAME WHERE $COL_DETAIL_SUB_PARENT = '$sub_parent' AND $COL_DETAIL_DATE = '$date' AND $COL_DETAIL_COUNT = '$count'"
         val db = this.writableDatabase
+        onCreate(db)
         val cursor = db.rawQuery(selectQuery,null)
         if(cursor.moveToFirst()){
             do{

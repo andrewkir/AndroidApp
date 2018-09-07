@@ -8,17 +8,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
-import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
-import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.andrewkir.andrewforwork.timem8.MainScheduleEdit.MainScheduleEditable
-import android.R.attr.label
 import android.app.ActivityManager
 import android.os.Build
 import android.util.TypedValue
 import android.graphics.BitmapFactory
-import android.graphics.Bitmap
-
+import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.Models.Sub
+import com.google.gson.Gson
 
 
 
@@ -49,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             val ScheduleIntentEd = Intent(this, MainScheduleEditable::class.java)
             startActivity(ScheduleIntentEd)
         }
+
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_settings, menu)
