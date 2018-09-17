@@ -13,10 +13,7 @@ import android.app.ActivityManager
 import android.os.Build
 import android.util.TypedValue
 import android.graphics.BitmapFactory
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
-import com.andrewkir.andrewforwork.timem8.Models.Sub
-import com.google.gson.Gson
-
+import android.view.View
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,17 +31,18 @@ class MainActivity : AppCompatActivity() {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         setContentView(R.layout.activity_main)
+        MainScheduleBtn.visibility = View.GONE
         dailyTasksBtn.setOnClickListener{
             val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)
             startActivity(dailyTaskIntent)
         }
         MainScheduleBtn.setOnClickListener{
-            val ScheduleIntent = Intent(this, MainSchedule::class.java)
-            startActivity(ScheduleIntent)
+            val scheduleIntent = Intent(this, MainSchedule::class.java)
+            startActivity(scheduleIntent)
         }
         MainScheduleBtnEd.setOnClickListener{
-            val ScheduleIntentEd = Intent(this, MainScheduleEditable::class.java)
-            startActivity(ScheduleIntentEd)
+            val scheduleIntentEd = Intent(this, MainScheduleEditable::class.java)
+            startActivity(scheduleIntentEd)
         }
 
     }
