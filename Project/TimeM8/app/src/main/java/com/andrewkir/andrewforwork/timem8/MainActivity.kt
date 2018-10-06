@@ -44,6 +44,10 @@ class MainActivity : AppCompatActivity() {
             val scheduleIntentEd = Intent(this, MainScheduleEditable::class.java)
             startActivity(scheduleIntentEd)
         }
+        financeButton.setOnClickListener {
+            val financialIntent = Intent(this,FinancialActivity::class.java)
+            startActivity(financialIntent)
+        }
 
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

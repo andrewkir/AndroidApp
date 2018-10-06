@@ -70,46 +70,46 @@ class ActivityWelcome : AppCompatActivity() {
         if (!prefManager!!.isFirstTimeLaunch()) {
             launchHomeScreen()
             finish()
-        }
+        } else {
 
-        var db = DBHandler(this)
-        db.deleteAllData()
-        var db2 = DBdaily(this)
-        db2.deleteAllData()
-        var db3 = DBdetailinfo(this)
-        db3.deleteAllData()
+            var db = DBHandler(this)
+            db.deleteAllData()
+            var db2 = DBdaily(this)
+            db2.deleteAllData()
+            var db3 = DBdetailinfo(this)
+            db3.deleteAllData()
 
-        // Making notification bar transparent
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        }
+            // Making notification bar transparent
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            }
 
-        setContentView(R.layout.activity_welcome)
+            setContentView(R.layout.activity_welcome)
 
-        viewPager = view_pager
-        dotsLayout = layoutDots
-        btnSkip = findViewById<View>(R.id.btn_skip) as Button
-        btnNext = findViewById<View>(R.id.btn_next) as Button
+            viewPager = view_pager
+            dotsLayout = layoutDots
+            btnSkip = findViewById<View>(R.id.btn_skip) as Button
+            btnNext = findViewById<View>(R.id.btn_next) as Button
 
-        // layouts of all welcome sliders
-        // add few more layouts if you want
-        layouts = intArrayOf(R.layout.welcome_activity_1, R.layout.welcome_activity_2, R.layout.welcome_activity_3)
+            // layouts of all welcome sliders
+            // add few more layouts if you want
+            layouts = intArrayOf(R.layout.welcome_activity_1, R.layout.welcome_activity_2, R.layout.welcome_activity_3)
 
-        // adding bottom dots
-        addBottomDots(0)
+            // adding bottom dots
+            addBottomDots(0)
 
-        // making notification bar transparent
-        changeStatusBarColor()
+            // making notification bar transparent
+            changeStatusBarColor()
 
-        myViewPagerAdapter = MyViewPagerAdapter()
-        viewPager!!.setAdapter(myViewPagerAdapter)
-        viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
+            myViewPagerAdapter = MyViewPagerAdapter()
+            viewPager!!.setAdapter(myViewPagerAdapter)
+            viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
 
-        btnSkip!!.setOnClickListener{
+            btnSkip!!.setOnClickListener {
                 launchHomeScreen()
-        }
+            }
 
-        btnNext!!.setOnClickListener{
+            btnNext!!.setOnClickListener {
                 // checking for last page
                 // if last page home screen will be launched
                 val current = getItem(+1)
@@ -119,6 +119,7 @@ class ActivityWelcome : AppCompatActivity() {
                 } else {
                     launchHomeScreen()
                 }
+            }
         }
     }
 

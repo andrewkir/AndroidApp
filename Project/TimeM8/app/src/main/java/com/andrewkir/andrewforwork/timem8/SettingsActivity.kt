@@ -219,6 +219,7 @@ class SettingsActivity : AppCompatActivity() {
                             delete = true,
                             count = sub.count
                     )
+                    println(Integer.parseInt(sub.timeBegin.split(":")[0]))
                 }
             }
         }

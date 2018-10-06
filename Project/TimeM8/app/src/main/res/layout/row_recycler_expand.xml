@@ -9,7 +9,7 @@
     >
 
     <RelativeLayout
-        android:id="@+id/button"
+        android:id="@+id/financeButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/button"
+        android:layout_toLeftOf="@id/financeButton"
         android:gravity="center"
         android:padding="4dp"
         android:textColor="@android:color/white"
