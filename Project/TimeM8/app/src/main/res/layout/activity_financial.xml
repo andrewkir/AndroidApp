@@ -12,30 +12,58 @@
         android:layout_height="200dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tipsFinancial" />
-
-    <TextView
-        android:id="@+id/tipsFinancial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Отлично!"
-        android:textSize="18sp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/progressAdd"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_action_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tipsFin"
+        android:layout_width="0dp"
+        android:padding="5dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:gravity="center"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/circle_fin"
+        android:text="Хэй дорова"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/waveView"
+        app:layout_constraintEnd_toEndOf="@+id/waveView"
+        app:layout_constraintStart_toStartOf="@+id/waveView"
+        app:layout_constraintTop_toTopOf="@+id/waveView" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/mainFinRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:text="add"
-        app:layout_constraintTop_toBottomOf="@+id/waveView"
-        tools:layout_editor_absoluteX="135dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/waveView" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginStart="8dp"
+        android:text="операции:"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/mainFinRecycler"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

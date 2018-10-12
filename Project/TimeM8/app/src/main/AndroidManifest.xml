@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -54,7 +54,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FinancialActivity"></activity>
+        <activity android:name=".FinancialActivity" />
+        <activity android:name=".Editors.FinanceEditor"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

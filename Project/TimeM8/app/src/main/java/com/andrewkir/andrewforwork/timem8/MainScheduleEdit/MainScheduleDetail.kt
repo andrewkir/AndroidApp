@@ -81,7 +81,6 @@ class MainScheduleDetail : AppCompatActivity() {
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
             detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
             detailTeacher.text = if(schSub.teacher.isEmpty()) "" else schSub.teacher
-
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
@@ -258,6 +257,22 @@ class MainScheduleDetail : AppCompatActivity() {
                     detailImageView.visibility = View.GONE
             buttonDetForw.visibility = View.GONE
             buttonDetBack.visibility = View.GONE
+            val pr = getPreferences(MODE_PRIVATE)
+            if(pr.getBoolean("FIRST"+schSub.id.toString(),true)) {
+                val ed = pr.edit()
+                ed.putBoolean("FIRST"+schSub.id.toString(), false)
+                ed.apply()
+                val DetailEditor = Intent(this, MainDetailEditor::class.java)
+                DetailEditor.putExtra("NAME_SUB", SubName)
+                DetailEditor.putExtra("DATE", date)
+                DetailEditor.putExtra("COUNT_SUB", count)
+                startActivity(DetailEditor)
+            } else {
+                val ed = pr.edit()
+                ed.putBoolean("FIRST"+schSub.id.toString(), true)
+                ed.apply()
+                finish()
+            }
         }
     }
 

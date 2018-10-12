@@ -25,6 +25,7 @@ import android.widget.Button
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
+import com.andrewkir.andrewforwork.timem8.DataBase.DBfinance
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 
@@ -72,12 +73,15 @@ class ActivityWelcome : AppCompatActivity() {
             finish()
         } else {
 
+            //creating all tables
             var db = DBHandler(this)
             db.deleteAllData()
             var db2 = DBdaily(this)
             db2.deleteAllData()
             var db3 = DBdetailinfo(this)
             db3.deleteAllData()
+            var db4 = DBfinance(this)
+            db4.deleteAllData()
 
             // Making notification bar transparent
             if (Build.VERSION.SDK_INT >= 21) {
