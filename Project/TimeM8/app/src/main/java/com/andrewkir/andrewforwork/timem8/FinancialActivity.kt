@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_finance_editor.*
 import kotlinx.android.synthetic.main.activity_financial.*
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
+import java.util.*
 
 
 class FinancialActivity : AppCompatActivity() {
@@ -42,6 +43,22 @@ class FinancialActivity : AppCompatActivity() {
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
         setContentView(R.layout.activity_financial)
+        var Dpref = getSharedPreferences("isFirstDel", Context.MODE_PRIVATE)
+        val isDel = Dpref.getBoolean("isFirstDel",true)
+        if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel){
+            DBfinance(this).deleteAllData()
+            var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+            val ed = pref.edit()
+            ed.putInt("MAX_FIN", 0)
+            ed.apply()
+            val edDel = Dpref.edit()
+            edDel.putBoolean("isFirstDel",false)
+            edDel.apply()
+        } else if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
+            val edDel = Dpref.edit()
+            edDel.putBoolean("isFirstDel",true)
+            edDel.apply()
+        }
     }
 
     override fun onResume() {
@@ -51,6 +68,7 @@ class FinancialActivity : AppCompatActivity() {
             val ed = pr.edit()
             ed.putBoolean("FIRST", false)
             ed.apply()
+            println("_______________RECREATED_______________")
             recreate()
         } else {
             val ed = pr.edit()
@@ -62,6 +80,7 @@ class FinancialActivity : AppCompatActivity() {
         val max = pref.getInt("MAX_FIN",0).toLong()
         waveView.setSpeed(WaveView.SPEED_NORMAL)
         if(max != 0.toLong()){
+            waveView.max = max
             waveView.max = max
             waveView.progress = if(len>=max) max else len
             val dsum = if(DBfinance(this).Sum()<0) 0 else DBfinance(this).Sum()

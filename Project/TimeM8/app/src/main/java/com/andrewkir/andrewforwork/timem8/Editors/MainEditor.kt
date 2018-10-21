@@ -51,7 +51,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        getMenuInflater().inflate(R.menu.activity_main_editor_menu,menu)
+        menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
         return true
     }
 
@@ -78,7 +78,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         setContentView(R.layout.activity_main_editor)
 
 
-        var EditorS = MediaPlayer.create(this, R.raw.activityeditors);
+        var EditorS = MediaPlayer.create(this, R.raw.activityeditors)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         timeBeginBtn.setOnClickListener {
@@ -130,7 +130,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
             TimePick.show()
         }
 
-        spinner!!.setOnItemSelectedListener(this)
+        spinner!!.onItemSelectedListener = this
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_days)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner!!.adapter = aa
@@ -270,8 +270,8 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         spinner.setSelection(CurrentDaySelected-1)
         println(CurrentDaySelected)
         name.setText("")
-        timeBeginBtn.setText("9:00")
-        timeEndBtn.setText("10:00")
+        timeBeginBtn.text = "9:00"
+        timeEndBtn.text = "10:00"
         count.setText("")
         type.setText("")
         teacher.setText("")

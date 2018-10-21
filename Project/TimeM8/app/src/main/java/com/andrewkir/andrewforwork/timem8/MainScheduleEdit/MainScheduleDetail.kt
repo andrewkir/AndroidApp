@@ -26,7 +26,7 @@ import android.util.TypedValue
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.R
 
-private const val PERMISSION_REQUEST = 10
+
 
 class MainScheduleDetail : AppCompatActivity() {
     internal lateinit var db: DBdetailinfo
@@ -42,16 +42,10 @@ class MainScheduleDetail : AppCompatActivity() {
     var photosQuantity = 0
     var photopathMap = hashMapOf<Bitmap,String>()
     private var photos = ArrayList<Bitmap>()
-    private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
     lateinit var sPref: SharedPreferences
     var stat: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!checkPermission(this, permissions)) {
-                requestPermissions(permissions, PERMISSION_REQUEST)
-            }
-        }
         sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
         stat = sPref.getString("THEME", "ORANGE")
         when (stat) {
@@ -120,7 +114,7 @@ class MainScheduleDetail : AppCompatActivity() {
             val file = File(photopathMap[photos[currentImage]])
             val callCameraIntent = Intent(Intent.ACTION_VIEW)
             if (callCameraIntent.resolveActivity(packageManager) != null) {
-                val authorities = packageName + ".fileprovider"
+                val authorities = "$packageName.fileprovider"
                 val imageUri = FileProvider.getUriForFile(this, authorities, file)
                 callCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 callCameraIntent.setDataAndType(imageUri, "image/*");
@@ -186,30 +180,6 @@ class MainScheduleDetail : AppCompatActivity() {
         println("fun map res=")
         println(map_res)
         return map_res
-    }
-
-    fun checkPermission(context: Context, permissionArray: Array<String>): Boolean {
-        var allSuccess = true
-        for (i in permissionArray.indices){
-            if(checkCallingOrSelfPermission(permissionArray[i]) == PackageManager.PERMISSION_DENIED)
-                allSuccess = false
-        }
-        return allSuccess
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode == PERMISSION_REQUEST){
-            for(i in permissions.indices){
-                if(grantResults[i] == PackageManager.PERMISSION_DENIED){
-                    var requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
-                    if(requestAgain){
-                        Toast.makeText(this,"Недостаточно прав",Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(this,"Перейдите в настройки и предоставьте приложению разрещения",Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         getMenuInflater().inflate(R.menu.activity_main_schedule_menu,menu)

@@ -176,10 +176,6 @@ class SettingsActivity : AppCompatActivity() {
         settings_switch.setOnClickListener {
             if (settings_switch.isChecked){
                 static_notif.text = "выключить уведомления"
-                var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
-                var ed = tmpPr.edit()
-                ed.putBoolean("ENABLED",true)
-                ed.apply()
                 minutesSettings.isEnabled = true
                 saveMinutes.isEnabled = true
                 var db = DBHandler(this)
@@ -197,12 +193,12 @@ class SettingsActivity : AppCompatActivity() {
                             count = sub.count
                     )
                 }
-            } else {
-                static_notif.text = "включить уведомления"
                 var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
                 var ed = tmpPr.edit()
-                ed.putBoolean("ENABLED",false)
+                ed.putBoolean("ENABLED",true)
                 ed.apply()
+            } else {
+                static_notif.text = "включить уведомления"
                 minutesSettings.isEnabled = false
                 saveMinutes.isEnabled = false
                 var db = DBHandler(this)
@@ -221,6 +217,10 @@ class SettingsActivity : AppCompatActivity() {
                     )
                     println(Integer.parseInt(sub.timeBegin.split(":")[0]))
                 }
+                var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
+                var ed = tmpPr.edit()
+                ed.putBoolean("ENABLED",false)
+                ed.apply()
             }
         }
         exportButton.setOnClickListener {
@@ -231,7 +231,7 @@ class SettingsActivity : AppCompatActivity() {
         }
         importButton.setOnClickListener {
             var input = EditText(this)
-            input.height = 80.toPx()
+            input.height = 50.toPx()
             input.width = 150.toPx()
             input.gravity = Gravity.LEFT;
             var text = ""

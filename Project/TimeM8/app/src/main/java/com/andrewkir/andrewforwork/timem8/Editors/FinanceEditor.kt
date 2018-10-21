@@ -117,7 +117,12 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         ed.putInt("MAX_FIN", max)
                         ed.apply()
                     }
-                } else if(edFinName.text.toString().isNotEmpty() && edFinValue.text.toString().isNotEmpty()) {
+                } else if(edFinName.text.toString().isNotEmpty() && edFinValue.text.toString().isNotEmpty() && finMax.text.toString().isNotEmpty()) {
+                    var max = Integer.parseInt(finMax.text.toString())
+                    var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+                    val ed = pref.edit()
+                    ed.putInt("MAX_FIN", max)
+                    ed.apply()
                     if (op.id == 0) {
                         op.id = Calendar.getInstance().timeInMillis.toInt()
                     }

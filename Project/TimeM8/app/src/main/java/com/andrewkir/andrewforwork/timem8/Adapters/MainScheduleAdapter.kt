@@ -1,6 +1,7 @@
 package com.andrewkir.andrewforwork.timem8.Adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +52,7 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
                 itemView.setBackgroundColor(sub.color)
             }
             catch (e: Exception){
-                itemView.setBackgroundColor(1694433022)
+                itemView.setBackgroundColor(Color.parseColor("#FAFAFA"))
                 subjectHome?.text = ""
             }
 
