@@ -21,7 +21,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven() {
-            url "https://oss.sonatype.org/content/repositories/snapshots"
+            url 'https://jitpack.io'
+        }
+        maven() {
+            url 'https://dl.bintray.com/yuancloud/maven/'
         }
     }
 }

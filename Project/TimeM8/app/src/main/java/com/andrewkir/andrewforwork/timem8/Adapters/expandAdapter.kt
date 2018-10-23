@@ -124,7 +124,7 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
 
         init {
             textName = v.findViewById(R.id.row_daily_name)
-            buttonLayout = v.findViewById(R.id.button)
+            buttonLayout = v.findViewById(R.id.financeButton)
             expandableLayout = v.findViewById(R.id.expandableLayout)
             expandLiner = v.findViewById(R.id.linearExpand)
             textDesc = v.findViewById(R.id.row_daily_desc)

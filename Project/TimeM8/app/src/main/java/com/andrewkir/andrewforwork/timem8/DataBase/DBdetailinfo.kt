@@ -33,48 +33,6 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         db!!.execSQL("drop table if exists " + TABLE_DETAIL_NAME)
         onCreate(db)
     }
-    fun test():String{
-        return "OK"
-    }
-    fun insertData(sub: SubDetail){
-        val db =  this.writableDatabase
-        var cv = ContentValues()
-        cv.put(COL_ID,sub.id)
-        cv.put(COL_DETAIL_SUB_PARENT,sub.parent_sub)
-        cv.put(COL_DETAIL_SUB_HOMEWORK,sub.homework)
-        cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
-        cv.put(COL_DETAIL_COUNT,sub.count)
-        cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
-        cv.put(COL_DETAIL_TIPS,sub.tips)
-        cv.put(COL_DETAIL_COLOR,sub.color)
-        cv.put(COL_DETAIL_DATE,sub.date)
-
-        var result = db.insertOrThrow(TABLE_DETAIL_NAME,null,cv)
-    }
-//TODO решить че с этим делать
-//    val allSub:List<SubDetail>
-////        get()
-////        {
-////            val lstSubs = ArrayList<SubDetail>()
-////            val selectQuery = "SELECT * FROM "+ TABLE_DETAIL_NAME+" ORDER BY $COL_DAY , $COL_CNT"
-////            val db = this.writableDatabase
-////            val cursor = db.rawQuery(selectQuery,null)
-////            if(cursor.moveToFirst()){
-////                do{
-////                    val sub = SubDetail()
-////                    sub.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
-////                    sub.name = cursor.getString(cursor.getColumnIndex(COL_NAME))
-////                    sub.day = cursor.getInt(cursor.getColumnIndex(COL_DAY))
-////                    sub.importance = cursor.getInt(cursor.getColumnIndex(COL_IMP))
-////                    sub.count = cursor.getInt(cursor.getColumnIndex(COL_CNT))
-////                    sub.time = cursor.getString(cursor.getColumnIndex(COL_TIME))
-////
-////                    lstSubs.add(sub)
-////                }while (cursor.moveToNext())
-////            }
-////            db.close()
-////            return lstSubs
-////        }
     fun allSubDetailByDay(sub_parent: String,date: String,count: Int):List<SubDetail>
     {
         val lstSubs = ArrayList<SubDetail>()

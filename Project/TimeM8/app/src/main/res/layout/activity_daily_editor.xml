@@ -103,12 +103,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Добавить"
+        android:text="Сохранить"
         app:layout_constraintEnd_toStartOf="@+id/clearFrog"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerDaily" />
+        app:layout_constraintTop_toBottomOf="@+id/editDays" />
 
     <Button
         android:id="@+id/clearFrog"
@@ -146,15 +145,18 @@
 
     <TextView
         android:id="@+id/editDays"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="daysView"
-        android:text="Дни повтора"
-        android:padding="3dp"
         android:background="@drawable/rounded_btn"
+        android:onClick="daysView"
+        android:padding="3dp"
+        android:text="Дни повтора"
+        android:textAlignment="center"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/spinnerDaily"
         app:layout_constraintTop_toBottomOf="@+id/recyclerCheckBox" />
 </android.support.constraint.ConstraintLayout>

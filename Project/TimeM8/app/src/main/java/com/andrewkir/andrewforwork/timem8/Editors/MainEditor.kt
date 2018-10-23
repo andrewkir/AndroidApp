@@ -51,7 +51,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 
-        getMenuInflater().inflate(R.menu.activity_main_editor_menu,menu)
+        menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
         return true
     }
 
@@ -78,7 +78,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         setContentView(R.layout.activity_main_editor)
 
 
-        var EditorS = MediaPlayer.create(this, R.raw.activityeditors);
+        var EditorS = MediaPlayer.create(this, R.raw.activityeditors)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         timeBeginBtn.setOnClickListener {
@@ -130,7 +130,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
             TimePick.show()
         }
 
-        spinner!!.setOnItemSelectedListener(this)
+        spinner!!.onItemSelectedListener = this
         val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_days)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner!!.adapter = aa
@@ -140,45 +140,49 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         refreshData()
         btn_insert.setOnClickListener{
             try {
-                if(name.text.toString()=="сясь"){
-                    EditorS.start()
-                    room.setText("сясь")
-                    type.setText("сясь")
-                    teacher.setText("сясь")
-                    timeBeginBtn.text = "13:37"
-                    timeEndBtn.text = "13:37"
-                    count.setText("1337")
-                    Toast.makeText(this,"Надо научить этих грубиянов уважать рЕп",Toast.LENGTH_LONG).show()
-                    supportActionBar?.title = "сясь"
-                    btn_insert.text = "сясь"
-                    btn_delete.text = "сясь"
-                    btn_update.text = "сясь"
+                if(name.text.toString() != ""){
+                    if(name.text.toString()=="сясь"){
+                        EditorS.start()
+                        room.setText("сясь")
+                        type.setText("сясь")
+                        teacher.setText("сясь")
+                        timeBeginBtn.text = "13:37"
+                        timeEndBtn.text = "13:37"
+                        count.setText("1337")
+                        Toast.makeText(this,"Надо научить этих грубиянов уважать рЕп",Toast.LENGTH_LONG).show()
+                        supportActionBar?.title = "сясь"
+                        btn_insert.text = "сясь"
+                        btn_delete.text = "сясь"
+                        btn_update.text = "сясь"
+                    } else {
+                        val sub = Sub(
+                                id = Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
+                                day = Integer.parseInt(CurrentDaySelected.toString()),
+                                count = Integer.parseInt(count.text.toString()),
+                                name = name.text.toString(),
+                                timeBegin = timeBeginBtn.text.toString(),
+                                timeEnd = timeEndBtn.text.toString(),
+                                type = type.text.toString(),
+                                room = room.text.toString(),
+                                teacher = teacher.text.toString()
+                        )
+                        db.addSub(sub)
+                        var tmp = count.text.toString()
+                        NotificationsHandler(context = this).makeNotification(
+                                hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
+                                minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
+                                text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                                textTitle = name.text.toString(),
+                                id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
+                                dayOfweek = sub.day,
+                                cancel = false,
+                                count = sub.count
+                        )
+                        refreshData()
+                        count.setText((Integer.parseInt(tmp) + 1).toString())
+                    }
                 } else {
-                    val sub = Sub(
-                            id = Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
-                            day = Integer.parseInt(CurrentDaySelected.toString()),
-                            count = Integer.parseInt(count.text.toString()),
-                            name = name.text.toString(),
-                            timeBegin = timeBeginBtn.text.toString(),
-                            timeEnd = timeEndBtn.text.toString(),
-                            type = type.text.toString(),
-                            room = room.text.toString(),
-                            teacher = teacher.text.toString()
-                    )
-                    db.addSub(sub)
-                    var tmp = count.text.toString()
-                    NotificationsHandler(context = this).makeNotification(
-                            hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
-                            minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
-                            text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
-                            textTitle = name.text.toString(),
-                            id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
-                            dayOfweek = sub.day,
-                            cancel = false,
-                            count = sub.count
-                    )
-                    refreshData()
-                    count.setText((Integer.parseInt(tmp) + 1).toString())
+                    Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
                 }
             }
             catch(e: Exception) {
@@ -266,8 +270,8 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         spinner.setSelection(CurrentDaySelected-1)
         println(CurrentDaySelected)
         name.setText("")
-        timeBeginBtn.setText("9:00")
-        timeEndBtn.setText("10:00")
+        timeBeginBtn.text = "9:00"
+        timeEndBtn.text = "10:00"
         count.setText("")
         type.setText("")
         teacher.setText("")

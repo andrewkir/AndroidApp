@@ -89,19 +89,23 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         refresh()
         spinnerDaily.setSelection(3)
         dailyAddBtn.setOnClickListener {
-            frog.tasks = frog.tasks+taskEdit.text.toString()+";;;"
-            frog.count++
-            try {
-                frog.isDone.add(false)
-            } catch (e:Exception){
-                var tmp = ArrayList<Boolean>()
-                tmp.add(false)
-                frog.isDone = tmp
+            if(taskEdit.text.toString() != "") {
+                frog.tasks = frog.tasks + taskEdit.text.toString() + ";;;"
+                frog.count++
+                try {
+                    frog.isDone.add(false)
+                } catch (e: Exception) {
+                    var tmp = ArrayList<Boolean>()
+                    tmp.add(false)
+                    frog.isDone = tmp
+                }
+                println(frog.tasks)
+                db.updateFrog(frog)
+                refresh()
+                taskEdit.setText("")
+            } else {
+                Toast.makeText(this, "Пожалуйста, введите корректные данные", Toast.LENGTH_SHORT).show()
             }
-            println(frog.tasks)
-            db.updateFrog(frog)
-            refresh()
-            taskEdit.setText("")
         }
         dailyDelBtn.setOnClickListener {
             if (frog.count >= 1) {

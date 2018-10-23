@@ -1,11 +1,13 @@
 package com.andrewkir.andrewforwork.timem8.Editors
 
+import android.Manifest
 import android.app.Activity
 import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -38,6 +40,7 @@ import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
+private const val PERMISSION_REQUEST = 10
 
 class MainDetailEditor : AppCompatActivity() {
 
@@ -46,7 +49,7 @@ class MainDetailEditor : AppCompatActivity() {
     var path = ""
     var count = 0
     var imagePos = 0
-    var color = Color.WHITE
+    var color = Color.parseColor("#FAFAFA")
     var imageFilePath = ""
     var newImage = false
     private val GALLERY = 1
@@ -59,6 +62,7 @@ class MainDetailEditor : AppCompatActivity() {
     internal lateinit var db: DBdetailinfo
     lateinit var sPref: SharedPreferences
     var stat: String = ""
+    private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -70,6 +74,11 @@ class MainDetailEditor : AppCompatActivity() {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         setContentView(R.layout.activity_main_detail_editor)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!checkPermission(this, permissions)) {
+                requestPermissions(permissions, PERMISSION_REQUEST)
+            }
+        }
         //switchPhotoAttach.visibility = View.GONE
         db = DBdetailinfo(this)
         subjectName = intent.getStringExtra("NAME_SUB")
@@ -461,6 +470,29 @@ class MainDetailEditor : AppCompatActivity() {
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
+        }
+    }
+    fun checkPermission(context: Context, permissionArray: Array<String>): Boolean {
+        var allSuccess = true
+        for (i in permissionArray.indices){
+            if(checkCallingOrSelfPermission(permissionArray[i]) == PackageManager.PERMISSION_DENIED)
+                allSuccess = false
+        }
+        return allSuccess
+    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if(requestCode == PERMISSION_REQUEST){
+            for(i in permissions.indices){
+                if(grantResults[i] == PackageManager.PERMISSION_DENIED){
+                    var requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
+                    if(requestAgain){
+                        Toast.makeText(this,"Недостаточно прав",Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this,"Перейдите в настройки и предоставьте приложению разрещения",Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 }
