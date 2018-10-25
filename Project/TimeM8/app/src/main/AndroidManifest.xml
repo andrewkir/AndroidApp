@@ -54,7 +54,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FinancialActivity" />
+        <activity android:name=".FinancialActivity.FinancialActivity" />
         <activity android:name=".Editors.FinanceEditor"
             android:screenOrientation="portrait"/>
     </application>

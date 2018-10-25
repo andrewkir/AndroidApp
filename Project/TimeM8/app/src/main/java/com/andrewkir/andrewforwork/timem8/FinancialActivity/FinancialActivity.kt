@@ -1,25 +1,22 @@
-package com.andrewkir.andrewforwork.timem8
+package com.andrewkir.andrewforwork.timem8.FinancialActivity
 
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View
 import com.andrewkir.andrewforwork.timem8.Adapters.FinancialAdapter
 import com.andrewkir.andrewforwork.timem8.DataBase.DBfinance
 import com.andrewkir.andrewforwork.timem8.Editors.FinanceEditor
 import com.yuan.waveview.WaveView
-import kotlinx.android.synthetic.main.activity_finance_editor.*
 import kotlinx.android.synthetic.main.activity_financial.*
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
+import com.andrewkir.andrewforwork.timem8.R
 import java.util.*
 
 

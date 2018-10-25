@@ -14,6 +14,7 @@ import android.os.Build
 import android.util.TypedValue
 import android.graphics.BitmapFactory
 import android.view.View
+import com.andrewkir.andrewforwork.timem8.FinancialActivity.FinancialActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(scheduleIntentEd)
         }
         financeButton.setOnClickListener {
-            val financialIntent = Intent(this,FinancialActivity::class.java)
+            val financialIntent = Intent(this, FinancialActivity::class.java)
             startActivity(financialIntent)
         }
 
