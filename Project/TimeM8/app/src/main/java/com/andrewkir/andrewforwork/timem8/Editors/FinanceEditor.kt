@@ -21,6 +21,11 @@ import kotlinx.android.synthetic.main.activity_finance_editor.*
 import java.lang.Exception
 import java.util.*
 import kotlin.math.abs
+import android.widget.TextView
+import android.support.v4.content.res.ResourcesCompat
+import android.view.ViewGroup
+
+
 
 class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     lateinit var sPref: SharedPreferences
@@ -83,9 +88,31 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             finMax.setText(max.toString())
         }
         var categories = arrayOf("Продукты","Кафе/рестораны","Развлечения","Магазины","Пополнение","Другое")
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,categories)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        financeSpinner!!.adapter = aa
+        val adapterSpinner = object : ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, categories) {
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getView(position, convertView, parent)
+
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik)
+                (v as TextView).typeface = externalFont
+
+                return v
+            }
+
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getDropDownView(position, convertView, parent)
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik)
+//                (v as TextView).typeface = externalFont
+//                v.setBackgroundColor(Color.GREEN)
+                return v
+            }
+        }
+        financeSpinner!!.adapter = adapterSpinner
+
+
+
         financeEditorRecycler.adapter = FinancialAdapter(context = this){
             Op ->
             op = Op

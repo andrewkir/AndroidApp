@@ -13,9 +13,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ежедневные задания"
+            android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
+            android:text="Ежедневные задания"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -28,11 +29,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:text="Больше не придется вспоминать свои ежедневные задачи"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="16dp"/>
+            android:textSize="16dp" />
     </LinearLayout>
 </RelativeLayout>

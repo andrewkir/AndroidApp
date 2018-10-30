@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FinancialActivity.FinancialActivity">
+    tools:context=".ActivityFin.FinancialActivity">
 
     <com.yuan.waveview.WaveView
         android:id="@+id/waveView"
@@ -31,15 +31,16 @@
     <TextView
         android:id="@+id/tipsFin"
         android:layout_width="0dp"
-        android:padding="5dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:gravity="center"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/circle_fin"
-        android:text="Хэй дорова"
+        android:fontFamily="@font/rubik_light"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Lorem"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/waveView"
         app:layout_constraintEnd_toEndOf="@+id/waveView"
@@ -50,20 +51,35 @@
         android:id="@+id/mainFinRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/waveView" />
+        app:layout_constraintTop_toBottomOf="@+id/FinAdvices" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="20dp"
-        android:layout_marginBottom="2dp"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="@font/rubik_light"
         android:text="операции:"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/mainFinRecycler"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/FinAdvices"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/rubik_light"
+        android:textAlignment="center"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/waveView" />
 </android.support.constraint.ConstraintLayout>

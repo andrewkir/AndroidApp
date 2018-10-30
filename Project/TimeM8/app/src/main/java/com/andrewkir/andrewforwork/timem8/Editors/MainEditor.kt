@@ -9,10 +9,12 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.Adapters.ListSubjectAdapter
@@ -131,9 +133,28 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         }
 
         spinner!!.onItemSelectedListener = this
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_days)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner!!.adapter = aa
+        val adapterSpinner = object : ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, list_days) {
+
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getView(position, convertView, parent)
+
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
+                (v as TextView).typeface = externalFont
+
+                return v
+            }
+
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getDropDownView(position, convertView, parent)
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
+//                (v as TextView).typeface = externalFont
+//                v.setBackgroundColor(Color.GREEN)
+                return v
+            }
+        }
+        spinner!!.adapter = adapterSpinner
 
         CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
         db = DBHandler(this)

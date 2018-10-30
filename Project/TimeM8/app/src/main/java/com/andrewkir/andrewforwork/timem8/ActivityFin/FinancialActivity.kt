@@ -1,4 +1,4 @@
-package com.andrewkir.andrewforwork.timem8.FinancialActivity
+package com.andrewkir.andrewforwork.timem8.ActivityFin
 
 import android.app.ActivityManager
 import android.content.Context
@@ -82,6 +82,31 @@ class FinancialActivity : AppCompatActivity() {
             waveView.progress = if(len>=max) max else len
             val dsum = if(DBfinance(this).Sum()<0) 0 else DBfinance(this).Sum()
             tipsFin.text = "Потрачено: \n$dsum\u20BD из $max\u20BD"
+            val calendar = Calendar.getInstance()
+            var dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
+            if (dayOfWeek == 0) {
+                dayOfWeek = 7
+            }
+            println(dayOfWeek)
+            if (waveView.progress >= max && dayOfWeek<7){
+                FinAdvices.text = "К сожалению вы превысили максимум расходов этой недели"
+            }else if (dayOfWeek <= 6 && waveView.progress >= max*0.8) {
+                FinAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы хотите уложиться в максимум!"
+            }else if(dayOfWeek in 3..5 && waveView.progress >= max*0.7){
+                FinAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
+            }else if (dayOfWeek <= 3 && waveView.progress >= max*0.5){
+                if (dayOfWeek == 1) {
+                    FinAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
+                } else {
+                    FinAdvices.text = "Прошёл только 1 день,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
+                }
+            }else if (dayOfWeek <= 2 && waveView.progress > max*0.3) {
+                FinAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в указанный максимум"
+            }else if (dayOfWeek <= 2 && waveView.progress >= max*0.2) {
+                FinAdvices.text = "Старайтесь избегать ненужных покупок!"
+            }else {
+                FinAdvices.text = "Так держать! Такими темпами вы уложитесь в максимум"
+            }
         } else {
             waveView.max = 100.toLong()
             waveView.progress = 49.toLong()
@@ -96,10 +121,10 @@ class FinancialActivity : AppCompatActivity() {
         }
         waveView.setMode(WaveView.MODE_CIRCLE)
         waveView.setWaveColor(resources.getColor(R.color.material_green_500))
-        if(waveView.progress > max*0.5){
+        if(waveView.progress >= max*0.4){
                 waveView.setWaveColor(resources.getColor(R.color.material_yellow_500))
         }
-        if(waveView.progress > max*0.8){
+        if(waveView.progress >= max*0.8){
             waveView.setWaveColor(resources.getColor(R.color.material_red_500))
         }
         mainFinRecycler.adapter = FinancialAdapter(this){_->}

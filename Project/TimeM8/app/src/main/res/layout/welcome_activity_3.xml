@@ -13,10 +13,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Кастомизируемый внешний вид"
+            android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
-            android:paddingBottom="20dp"
             android:paddingRight="40dp"
+            android:paddingBottom="20dp"
+            android:text="Кастомизируемый внешний вид"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -49,16 +50,18 @@
                 android:layout_height="50dp"
                 android:src="@mipmap/ic_logo_purple" />
         </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:text="Возможность подобрать цвета
 приложения по вкусу"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="16dp"/>
+            android:textSize="16dp" />
     </LinearLayout>
 </RelativeLayout>

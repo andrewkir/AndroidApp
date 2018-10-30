@@ -2,5 +2,7 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alfa_slab_one</item>
+        <item>@font/rubik</item>
+        <item>@font/rubik_medium</item>
     </array>
 </resources>
