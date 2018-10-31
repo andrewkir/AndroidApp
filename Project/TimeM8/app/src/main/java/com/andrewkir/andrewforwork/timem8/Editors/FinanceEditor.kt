@@ -23,6 +23,7 @@ import java.util.*
 import kotlin.math.abs
 import android.widget.TextView
 import android.support.v4.content.res.ResourcesCompat
+import android.view.MenuItem
 import android.view.ViewGroup
 
 
@@ -81,6 +82,8 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
         setContentView(R.layout.activity_finance_editor)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         financeSpinner!!.onItemSelectedListener = this
         val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
         val max = pref.getInt("MAX_FIN",0)
@@ -128,6 +131,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 else -> financeSpinner.setSelection(0)
             }
         }
+
         val layoutManagerFinance = LinearLayoutManager(this)
         financeEditorRecycler.layoutManager = layoutManagerFinance
         financeEditorRecycler.setHasFixedSize(true)
@@ -185,7 +189,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
-    fun refresh(){
+    private fun refresh(){
         edFinName.setText("")
         edFinValue.setText("")
         financeSpinner.setSelection(0)
@@ -212,5 +216,10 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         val layoutManagerFinance = LinearLayoutManager(this)
         financeEditorRecycler.layoutManager = layoutManagerFinance
         financeEditorRecycler.setHasFixedSize(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        this.finish()
+        return true
     }
 }

@@ -40,7 +40,21 @@
         android:fontFamily="@font/rubik_light"
         android:gravity="center"
         android:padding="5dp"
-        android:text="Lorem"
+        android:text="@string/lorem"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/waveView"
+        app:layout_constraintEnd_toEndOf="@+id/waveView"
+        app:layout_constraintStart_toStartOf="@+id/waveView"
+        app:layout_constraintTop_toTopOf="@+id/waveView" />
+
+    <TextView
+        android:id="@+id/trans"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/circle_fin_transparent"
+        android:fontFamily="@font/rubik_light"
+        android:gravity="center"
+        android:padding="5dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/waveView"
         app:layout_constraintEnd_toEndOf="@+id/waveView"
@@ -64,7 +78,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="2dp"
         android:fontFamily="@font/rubik_light"
-        android:text="операции:"
+        android:text="@string/operations"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/mainFinRecycler"
         app:layout_constraintStart_toStartOf="parent" />

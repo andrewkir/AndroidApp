@@ -18,6 +18,7 @@ import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -49,7 +50,8 @@ class SettingsActivity : AppCompatActivity() {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         setContentView(R.layout.activity_settings)
-
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         var prefNotif = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
         if(prefNotif.getBoolean("ENABLED",true)){
             settings_switch.performClick()
@@ -175,11 +177,15 @@ class SettingsActivity : AppCompatActivity() {
         }
         settings_switch.setOnClickListener {
             if (settings_switch.isChecked){
+                val tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
+                val ed = tmpPr.edit()
+                ed.putBoolean("ENABLED",true)
+                ed.apply()
                 static_notif.text = "выключить уведомления"
                 minutesSettings.isEnabled = true
                 saveMinutes.isEnabled = true
-                var db = DBHandler(this)
-                var subs = db.allSub
+                val db = DBHandler(this)
+                val subs = db.allSub
                 for(sub in subs){
                     NotificationsHandler(context = this).makeNotification(
                             hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
@@ -193,10 +199,6 @@ class SettingsActivity : AppCompatActivity() {
                             count = sub.count
                     )
                 }
-                var tmpPr = getSharedPreferences("NotifEnabled",Context.MODE_PRIVATE)
-                var ed = tmpPr.edit()
-                ed.putBoolean("ENABLED",true)
-                ed.apply()
             } else {
                 static_notif.text = "включить уведомления"
                 minutesSettings.isEnabled = false
@@ -344,6 +346,10 @@ class SettingsActivity : AppCompatActivity() {
             val clip = android.content.ClipData.newPlainText("Copied Text", text)
             clipboard.primaryClip = clip
         }
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        this.finish()
+        return true
     }
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }

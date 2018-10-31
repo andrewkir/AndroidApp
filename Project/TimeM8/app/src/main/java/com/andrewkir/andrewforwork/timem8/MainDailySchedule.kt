@@ -53,8 +53,10 @@ class MainDailySchedule : AppCompatActivity(){
         expandRecycler.addItemDecoration(DividerItemDecoration(this,1))
         expandRecycler.layoutManager = LinearLayoutManager(this)
 
-
-
+        fabDaily.setOnClickListener {
+            val Editor = Intent(this, DailyEditor::class.java)
+            startActivity(Editor)
+        }
         val db =  DBdaily(this)
         var calendar = Calendar.getInstance()
         when(calendar.get(Calendar.DAY_OF_WEEK)){
@@ -119,21 +121,21 @@ class MainDailySchedule : AppCompatActivity(){
         } else {
             hintToAddSmthDaily.text = "Вы ещё не добавили задания на этот день"
         }
-
+        showHideWhenScroll()
     }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
-        return true
-    }
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.edit_menu) {
-            val Editor = Intent(this, DailyEditor::class.java)
-            startActivity(Editor)
-        } else {
-            this.finish()
-        }
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
+//        return true
+//    }
+//    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+//        if (item?.itemId == R.id.edit_menu) {
+//            val Editor = Intent(this, DailyEditor::class.java)
+//            startActivity(Editor)
+//        } else {
+//            this.finish()
+//        }
+//        return true
+//    }
 
     private fun checkDay(){
         var sPref = getPreferences(Context.MODE_PRIVATE)
@@ -160,5 +162,16 @@ class MainDailySchedule : AppCompatActivity(){
             ed.putInt(CHECK_DAY, savedDay)
             ed.apply()
         }
+    }
+    private fun showHideWhenScroll() {
+        expandRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (dy > 0)
+                    fabDaily.hide()
+                else
+                    fabDaily.show()
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 }

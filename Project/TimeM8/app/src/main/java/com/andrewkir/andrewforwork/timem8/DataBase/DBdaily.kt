@@ -18,7 +18,7 @@ val COL_DAILY_COLOR_1="color1"
 val COL_DAILY_COLOR_2="color2"
 val COL_DAILY_TASKS="tasks"
 
-class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION) {
+class DBdaily(contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DAILY_NAME + " (" + COL_ID + " INTEGER PRIMARY KEY," +
                 COL_DAILY_NAME + " text," +
@@ -53,7 +53,7 @@ class DBdaily(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null 
                 frog.date = cursor.getString(cursor.getColumnIndex(COL_DAILY_DATE))
                 frog.tasks = cursor.getString(cursor.getColumnIndex(COL_DAILY_TASKS))
                 var tmp = cursor.getString(cursor.getColumnIndex(COL_DAILY_ISDONE))
-                frog.isDone = ArrayList<Boolean>()
+                frog.isDone = ArrayList()
                 for(i in tmp){
                     if(i == '0'){
                         frog.isDone.add(false)

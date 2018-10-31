@@ -16,6 +16,7 @@ import com.yuan.waveview.WaveView
 import kotlinx.android.synthetic.main.activity_financial.*
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
+import android.view.MenuItem
 import com.andrewkir.andrewforwork.timem8.R
 import java.util.*
 
@@ -56,6 +57,8 @@ class FinancialActivity : AppCompatActivity() {
             edDel.putBoolean("isFirstDel",true)
             edDel.apply()
         }
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onResume() {
@@ -66,7 +69,12 @@ class FinancialActivity : AppCompatActivity() {
             ed.putBoolean("FIRST", false)
             ed.apply()
             println("_______________RECREATED_______________")
+            //recreate()
+            //finish()
+            //overridePendingTransition(0, 0)
+            //startActivity(intent)
             recreate()
+            //overridePendingTransition(0, 0)
         } else {
             val ed = pr.edit()
             ed.putBoolean("FIRST", true)
@@ -87,25 +95,37 @@ class FinancialActivity : AppCompatActivity() {
             if (dayOfWeek == 0) {
                 dayOfWeek = 7
             }
-            println(dayOfWeek)
             if (waveView.progress >= max && dayOfWeek<7){
                 FinAdvices.text = "К сожалению вы превысили максимум расходов этой недели"
-            }else if (dayOfWeek <= 6 && waveView.progress >= max*0.8) {
-                FinAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы хотите уложиться в максимум!"
-            }else if(dayOfWeek in 3..5 && waveView.progress >= max*0.7){
-                FinAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
-            }else if (dayOfWeek <= 3 && waveView.progress >= max*0.5){
-                if (dayOfWeek == 1) {
-                    FinAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
-                } else {
-                    FinAdvices.text = "Прошёл только 1 день,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
+            } else  when((0..1).shuffled().last()){
+                0 ->{
+                    if (dayOfWeek <= 6 && waveView.progress >= max*0.8) {
+                        FinAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы хотите уложиться в максимум!"
+                    }else if(dayOfWeek in 3..5 && waveView.progress >= max*0.7){
+                        FinAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
+                    }else if (dayOfWeek <= 3 && waveView.progress >= max*0.5){
+                        if (dayOfWeek == 1) {
+                            FinAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
+                        } else {
+                            FinAdvices.text = "Прошёл только 1 день,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
+                        }
+                    }else if (dayOfWeek <= 2 && waveView.progress > max*0.3) {
+                        FinAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в указанный максимум"
+                    }else if (dayOfWeek <= 2 && waveView.progress >= max*0.2) {
+                        FinAdvices.text = "Старайтесь избегать ненужных покупок!"
+                    }else {
+                        FinAdvices.text = "Так держать! Такими темпами вы уложитесь в максимум"
+                    }
                 }
-            }else if (dayOfWeek <= 2 && waveView.progress > max*0.3) {
-                FinAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в указанный максимум"
-            }else if (dayOfWeek <= 2 && waveView.progress >= max*0.2) {
-                FinAdvices.text = "Старайтесь избегать ненужных покупок!"
-            }else {
-                FinAdvices.text = "Так держать! Такими темпами вы уложитесь в максимум"
+                1 ->{
+                    when((0..4).shuffled().last()) {
+                        0 -> FinAdvices.text = "Перед покупкой всегда задавайте себе вопрос необходимости данной вещи"
+                        1 -> FinAdvices.text = "Старайтесь откладывать с каждого дохода часть(10%-30%) средств"
+                        2 -> FinAdvices.text = "Отслеживаете ваши затраты, именно для этого хорошо подойдёт данное приложение :)"
+                        3 -> FinAdvices.text = "Старайтесь ходить по магазинам со списком, так вы с меньшей вероятностью купите ненужную вещь"
+                        4 -> FinAdvices.text = "Старайтесь держать не больше 30% от всех ваших средств в одном месте"
+                    }
+                }
             }
         } else {
             waveView.max = 100.toLong()
@@ -145,5 +165,9 @@ class FinancialActivity : AppCompatActivity() {
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+    }
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        this.finish()
+        return true
     }
 }
