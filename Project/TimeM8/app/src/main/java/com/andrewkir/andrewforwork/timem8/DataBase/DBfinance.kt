@@ -59,6 +59,19 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
         return lstOps
     }
 
+    fun allOpByCat(): HashMap<String, Int> {
+        val res = hashMapOf<String, Int>()
+        for (i in allOperations()){
+            if(res[i.type] != null){
+                res[i.type] = res[i.type]!!+i.amount
+            } else {
+                res[i.type] = 0
+                res[i.type] = res[i.type]!!+i.amount
+            }
+        }
+        return res
+    }
+
     fun updateOp(op: FinancialOperation): Int {
         val db = this.writableDatabase
         var cv = ContentValues()

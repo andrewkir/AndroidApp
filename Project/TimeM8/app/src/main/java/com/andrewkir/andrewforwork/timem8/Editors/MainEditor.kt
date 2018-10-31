@@ -51,19 +51,9 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
     var list_days = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
-        menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
-        return true
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == R.id.edit_menu_delete) {
-            db.deleteAllData()
-            refreshData()
-        } else {
-            this.finish()
-        }
+        this.finish()
         return true
     }
 

@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.andrewkir.andrewforwork.timem8.Adapters.FinancialAdapter
 import com.andrewkir.andrewforwork.timem8.DataBase.DBfinance
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_financial.*
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.MenuItem
+import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.R
 import java.util.*
 
@@ -64,6 +66,9 @@ class FinancialActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val pr = getPreferences(MODE_PRIVATE)
+        var len = DBfinance(this).Sum().toLong()
+        val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+        val max = pref.getInt("MAX_FIN",0).toLong()
         if(pr.getBoolean("FIRST",true)) {
             val ed = pr.edit()
             ed.putBoolean("FIRST", false)
@@ -79,10 +84,24 @@ class FinancialActivity : AppCompatActivity() {
             val ed = pr.edit()
             ed.putBoolean("FIRST", true)
             ed.apply()
+            var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
+            val isDel = Dpref.getBoolean("isFirstLaunch",true)
+            if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel) {
+                val ResIntent = Intent(this, FinanceResult::class.java)
+                Dpref.edit().putBoolean("isFirstLaunch",false).apply()
+                startActivity(ResIntent)
+            } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2){
+                Dpref.edit().putBoolean("isFirstLaunch",true).apply()
+            }
+
+            debug_res.setOnClickListener {
+                val ResIntent = Intent(this, FinanceResult::class.java)
+                ResIntent.putExtra("MAX", max.toInt())
+                ResIntent.putExtra("SUM", len.toInt())
+                startActivity(ResIntent)
+            }
+
         }
-        var len = DBfinance(this).Sum().toLong()
-        val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
-        val max = pref.getInt("MAX_FIN",0).toLong()
         waveView.setSpeed(WaveView.SPEED_NORMAL)
         if(max != 0.toLong()){
             waveView.max = max

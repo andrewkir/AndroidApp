@@ -69,9 +69,9 @@ class NotificationsHandler(var context:Context) {
             } else {
                 if (calendar.timeInMillis < Calendar.getInstance().timeInMillis) {
                     calendar.add(Calendar.WEEK_OF_YEAR, 1)
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent) //week = 604800000
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
                 } else {
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent) //week = 604800000
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
                 }
             }
         }

@@ -42,26 +42,32 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             0 -> {
                 op.type = "Продукты"
                 edFinName.hint = "покупка"
+                edFinValue.hint = "стоимость, \u20BD"
             }
             1 -> {
                 op.type = "Кафе/рестораны"
                 edFinName.hint = "покупка"
+                edFinValue.hint = "стоимость, \u20BD"
             }
             2 -> {
                 op.type = "Развлечения"
                 edFinName.hint = "покупка"
+                edFinValue.hint = "стоимость, \u20BD"
             }
             3 -> {
                 op.type = "Магазины"
                 edFinName.hint = "покупка"
+                edFinValue.hint = "стоимость, \u20BD"
             }
             4 -> {
                 op.type = "Пополнение"
                 edFinName.hint = "пополнение"
+                edFinValue.hint = "\u20BD"
             }
             5 -> {
                 op.type = "Другое"
                 edFinName.hint = "покупка"
+                edFinValue.hint = "стоимость, \u20BD"
             }
         }
     }
@@ -148,7 +154,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                         ed.putInt("MAX_FIN", max)
                         ed.apply()
                     }
-                } else if(edFinName.text.toString().isNotEmpty() && edFinValue.text.toString().isNotEmpty() && finMax.text.toString().isNotEmpty()) {
+                } else if(edFinName.text.toString().isNotEmpty() && edFinValue.text.toString().isNotEmpty() && finMax.text.toString().isNotEmpty() && Integer.parseInt(edFinValue.text.toString())!=0) {
                     var max = Integer.parseInt(finMax.text.toString())
                     var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
                     val ed = pref.edit()

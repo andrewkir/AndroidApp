@@ -13,6 +13,7 @@ import android.app.ActivityManager
 import android.os.Build
 import android.util.TypedValue
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.View
 import com.andrewkir.andrewforwork.timem8.ActivityFin.FinancialActivity
 
@@ -49,7 +50,6 @@ class MainActivity : AppCompatActivity() {
             val financialIntent = Intent(this, FinancialActivity::class.java)
             startActivity(financialIntent)
         }
-
     }
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_settings, menu)
