@@ -35,25 +35,25 @@ class FinanceResult : AppCompatActivity() {
         if(moneyGain.text.toString() == ""){
             gainStatic.text = ""
         }
-        if(sum<max){
-            resTip.text = "Так держать! Вы смогли сэкономить ${max-sum}\u20BD. В таком духе через год у вас накопится ${52*(max-sum)}\u20BD"
-        } else if(sum - max <= max*0.05){
-            resTip.text = "Чуть - чуть не вышло, вы превысили установленный максимум на ${sum-max}\u20BD"
-        } else {
-            resTip.text = "К сожалению, вы превысили свой максимум расходов на эту неделю :C"
+        when {
+            sum<max -> resTip.text = "Так держать! Вы смогли сэкономить ${max-sum}\u20BD. В таком духе через год у вас накопится ${52*(max-sum)}\u20BD"
+            sum - max <= max*0.05 -> resTip.text = "Чуть - чуть не вышло, вы превысили установленный максимум на ${sum-max}\u20BD"
+            else -> resTip.text = "К сожалению, вы превысили свой максимум расходов на эту неделю :C"
         }
 
-        var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
-        val isDel = Dpref.getBoolean("isFirstLaunch",true)
+        val dPref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
+        dPref.getBoolean("isFirstLaunch",true)
         DBfinance(this).deleteAllData()
-        var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+        val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
         val ed = pref.edit()
         ed.putInt("MAX_FIN", 0)
         ed.apply()
-        val edDel = Dpref.edit()
+        val edDel = dPref.edit()
         edDel.putBoolean("isFirstDel",false)
         edDel.apply()
     }
+
+
     private fun changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window

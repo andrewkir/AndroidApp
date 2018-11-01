@@ -123,11 +123,11 @@ class expandAdapter: RecyclerView.Adapter<expandAdapter.ViewHolder>{
         var textDesc: TextView
 
         init {
-            textName = v.findViewById(R.id.row_daily_name)
+            textName = v.findViewById(R.id.rowDailyName)
             buttonLayout = v.findViewById(R.id.financeButton)
             expandableLayout = v.findViewById(R.id.expandableLayout)
             expandLiner = v.findViewById(R.id.linearExpand)
-            textDesc = v.findViewById(R.id.row_daily_desc)
+            textDesc = v.findViewById(R.id.rowDailyDesc)
             relativeExpand = v.findViewById(R.id.relativeExpand)
         }
     }

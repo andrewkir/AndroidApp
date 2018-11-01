@@ -1,5 +1,6 @@
 package com.andrewkir.andrewforwork.timem8.Models
 
+
 class Sub{
     var id: Int = 0
     var day: Int = 0
@@ -23,7 +24,6 @@ class Sub{
         this.teacher = teacher
     }
 
-    constructor(){
-    }
+    constructor()
 
 }

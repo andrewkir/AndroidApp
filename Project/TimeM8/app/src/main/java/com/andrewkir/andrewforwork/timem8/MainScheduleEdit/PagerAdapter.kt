@@ -10,18 +10,19 @@ import java.util.*
 class PagerAdapter(fragmentManager: FragmentManager, var day:Int) :
         FragmentStatePagerAdapter(fragmentManager) {
 
+
     override fun getItem(position: Int): Fragment {
         val bundle = Bundle()
         val fragment = MainScheduleFragment.newInstance()
 
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR,2018)
         calendar.set(Calendar.MONTH,0)
         calendar.set(Calendar.DAY_OF_YEAR,0)
 
         calendar.add(Calendar.DATE,position)
 
-        var tmp = calendar.get(Calendar.DAY_OF_WEEK)
+        val tmp = calendar.get(Calendar.DAY_OF_WEEK)
         when (tmp) {
             2 -> day = 0
             3 -> day = 1
@@ -37,14 +38,16 @@ class PagerAdapter(fragmentManager: FragmentManager, var day:Int) :
         return fragment
     }
 
+
     override fun getCount(): Int {
-        var calendar = Calendar.getInstance()
-        var tmp = calendar.get(Calendar.YEAR)-2018
+        val calendar = Calendar.getInstance()
+        val tmp = calendar.get(Calendar.YEAR)-2018
         return 365*(abs(tmp)+3)
     }
 
+
     override fun getPageTitle(position: Int): CharSequence? {
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR,2018)
         calendar.set(Calendar.MONTH,0)
         calendar.set(Calendar.DAY_OF_YEAR,0)

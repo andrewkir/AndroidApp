@@ -13,13 +13,13 @@ class FlagView(context: Context, layout: Int) : FlagView(context, layout) {
     private val view: View
 
     init {
-        textView = findViewById(R.id.flag_color_code)
-        view = findViewById<View>(R.id.flag_color_layout)
+        textView = findViewById(R.id.flagColorCode)
+        view = findViewById<View>(R.id.flagColorLayout)
     }
 
     override fun onRefresh(colorEnvelope: ColorEnvelope?) {
-        var color = colorEnvelope
+        val color = colorEnvelope
         textView.text = "#" + String.format("%06X", 0xFFFFFF and color!!.color)
-        view.setBackgroundColor(color!!.color)
+        view.setBackgroundColor(color.color)
     }
 }

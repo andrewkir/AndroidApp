@@ -11,13 +11,11 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.res.ResourcesCompat
 import android.util.TypedValue
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
-import com.andrewkir.andrewforwork.timem8.Adapters.ListSubjectAdapter
 import com.andrewkir.andrewforwork.timem8.Notifications.NotificationsHandler
 import com.andrewkir.andrewforwork.timem8.R
 import com.andrewkir.andrewforwork.timem8.Models.Sub
@@ -27,18 +25,20 @@ import java.util.*
 class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, TimePickerDialog.OnTimeSetListener{
     lateinit var sPref: SharedPreferences
     var stat: String = ""
+
+
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    var CurrentDaySelected = 1
-    var editSelection = 0
+    private var currentDaySelected = 1
+    private var editSelection = 0
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        CurrentDaySelected = position+1
+        currentDaySelected = position+1
         if(editSelection == 0) {
             refreshData()
         } else {
@@ -47,15 +47,15 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
     }
 
     internal lateinit var db: DBHandler
-    internal var lstSubs:List<Sub> = ArrayList<Sub>()
-    var list_days = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
-
+    private var lstSubs:List<Sub> = ArrayList()
+    var listDays = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
 
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         this.finish()
         return true
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,12 +70,12 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         setContentView(R.layout.activity_main_editor)
 
 
-        var EditorS = MediaPlayer.create(this, R.raw.activityeditors)
+        val editorS = MediaPlayer.create(this, R.raw.activityeditors)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         timeBeginBtn.setOnClickListener {
-            var TimePick = TimePickerDialog(this,{
-                view: TimePicker?, hourOfDay: Int, minute: Int ->
+            val timePick = TimePickerDialog(this,{
+                _: TimePicker?, hourOfDay: Int, minute: Int ->
                 timeBeginBtn.text = (if(hourOfDay.toString().length<2){
                     "0$hourOfDay"
                 } else{
@@ -85,7 +85,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                 } else{
                     minute.toString()
                 })
-                var calendar = Calendar.getInstance()
+                val calendar = Calendar.getInstance()
                 calendar.set(Calendar.HOUR_OF_DAY,hourOfDay)
                 calendar.set(Calendar.MINUTE,minute)
                 calendar.add(Calendar.MINUTE,45)
@@ -99,11 +99,12 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                     calendar.get(Calendar.MINUTE).toString()
                 })
             },Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),true)
-            TimePick.show()
+            timePick.show()
         }
+
         timeEndBtn.setOnClickListener {
-            var TimePick = TimePickerDialog(this,{
-                view: TimePicker?, hourOfDay: Int, minute: Int ->
+            val timePick = TimePickerDialog(this,{
+                _: TimePicker?, hourOfDay: Int, minute: Int ->
                 timeEndBtn.text = (if(hourOfDay.toString().length<2){
                     "0$hourOfDay"
                 } else{
@@ -114,17 +115,18 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                     minute.toString()
                 })
                 if(Integer.parseInt(timeBeginBtn.text.toString().split(":")[0])*60+Integer.parseInt(timeBeginBtn.text.toString().split(":")[1])>hourOfDay*60+minute){
-                    var tmp = timeBeginBtn.text
+                    val tmp = timeBeginBtn.text
                     timeBeginBtn.text = timeEndBtn.text
                     timeEndBtn.text = tmp
                 }
             },Integer.parseInt(timeEndBtn.text.toString().split(":")[0]),Integer.parseInt(timeEndBtn.text.toString().split(":")[1]),true)
-            TimePick.show()
+            timePick.show()
         }
+
 
         spinner!!.onItemSelectedListener = this
         val adapterSpinner = object : ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_dropdown_item, list_days) {
+                android.R.layout.simple_spinner_dropdown_item, listDays) {
 
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getView(position, convertView, parent)
@@ -139,21 +141,21 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getDropDownView(position, convertView, parent)
                 val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
-//                (v as TextView).typeface = externalFont
-//                v.setBackgroundColor(Color.GREEN)
+                (v as TextView).typeface = externalFont
                 return v
             }
         }
         spinner!!.adapter = adapterSpinner
 
-        CurrentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
+        currentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
         db = DBHandler(this)
         refreshData()
-        btn_insert.setOnClickListener{
+
+        btnInsert.setOnClickListener{
             try {
                 if(name.text.toString() != ""){
                     if(name.text.toString()=="сясь"){
-                        EditorS.start()
+                        editorS.start()
                         room.setText("сясь")
                         type.setText("сясь")
                         teacher.setText("сясь")
@@ -162,13 +164,13 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         count.setText("1337")
                         Toast.makeText(this,"Надо научить этих грубиянов уважать рЕп",Toast.LENGTH_LONG).show()
                         supportActionBar?.title = "сясь"
-                        btn_insert.text = "сясь"
-                        btn_delete.text = "сясь"
-                        btn_update.text = "сясь"
+                        btnInsert.text = "сясь"
+                        btnDelete.text = "сясь"
+                        btnUpdate.text = "сясь"
                     } else {
                         val sub = Sub(
-                                id = Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
-                                day = Integer.parseInt(CurrentDaySelected.toString()),
+                                id = Integer.parseInt(currentDaySelected.toString() + count.text.toString()),
+                                day = Integer.parseInt(currentDaySelected.toString()),
                                 count = Integer.parseInt(count.text.toString()),
                                 name = name.text.toString(),
                                 timeBegin = timeBeginBtn.text.toString(),
@@ -178,14 +180,14 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                                 teacher = teacher.text.toString()
                         )
                         db.addSub(sub)
-                        var tmp = count.text.toString()
+                        val tmp = count.text.toString()
                         NotificationsHandler(context = this).makeNotification(
                                 hour = Integer.parseInt(timeBeginBtn.text.toString().split(":")[0]),
                                 minute = Integer.parseInt(timeBeginBtn.text.toString().split(":")[1]),
                                 text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                                 textTitle = name.text.toString(),
                                 id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
-                                dayOfweek = sub.day,
+                                dayOfWeek = sub.day,
                                 cancel = false,
                                 count = sub.count
                         )
@@ -199,13 +201,13 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
             catch(e: Exception) {
                 Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
             }
-
         }
-        btn_update.setOnClickListener{
+
+        btnUpdate.setOnClickListener{
             try {
                 val sub = Sub(
-                        id =Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
-                        day =Integer.parseInt(CurrentDaySelected.toString()),
+                        id =Integer.parseInt(currentDaySelected.toString() + count.text.toString()),
+                        day =Integer.parseInt(currentDaySelected.toString()),
                         count =Integer.parseInt(count.text.toString()),
                         name = name.text.toString(),
                         timeBegin = timeBeginBtn.text.toString(),
@@ -220,7 +222,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
-                        dayOfweek = sub.day,
+                        dayOfWeek = sub.day,
                         cancel = true,
                         delete = true,
                         count = sub.count
@@ -231,7 +233,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
-                        dayOfweek = sub.day,
+                        dayOfWeek = sub.day,
                         delete = false,
                         cancel = false,
                         count = sub.count
@@ -243,11 +245,12 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                 Toast.makeText(this,"Пожалуйста, введите корректные данные",Toast.LENGTH_SHORT).show()
             }
         }
-        btn_delete.setOnClickListener{
+
+        btnDelete.setOnClickListener{
             try {
                 val sub = Sub(
-                        id =Integer.parseInt(CurrentDaySelected.toString() + count.text.toString()),
-                        day =Integer.parseInt(CurrentDaySelected.toString()),
+                        id =Integer.parseInt(currentDaySelected.toString() + count.text.toString()),
+                        day =Integer.parseInt(currentDaySelected.toString()),
                         count =Integer.parseInt(count.text.toString()),
                         name = name.text.toString(),
                         timeBegin = timeBeginBtn.text.toString(),
@@ -263,7 +266,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
                         text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
                         textTitle = name.text.toString(),
                         id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
-                        dayOfweek = sub.day,
+                        dayOfWeek = sub.day,
                         cancel = true,
                         delete = true,
                         count = sub.count
@@ -275,11 +278,12 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
             }
         }
     }
+
+
     private fun refreshData(){
         lstSubs = db.allSub
         val adapter = com.andrewkir.andrewforwork.timem8.Adapters.ListSubjectAdapter(this@MainEditor, lstSubs, spinner, name, timeBeginBtn, timeEndBtn, count, type, teacher, room, ::editSelection)
-        spinner.setSelection(CurrentDaySelected-1)
-        println(CurrentDaySelected)
+        spinner.setSelection(currentDaySelected-1)
         name.setText("")
         timeBeginBtn.text = "9:00"
         timeEndBtn.text = "10:00"
@@ -290,10 +294,11 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         list_subs.adapter = adapter
     }
 
+
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))

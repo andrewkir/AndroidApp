@@ -29,7 +29,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_update" />
+        app:layout_constraintTop_toBottomOf="@+id/btnUpdate" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -100,7 +100,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Button
-        android:id="@+id/btn_insert"
+        android:id="@+id/btnInsert"
         style="@style/AppTheme.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -109,14 +109,14 @@
         android:padding="10dp"
         android:text="@string/add_btn_main_edit"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/btn_update"
+        app:layout_constraintEnd_toStartOf="@+id/btnUpdate"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/teacher" />
 
     <Button
-        android:id="@+id/btn_update"
+        android:id="@+id/btnUpdate"
         style="@style/AppTheme.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -124,14 +124,14 @@
         android:fontFamily="@font/rubik"
         android:text="@string/update_btn_main_edit"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_insert"
-        app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@+id/btnInsert"
+        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_insert"
-        app:layout_constraintTop_toTopOf="@+id/btn_insert" />
+        app:layout_constraintStart_toEndOf="@+id/btnInsert"
+        app:layout_constraintTop_toTopOf="@+id/btnInsert" />
 
     <Button
-        android:id="@+id/btn_delete"
+        android:id="@+id/btnDelete"
         style="@style/AppTheme.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -139,11 +139,11 @@
         android:fontFamily="@font/rubik"
         android:text="@string/del_btn_main_edit"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_update"
+        app:layout_constraintBottom_toBottomOf="@+id/btnUpdate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btn_update"
-        app:layout_constraintTop_toTopOf="@+id/btn_update"
+        app:layout_constraintStart_toEndOf="@+id/btnUpdate"
+        app:layout_constraintTop_toTopOf="@+id/btnUpdate"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button

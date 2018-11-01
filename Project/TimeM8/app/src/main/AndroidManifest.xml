@@ -43,7 +43,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver android:name=".Notifications.Notification_reciever" />
+        <receiver android:name=".Notifications.NotificationReciever" />
 
         <activity
             android:name=".Editors.DailyEditor"

@@ -1,26 +1,23 @@
 package com.andrewkir.andrewforwork.timem8
 
-import android.R.id.edit
 import android.content.Context
 import android.content.SharedPreferences
 
 
-
-class FirstLaungPrefs {
-    var pref: SharedPreferences
-    var editor: SharedPreferences.Editor
-    var _context: Context
+class FirstLaungPrefs(context: Context) {
+    private var pref: SharedPreferences
+    private var editor: SharedPreferences.Editor
+    private var _context: Context = context
 
     // shared pref mode
-    var PRIVATE_MODE = 0
+    private var PRIVATE_MODE = 0
 
     // Shared preferences file name
     private val PREF_NAME = "intro_slider-welcome"
 
     private val IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch"
 
-    constructor(context: Context){
-        this._context = context
+    init {
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE)
         editor = pref.edit()
     }

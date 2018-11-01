@@ -17,20 +17,23 @@ class DailyCheckBoxAdapter(val context:Context,var frog:dailyFrog):RecyclerView.
         return Holder(view)
     }
 
+
     override fun getItemCount(): Int {
         return frog.count
     }
 
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder?.bindcheckbox(position)
+        holder.bindCheckBox(position)
     }
 
-    inner class Holder(itemView:View?): RecyclerView.ViewHolder(itemView){
-        val checkBox = itemView?.findViewById<CheckBox>(R.id.dailyRowCheck)
 
-        fun bindcheckbox(position: Int){
-            var task = frog.tasks.split(";;;")
-            var tasks = ArrayList<String>()
+    inner class Holder(itemView:View?): RecyclerView.ViewHolder(itemView){
+        private val checkBox = itemView?.findViewById<CheckBox>(R.id.dailyRowCheck)
+
+        fun bindCheckBox(position: Int){
+            val task = frog.tasks.split(";;;")
+            val tasks = ArrayList<String>()
             for (i in 0 until frog.count){
                 tasks.add(task[i])
             }

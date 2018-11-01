@@ -9,11 +9,10 @@ import android.widget.TextView
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.Models.dailyFrog
 import com.andrewkir.andrewforwork.timem8.R
-import kotlinx.android.synthetic.main.row_daily_editor.view.*
 
 class DailyEditorFrogs(val context: Context,val itemClick: (dailyFrog) -> Unit): RecyclerView.Adapter<DailyEditorFrogs.Holder>() {
     var db = DBdaily(context)
-    var frogs = db.allFrogs()
+    private var frogs = db.allFrogs()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyEditorFrogs.Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.row_daily_editor, parent,false)
         return Holder(view,itemClick)
@@ -24,12 +23,12 @@ class DailyEditorFrogs(val context: Context,val itemClick: (dailyFrog) -> Unit):
     }
 
     override fun onBindViewHolder(holder: DailyEditorFrogs.Holder, position: Int) {
-        holder?.bindFrog(frogs[position])
+        holder.bindFrog(frogs[position])
     }
     inner class Holder(itemView: View?, val itemClick: (dailyFrog) -> Unit) : RecyclerView.ViewHolder(itemView) {
-        val frogName = itemView?.findViewById<TextView>(R.id.rowDailyEditorName)
-        val frogDesc = itemView?.findViewById<TextView>(R.id.rowDailyEditorDesc)
-        val frogTask = itemView?.findViewById<TextView>(R.id.rowDailyEditorTask)
+        private val frogName = itemView?.findViewById<TextView>(R.id.rowDailyEditorName)
+        private val frogDesc = itemView?.findViewById<TextView>(R.id.rowDailyEditorDesc)
+        private val frogTask = itemView?.findViewById<TextView>(R.id.rowDailyEditorTask)
 
         fun bindFrog(frog: dailyFrog){
 

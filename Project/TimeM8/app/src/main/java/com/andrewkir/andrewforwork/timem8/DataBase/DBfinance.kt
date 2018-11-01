@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.andrewkir.andrewforwork.timem8.Models.FinancialOperation
 import java.util.Collections.reverse
-import kotlin.math.abs
 
 const val TABLE_FINANCE_NAME="finance_table"
 const val COL_FIN_NAME="name"
@@ -14,20 +13,22 @@ const val COL_FIN_DAY="day"
 const val COL_FIN_AMOUNT="amount"
 const val COL_FIN_TYPE="type"
 
-class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION) {
+class DBfinance(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null , DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE IF NOT EXISTS $TABLE_FINANCE_NAME ($COL_ID INTEGER PRIMARY KEY,$COL_FIN_NAME text,$COL_FIN_TYPE text,$COL_FIN_AMOUNT int,$COL_FIN_DAY int)"
         db!!.execSQL(createTable)
     }
+
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db!!.execSQL("drop table if exists $TABLE_FINANCE_NAME")
         onCreate(db)
     }
 
+
     fun insertData(op: FinancialOperation) {
         val db = this.writableDatabase
-        var cv = ContentValues()
+        val cv = ContentValues()
         cv.put(COL_ID, op.id)
         cv.put(COL_FIN_DAY, op.day)
         cv.put(COL_FIN_NAME, op.name)
@@ -36,6 +37,7 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
         db.insertOrThrow(TABLE_FINANCE_NAME, null, cv)
         db.close()
     }
+
 
     fun allOperations(): List<FinancialOperation> {
         val lstOps = ArrayList<FinancialOperation>()
@@ -59,6 +61,7 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
         return lstOps
     }
 
+
     fun allOpByCat(): HashMap<String, Int> {
         val res = hashMapOf<String, Int>()
         for (i in allOperations()){
@@ -72,6 +75,7 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
         return res
     }
 
+
     fun updateOp(op: FinancialOperation): Int {
         val db = this.writableDatabase
         var cv = ContentValues()
@@ -84,11 +88,13 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
 
     }
 
+
     fun deleteOp(op: FinancialOperation) {
         val db = this.writableDatabase
         db.delete(TABLE_FINANCE_NAME, "$COL_ID=?", arrayOf(op.id.toString()))
         db.close()
     }
+
 
     fun deleteAllData() {
         val db = this.writableDatabase
@@ -96,7 +102,9 @@ class DBfinance(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,nul
         onCreate(db)
         db.close()
     }
-    fun Sum(): Int {
+
+
+    fun sum(): Int {
         val db = this.writableDatabase
         val cur = db.rawQuery("SELECT SUM($COL_FIN_AMOUNT) FROM $TABLE_FINANCE_NAME", null)
         if (cur.moveToFirst()) {

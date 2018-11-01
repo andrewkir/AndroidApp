@@ -10,6 +10,7 @@ import com.andrewkir.andrewforwork.timem8.R
 
 
 class MainSchedule : AppCompatActivity() {
+    // Решил пока оставить, будет с чем сравнить в конце)
     var cnt = 0
     var flag = 0
     var flag2 = 0
@@ -35,7 +36,7 @@ class MainSchedule : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_schedule)
-        progressBarchk.setProgress(0)
+        progressBarchk.progress = 0
         ProgressText.text="Процесс..."
         loadText()
         Toast.makeText(this,"Решил пока оставить, будет с чем сравнить в конце) А так, тут ловить нечего, уходи",Toast.LENGTH_LONG).show()
@@ -45,13 +46,13 @@ class MainSchedule : AppCompatActivity() {
     fun CheckBox1(view: View){
         if(checkBoxBtn1.isChecked==true && flag==0){
             cnt=cnt+25
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
             flag=1
         }
         else {
             cnt=cnt-25
             flag=0
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
         }
         if(cnt==100){
             ProgressText.text=""
@@ -61,13 +62,13 @@ class MainSchedule : AppCompatActivity() {
     fun CheckBox2(view: View){
         if(checkBoxBtn2.isChecked==true && flag2==0){
             cnt=cnt+25
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
             flag2=1
         }
         else {
             cnt=cnt-25
             flag2=0
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
         }
         if(cnt==100){
             ProgressText.text=""
@@ -77,13 +78,13 @@ class MainSchedule : AppCompatActivity() {
     fun CheckBox3(view: View){
         if(checkBoxBtn3.isChecked==true && flag3==0){
             cnt=cnt+25
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
             flag3=1
         }
         else {
             cnt=cnt-25
             flag3=0
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
         }
         if(cnt==100){
             ProgressText.text=""
@@ -93,13 +94,13 @@ class MainSchedule : AppCompatActivity() {
     fun CheckBox4(view: View){
         if(checkBoxBtn4.isChecked==true && flag4==0){
             cnt=cnt+25
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
             flag4=1
         }
         else {
             cnt=cnt-25
             flag4=0
-            progressBarchk.setProgress(cnt)
+            progressBarchk.progress = cnt
         }
         if(cnt==100){
             ProgressText.text=""
@@ -139,7 +140,7 @@ class MainSchedule : AppCompatActivity() {
             flag4=1
             cnt+=25
         }
-        progressBarchk.setProgress(cnt)
+        progressBarchk.progress = cnt
     }
 
     override fun onDestroy() {

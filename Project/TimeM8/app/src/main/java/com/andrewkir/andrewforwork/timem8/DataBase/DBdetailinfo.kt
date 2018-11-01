@@ -6,17 +6,17 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.andrewkir.andrewforwork.timem8.Models.SubDetail
 
-val TABLE_DETAIL_NAME="subjects_detail_info"
-val COL_DETAIL_SUB_PARENT="sub_name"
-val COL_DETAIL_SUB_HOMEWORK="homework"
-val COL_DETAIL_IMAGE_ATT="img"
-val COL_DETAIL_IMAGE_PATH="path"
-val COL_DETAIL_DATE="date"
-val COL_DETAIL_TIPS="tips"
-val COL_DETAIL_COUNT="count"
-val COL_DETAIL_COLOR="color"
+const val TABLE_DETAIL_NAME="subjects_detail_info"
+const val COL_DETAIL_SUB_PARENT="sub_name"
+const val COL_DETAIL_SUB_HOMEWORK="homework"
+const val COL_DETAIL_IMAGE_ATT="img"
+const val COL_DETAIL_IMAGE_PATH="path"
+const val COL_DETAIL_DATE="date"
+const val COL_DETAIL_TIPS="tips"
+const val COL_DETAIL_COUNT="count"
+const val COL_DETAIL_COLOR="color"
 
-class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,null , DATABASE_VERSION){
+class DBdetailinfo(context: Context): SQLiteOpenHelper(context, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DETAIL_NAME +" ("+ COL_ID+" INTEGER PRIMARY KEY," +
                 COL_DETAIL_SUB_PARENT + " text," +
@@ -29,10 +29,14 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
                 COL_DETAIL_DATE + " text)"
         db!!.execSQL(createTable)
     }
+
+
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db!!.execSQL("drop table if exists " + TABLE_DETAIL_NAME)
+        db!!.execSQL("drop table if exists $TABLE_DETAIL_NAME")
         onCreate(db)
     }
+
+
     fun allSubDetailByDay(sub_parent: String,date: String,count: Int):List<SubDetail>
     {
         val lstSubs = ArrayList<SubDetail>()
@@ -42,30 +46,31 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         val cursor = db.rawQuery(selectQuery,null)
         if(cursor.moveToFirst()){
             do{
-                val sub_detail = SubDetail()
-                sub_detail.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
-                sub_detail.parent_sub = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_PARENT))
-                sub_detail.hasimage = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_IMAGE_ATT))
-                sub_detail.count = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COUNT))
-                sub_detail.color = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COLOR))
-                sub_detail.homework = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_HOMEWORK))
-                sub_detail.path = cursor.getString(cursor.getColumnIndex(COL_DETAIL_IMAGE_PATH))
-                sub_detail.date = cursor.getString(cursor.getColumnIndex(COL_DETAIL_DATE))
-                sub_detail.tips = cursor.getString(cursor.getColumnIndex(COL_DETAIL_TIPS))
-                lstSubs.add(sub_detail)
+                val subDetail = SubDetail()
+                subDetail.id = cursor.getInt(cursor.getColumnIndex(COL_ID))
+                subDetail.parentSub = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_PARENT))
+                subDetail.hasimage = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_IMAGE_ATT))
+                subDetail.count = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COUNT))
+                subDetail.color = cursor.getInt(cursor.getColumnIndex(COL_DETAIL_COLOR))
+                subDetail.homework = cursor.getString(cursor.getColumnIndex(COL_DETAIL_SUB_HOMEWORK))
+                subDetail.path = cursor.getString(cursor.getColumnIndex(COL_DETAIL_IMAGE_PATH))
+                subDetail.date = cursor.getString(cursor.getColumnIndex(COL_DETAIL_DATE))
+                subDetail.tips = cursor.getString(cursor.getColumnIndex(COL_DETAIL_TIPS))
+                lstSubs.add(subDetail)
             }while (cursor.moveToNext())
         }
         db.close()
         return lstSubs
     }
 
-    fun addSub_detail(sub: SubDetail)
+
+    fun addSubDetail(sub: SubDetail)
     {
         val db = this.writableDatabase
         onCreate(db)
-        var cv = ContentValues()
+        val cv = ContentValues()
         cv.put(COL_ID,sub.id)
-        cv.put(COL_DETAIL_SUB_PARENT,sub.parent_sub)
+        cv.put(COL_DETAIL_SUB_PARENT,sub.parentSub)
         cv.put(COL_DETAIL_SUB_HOMEWORK,sub.homework)
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
         cv.put(COL_DETAIL_IMAGE_PATH,sub.path)
@@ -77,12 +82,14 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         db.insertOrThrow(TABLE_DETAIL_NAME,null,cv)
         db.close()
     }
-    fun updateSub_detail(sub: SubDetail):Int
+
+
+    fun updateSubDetail(sub: SubDetail):Int
     {
         val db = this.writableDatabase
-        var cv = ContentValues()
+        val cv = ContentValues()
         cv.put(COL_ID,sub.id)
-        cv.put(COL_DETAIL_SUB_PARENT,sub.parent_sub)
+        cv.put(COL_DETAIL_SUB_PARENT,sub.parentSub)
         cv.put(COL_DETAIL_SUB_HOMEWORK,sub.homework)
         cv.put(COL_DETAIL_IMAGE_ATT,sub.hasimage)
         cv.put(COL_DETAIL_COUNT,sub.count)
@@ -91,15 +98,10 @@ class DBdetailinfo(var contex: Context): SQLiteOpenHelper(contex, DATABASE_NAME,
         cv.put(COL_DETAIL_COLOR,sub.color)
         cv.put(COL_DETAIL_TIPS,sub.tips)
 
-        return db.update(TABLE_DETAIL_NAME,cv, COL_ID+"=?", arrayOf(sub.id.toString()))
+        return db.update(TABLE_DETAIL_NAME,cv, "$COL_ID=?", arrayOf(sub.id.toString()))
+    }
 
-    }
-    fun deleteSub(sub: SubDetail)
-    {
-        val db = this.writableDatabase
-        db.delete(TABLE_DETAIL_NAME,COL_ID+"=?", arrayOf(sub.id.toString()))
-        db.close()
-    }
+
     fun deleteAllData(){
         val db = this.writableDatabase
         db.execSQL("DROP TABLE IF EXISTS $TABLE_DETAIL_NAME")

@@ -14,7 +14,6 @@ import com.andrewkir.andrewforwork.timem8.Editors.MainEditor
 import com.andrewkir.andrewforwork.timem8.R
 import kotlinx.android.synthetic.main.activity_main_schedule_editable.*
 import java.util.*
-import android.content.res.TypedArray
 import android.graphics.BitmapFactory
 import android.os.Build
 
@@ -22,19 +21,23 @@ import android.os.Build
 class MainScheduleEditable : AppCompatActivity() {
     private lateinit var pagerAdapter: PagerAdapter
     var day = 0
-    var position_day = 0
+    var positionDay = 0
     var count = 0
     lateinit var sPref: SharedPreferences
     var stat: String = ""
+
+
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -53,14 +56,14 @@ class MainScheduleEditable : AppCompatActivity() {
         pagerAdapter = PagerAdapter(supportFragmentManager, 0)
         pagerView.adapter = pagerAdapter
         pagerView.currentItem = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
-        position_day = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
+        positionDay = Calendar.getInstance().get(Calendar.DAY_OF_YEAR)
         day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
         applyDay()
 
         supportActionBar?.title = getMonth()
-        var typedValue = TypedValue()
+        val typedValue = TypedValue()
         theme.resolveAttribute(R.attr.colorAccent, typedValue,true)
-        pagerTabStrip.tabIndicatorColor = typedValue?.data
+        pagerTabStrip.tabIndicatorColor = typedValue.data
         pagerTabStrip.setTextColor(resources.getColor(R.color.Txt))
         pagerView?.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -70,8 +73,8 @@ class MainScheduleEditable : AppCompatActivity() {
 
             }
             override fun onPageSelected(position: Int) {
-                position_day = position
-                var calendar = Calendar.getInstance()
+                positionDay = position
+                val calendar = Calendar.getInstance()
                 calendar.set(Calendar.YEAR,2018)
                 calendar.set(Calendar.MONTH,0)
                 calendar.set(Calendar.DAY_OF_YEAR,0)
@@ -82,6 +85,8 @@ class MainScheduleEditable : AppCompatActivity() {
             }
         })
     }
+
+
     fun applyDay(){
         when (day) {
             2 -> day = 0
@@ -93,12 +98,14 @@ class MainScheduleEditable : AppCompatActivity() {
             1 -> day = 6
         }
     }
+
+
     fun getMonth():String{
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR,2018)
         calendar.set(Calendar.MONTH,0)
         calendar.set(Calendar.DAY_OF_YEAR,0)
-        calendar.add(Calendar.DATE,position_day)
+        calendar.add(Calendar.DATE,positionDay)
         when(calendar.get(Calendar.MONTH)){
             0 -> return "Январь"
             1 -> return "Февраль"
@@ -115,16 +122,19 @@ class MainScheduleEditable : AppCompatActivity() {
         }
         return ""
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_schedule_menu, menu)
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.edit_menu) {
-            val Editor = Intent(this, MainEditor::class.java)
-            Editor.putExtra("DAY_OF_THE_WEEK", day)
-            startActivity(Editor)
+            val editor = Intent(this, MainEditor::class.java)
+            editor.putExtra("DAY_OF_THE_WEEK", day)
+            startActivity(editor)
         } else {
             this.finish()
         }

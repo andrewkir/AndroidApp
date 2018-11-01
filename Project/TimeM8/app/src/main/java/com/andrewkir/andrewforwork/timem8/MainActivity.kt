@@ -1,39 +1,24 @@
 package com.andrewkir.andrewforwork.timem8
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.support.v7.app.AppCompatActivity
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_main.*
-import com.andrewkir.andrewforwork.timem8.MainScheduleEdit.MainScheduleEditable
-import android.app.ActivityManager
-import android.content.res.Resources
-import android.os.Build
-import android.util.TypedValue
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.util.Log
 import android.view.View
-import android.view.animation.LinearInterpolator
-import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.ActivityFin.FinancialActivity
-import com.andrewkir.andrewforwork.timem8.Services.App
-import com.andrewkir.andrewforwork.timem8.Services.WaveHelper
-import com.andrewkir.andrewforwork.timem8.Services.WebData
-import com.gelitenight.waveview.library.WaveView
-import kotlinx.android.synthetic.main.activity_financial.*
-import java.nio.charset.StandardCharsets
-import java.util.*
+import com.andrewkir.andrewforwork.timem8.MainScheduleEdit.MainScheduleEditable
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var sPref:SharedPreferences
-    private lateinit var waveHelper: WaveHelper
     var stat: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,28 +32,35 @@ class MainActivity : AppCompatActivity() {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         setContentView(R.layout.activity_main)
+
         MainScheduleBtn.visibility = View.GONE
         dailyTasksBtn.setOnClickListener{
             val dailyTaskIntent = Intent(this,MainDailySchedule::class.java)
             startActivity(dailyTaskIntent)
         }
+
         MainScheduleBtn.setOnClickListener{
             val scheduleIntent = Intent(this, MainSchedule::class.java)
             startActivity(scheduleIntent)
         }
+
         MainScheduleBtnEd.setOnClickListener{
             val scheduleIntentEd = Intent(this, MainScheduleEditable::class.java)
             startActivity(scheduleIntentEd)
         }
+
         financeButton.setOnClickListener {
             val financialIntent = Intent(this, FinancialActivity::class.java)
             startActivity(financialIntent)
         }
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_settings, menu)
         return true
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.settings_menu) {
@@ -79,19 +71,20 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
+
         sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
         if(stat != sPref.getString("THEME", "ORANGE")){
             finish()
             startActivity(intent)
         }
     }
-
 }

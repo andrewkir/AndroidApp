@@ -15,18 +15,23 @@ import kotlin.math.abs
 class FinancialAdapter(val context: Context, val itemClick: (FinancialOperation) -> Unit): RecyclerView.Adapter<FinancialAdapter.Holder>() {
     var db = DBfinance(context)
     var operations = db.allOperations()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FinancialAdapter.Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.row_edit_finance, parent,false)
         return Holder(view,itemClick)
     }
 
+
     override fun getItemCount(): Int {
         return operations.size
     }
 
+
     override fun onBindViewHolder(holder: FinancialAdapter.Holder, position: Int) {
         holder.bindFrog(operations[position])
     }
+
+
     inner class Holder(itemView: View?, val itemClick: (FinancialOperation) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val finName = itemView?.findViewById<TextView>(R.id.finName)
         val finValue = itemView?.findViewById<TextView>(R.id.finValue)

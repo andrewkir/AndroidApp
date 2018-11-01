@@ -31,11 +31,13 @@ import android.view.ViewGroup
 class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     lateinit var sPref: SharedPreferences
     var stat: String = ""
-    var op = FinancialOperation()
+    private var op = FinancialOperation()
+
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         op.type = "Продукты"
     }
+
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(position){
@@ -71,6 +73,8 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         }
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -82,7 +86,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
@@ -96,7 +100,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         if(max != 0){
             finMax.setText(max.toString())
         }
-        var categories = arrayOf("Продукты","Кафе/рестораны","Развлечения","Магазины","Пополнение","Другое")
+        val categories = arrayOf("Продукты","Кафе/рестораны","Развлечения","Магазины","Пополнение","Другое")
         val adapterSpinner = object : ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, categories) {
 
@@ -113,13 +117,11 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getDropDownView(position, convertView, parent)
                 val externalFont = ResourcesCompat.getFont(context, R.font.rubik)
-//                (v as TextView).typeface = externalFont
-//                v.setBackgroundColor(Color.GREEN)
+                (v as TextView).typeface = externalFont
                 return v
             }
         }
         financeSpinner!!.adapter = adapterSpinner
-
 
 
         financeEditorRecycler.adapter = FinancialAdapter(context = this){
@@ -138,6 +140,7 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
         }
 
+
         val layoutManagerFinance = LinearLayoutManager(this)
         financeEditorRecycler.layoutManager = layoutManagerFinance
         financeEditorRecycler.setHasFixedSize(true)
@@ -148,15 +151,15 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             } else {
                 if (edFinName.text.toString().isEmpty() && edFinValue.text.toString().isEmpty()) {
                     if(finMax.text.toString().isNotEmpty()) {
-                        var max = Integer.parseInt(finMax.text.toString())
-                        var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+                        val max = Integer.parseInt(finMax.text.toString())
+                        val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
                         val ed = pref.edit()
                         ed.putInt("MAX_FIN", max)
                         ed.apply()
                     }
                 } else if(edFinName.text.toString().isNotEmpty() && edFinValue.text.toString().isNotEmpty() && finMax.text.toString().isNotEmpty() && Integer.parseInt(edFinValue.text.toString())!=0) {
-                    var max = Integer.parseInt(finMax.text.toString())
-                    var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+                    val max = Integer.parseInt(finMax.text.toString())
+                    val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
                     val ed = pref.edit()
                     ed.putInt("MAX_FIN", max)
                     ed.apply()
@@ -166,13 +169,12 @@ class FinanceEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     try {
                         op.name = edFinName.text.toString()
                         op.amount = if(op.type == "Пополнение") -Integer.parseInt(edFinValue.text.toString()) else Integer.parseInt(edFinValue.text.toString())
-                        var db = DBfinance(this)
+                        val db = DBfinance(this)
                         db.insertData(op)
-                        println(op.type + "OP TYPE")
                     } catch (e: Exception) {
                         op.name = edFinName.text.toString()
                         op.amount = if(op.type == "Пополнение") -Integer.parseInt(edFinValue.text.toString()) else Integer.parseInt(edFinValue.text.toString())
-                        var db = DBfinance(this)
+                        val db = DBfinance(this)
                         db.updateOp(op)
                     }
                     op = FinancialOperation()

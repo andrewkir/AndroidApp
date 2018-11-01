@@ -43,26 +43,27 @@ import kotlin.collections.HashMap
 private const val PERMISSION_REQUEST = 10
 
 class MainDetailEditor : AppCompatActivity() {
-
     var subjectName = ""
     var date = ""
-    var path = ""
+    private var path = ""
     var count = 0
-    var imagePos = 0
+    private var imagePos = 0
     var color = Color.parseColor("#FAFAFA")
-    var imageFilePath = ""
-    var newImage = false
+    private var imageFilePath = ""
+    private var newImage = false
     private val GALLERY = 1
     private val CAMERA = 2
-    lateinit var subject: SubDetail
-    lateinit var adjustedBitmap: Bitmap
-    var alreadySavedPhotos = hashMapOf<Bitmap,String>()
-    var photos = ArrayList<Bitmap>()
-    var photosAttached = ArrayList<Boolean>()
+    private lateinit var subject: SubDetail
+    private lateinit var adjustedBitmap: Bitmap
+    private var alreadySavedPhotos = hashMapOf<Bitmap,String>()
+    private var photos = ArrayList<Bitmap>()
+    private var photosAttached = ArrayList<Boolean>()
     internal lateinit var db: DBdetailinfo
     lateinit var sPref: SharedPreferences
     var stat: String = ""
     private var permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -73,24 +74,25 @@ class MainDetailEditor : AppCompatActivity() {
             "PURPLE" -> setTheme(R.style.AppThemePurple)
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
+
         setContentView(R.layout.activity_main_detail_editor)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!checkPermission(this, permissions)) {
+            if (!checkPermission(permissions)) {
                 requestPermissions(permissions, PERMISSION_REQUEST)
             }
         }
-        //switchPhotoAttach.visibility = View.GONE
+
         db = DBdetailinfo(this)
         subjectName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
         count = intent.getIntExtra("COUNT_SUB",0)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        var count = intent.getIntExtra("COUNT_SUB",0)
+        val count = intent.getIntExtra("COUNT_SUB",0)
         try {
             subject = db.allSubDetailByDay(subjectName,date,count)[0]
             color = subject.color
-            var colorCircle = colorView.background.mutate() as GradientDrawable
+            val colorCircle = colorView.background.mutate() as GradientDrawable
             colorCircle.setColor(color)
             when(subject.hasimage){
                 1 -> {
@@ -115,11 +117,9 @@ class MainDetailEditor : AppCompatActivity() {
                 DetailEditorBack.performClick()
                 DetailEditorForward.performClick()
             }
-            var dateArr =date.split(".")
-            println(dateArr)
-            println(alreadySavedPhotos.values)
+            val dateArr =date.split(".")
             path = makePath()
-            var subdt = SubDetail(
+            val subDt = SubDetail(
                     id=Integer.parseInt(dateArr[0]+dateArr[1]+dateArr[2]+count.toString()),
                     date = date,
                     parent = subjectName,
@@ -131,13 +131,12 @@ class MainDetailEditor : AppCompatActivity() {
                     color = color
 
             )
-            println("color $color")
             try {
-                db.addSub_detail(subdt)
+                db.addSubDetail(subDt)
                 Toast.makeText(this,"добавлено",Toast.LENGTH_SHORT).show()
             } catch (e: Exception){
                 Toast.makeText(this,"обновлено",Toast.LENGTH_SHORT).show()
-                db.updateSub_detail(subdt)
+                db.updateSubDetail(subDt)
             }
         }
 
@@ -169,7 +168,6 @@ class MainDetailEditor : AppCompatActivity() {
                     adjustedBitmap = photos[imagePos]
                     }
                 }
-            println(imagePos)
         }
 
         DetailEditorForward.setOnClickListener {
@@ -206,96 +204,106 @@ class MainDetailEditor : AppCompatActivity() {
                     }
                 }
             }
-            println(imagePos)
         }
-
     }
-    fun OnimageAdd(view: View){
+
+
+    fun onImageAdd(view: View) {
         switchPhotoAttach.visibility = View.VISIBLE
         showPictureDialog()
     }
-    fun onColorClick(view: View){
+
+
+    fun onColorClick(view: View) {
         showColorDialog()
     }
+
+
     fun decodePath(d_path:String): HashMap<Bitmap, String> {
-        var res_path = ArrayList<String>()
-        res_path = d_path.split(";;;") as ArrayList<String>
-        res_path.removeAt(res_path.lastIndex)
-        var map_res = hashMapOf<Bitmap,String>()
-        val file = File(res_path[0])
-        var exif =ExifInterface(file.absolutePath)
+        val resPath: ArrayList<String> = d_path.split(";;;") as ArrayList<String>
+        resPath.removeAt(resPath.lastIndex)
+        val mapRes = hashMapOf<Bitmap,String>()
+        val file = File(resPath[0])
+        val exif =ExifInterface(file.absolutePath)
         val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        var rotationInDegrees =
+        val rotationInDegrees =
                 when (rotation) {
                     ExifInterface.ORIENTATION_ROTATE_90 ->  90
                     ExifInterface.ORIENTATION_ROTATE_180 -> 180
                     ExifInterface.ORIENTATION_ROTATE_270 -> 270
                     else -> 0
                 }
-        var matrix = Matrix()
+        val matrix = Matrix()
         if (rotation.toFloat() != 0f) {
             matrix.preRotate(rotationInDegrees.toFloat())
         }
-        var btmp = BitmapFactory.decodeFile(file.path)
+        val btmp = BitmapFactory.decodeFile(file.path)
         adjustedBitmap = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
         detailEditorImageView.setImageBitmap(adjustedBitmap)
-        map_res.put(adjustedBitmap, res_path[0])
-        println(res_path)
-        for(p in res_path){
-                val fileTmp = File(p)
-                var exif = ExifInterface(fileTmp.absolutePath)
-                val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                var rotationInDegrees =
-                        when (rotation) {
-                            ExifInterface.ORIENTATION_ROTATE_90 -> 90
-                            ExifInterface.ORIENTATION_ROTATE_180 -> 180
-                            ExifInterface.ORIENTATION_ROTATE_270 -> 270
-                            else -> 0
-                        }
-                var matrix = Matrix()
-                if (rotation.toFloat() != 0f) {
-                    matrix.preRotate(rotationInDegrees.toFloat())
-                }
-                var btmp = BitmapFactory.decodeFile(fileTmp.path)
-                var adjustedBitmaptmp = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
-                photos.add(adjustedBitmaptmp)
-                photosAttached.add(true)
-                map_res.put(adjustedBitmaptmp, p)
+        mapRes.put(adjustedBitmap, resPath[0])
+        for(p in resPath){
+            val fileTmp = File(p)
+            val exif = ExifInterface(fileTmp.absolutePath)
+            val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
+            val rotationInDegrees =
+                    when (rotation) {
+                        ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                        ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                        ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                        else -> 0
+                    }
+            val matrix = Matrix()
+            if (rotation.toFloat() != 0f) {
+                matrix.preRotate(rotationInDegrees.toFloat())
+            }
+            val btmp = BitmapFactory.decodeFile(fileTmp.path)
+            val adjustedBitmapTmp = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
+            photos.add(adjustedBitmapTmp)
+            photosAttached.add(true)
+            mapRes[adjustedBitmapTmp] = p
         }
-        return map_res
+        return mapRes
     }
-    fun makePath():String{
+
+
+    private fun makePath():String{
         var tmpPath = ""
-        for (index in 0..photos.size-1){
+        for (index in 0 until photos.size){
             if(photosAttached[index]){
-                if(photos[index] !in alreadySavedPhotos.keys) {
-                    tmpPath += saveImage(photos[index]) + ";;;"
+                tmpPath += if(photos[index] !in alreadySavedPhotos.keys) {
+                    saveImage(photos[index]) + ";;;"
                 } else {
-                    tmpPath +=  alreadySavedPhotos[photos[index]]+";;;"
+                    alreadySavedPhotos[photos[index]]+";;;"
                 }
             }
         }
         return tmpPath
     }
+
+
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle("Выберите действие")
         val pictureDialogItems = arrayOf("Выбрать фото из галереи", "Сделать новое фото")
         pictureDialog.setItems(pictureDialogItems
-        ) { dialog, which ->
+        ) { _, which ->
             when (which) {
-                0 -> choosePhotoFromGallary()
+                0 -> choosePhotoFromGallery()
                 1 -> takePhotoFromCamera()
             }
         }
         pictureDialog.show()
     }
-    fun choosePhotoFromGallary() {
+
+
+    private fun choosePhotoFromGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         startActivityForResult(galleryIntent, GALLERY)
     }
+
+
     private fun takePhotoFromCamera() {
         val imageFile = createImageFile()
         val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -307,7 +315,8 @@ class MainDetailEditor : AppCompatActivity() {
         }
     }
 
-    fun getRealPathFromURI(uri: Uri): String {
+
+    private fun getRealPathFromURI(uri: Uri): String {
         val cursor = contentResolver.query(uri, null, null, null, null)
         cursor!!.moveToFirst()
         val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
@@ -318,18 +327,14 @@ class MainDetailEditor : AppCompatActivity() {
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
         val imageFileName: String = "JPEG_" + timeStamp + "_"
         val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        println(storageDir)
         if(!storageDir.exists()) storageDir.mkdirs()
         val imageFile = File.createTempFile(imageFileName, ".jpg", storageDir)
         imageFilePath = imageFile.absolutePath
         return imageFile
     }
-    fun Bitmap.rotate(degrees: Float): Bitmap {
-        val matrix = Matrix().apply { postRotate(degrees) }
-        return Bitmap.createBitmap(this, 0, 0, width, height, matrix, true)
-    }
-    public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
 
+
+    public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GALLERY)
         {
@@ -341,20 +346,20 @@ class MainDetailEditor : AppCompatActivity() {
                     imageFilePath=getRealPathFromURI(contentURI)
                     val file = File(imageFilePath)
                     val exifData = Uri.fromFile(file)
-                    var exif =ExifInterface(exifData.path)
+                    val exif =ExifInterface(exifData.path)
                     val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-                    var rotationInDegrees =
+                    val rotationInDegrees =
                             when (rotation) {
                                 ExifInterface.ORIENTATION_ROTATE_90 ->  90
                                 ExifInterface.ORIENTATION_ROTATE_180 -> 180
                                 ExifInterface.ORIENTATION_ROTATE_270 -> 270
                                 else -> 0
                             }
-                    var matrix = Matrix()
+                    val matrix = Matrix()
                     if (rotation.toFloat() != 0f) {
                         matrix.preRotate(rotationInDegrees.toFloat())
                     }
-                    var btmp = BitmapFactory.decodeFile(imageFilePath)
+                    val btmp = BitmapFactory.decodeFile(imageFilePath)
                     adjustedBitmap = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
                     detailEditorImageView.setImageBitmap(adjustedBitmap)
                     if(photos.size ==0){
@@ -366,28 +371,26 @@ class MainDetailEditor : AppCompatActivity() {
                     e.printStackTrace()
                     Toast.makeText(this, "Failed!", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
         }
         else if (requestCode == CAMERA && resultCode == Activity.RESULT_OK)
         {
             val file = File(imageFilePath)
             val exifData = Uri.fromFile( File(imageFilePath))
-            var exif =ExifInterface(exifData.path)
+            val exif =ExifInterface(exifData.path)
             val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            var rotationInDegrees =
+            val rotationInDegrees =
                 when (rotation) {
                     ExifInterface.ORIENTATION_ROTATE_90 ->  90
                     ExifInterface.ORIENTATION_ROTATE_180 -> 180
                     ExifInterface.ORIENTATION_ROTATE_270 -> 270
                     else -> 0
                 }
-            var matrix = Matrix()
+            val matrix = Matrix()
             if (rotation.toFloat() != 0f) {
                 matrix.preRotate(rotationInDegrees.toFloat())
             }
-            var btmp = BitmapFactory.decodeFile(imageFilePath)
+            val btmp = BitmapFactory.decodeFile(imageFilePath)
             adjustedBitmap = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
             detailEditorImageView.setImageBitmap(adjustedBitmap)
             if(photos.size ==0){
@@ -397,17 +400,17 @@ class MainDetailEditor : AppCompatActivity() {
             file.delete()
         }
     }
-    fun saveImage(myBitmap: Bitmap):String {
+
+
+    private fun saveImage(myBitmap: Bitmap):String {
         val bytes = ByteArrayOutputStream()
         myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
         val wallpaperDirectory = File(
                 (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
         if (!wallpaperDirectory.exists())
         {
-
             wallpaperDirectory.mkdirs()
         }
-
         try
         {
             val f = File(wallpaperDirectory, ((Calendar.getInstance()
@@ -427,13 +430,18 @@ class MainDetailEditor : AppCompatActivity() {
         return ""
     }
 
+
     companion object {
-        private val IMAGE_DIRECTORY = "/timem8"
+        private const val IMAGE_DIRECTORY = "/timem8"
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main_editor_menu,menu)
         return true
     }
+
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId != R.id.edit_menu_delete){
             this.finish()
@@ -447,7 +455,9 @@ class MainDetailEditor : AppCompatActivity() {
         }
         return true
     }
-    fun showColorDialog(){
+
+
+    private fun showColorDialog(){
         val builder = ColorPickerDialog.Builder(this,AlertDialog.THEME_DEVICE_DEFAULT_DARK)
         builder.setTitle("Выберите цвет")
         builder.colorPickerView.setPaletteDrawable(ContextCompat.getDrawable(this,R.drawable.palette))
@@ -456,23 +466,24 @@ class MainDetailEditor : AppCompatActivity() {
         builder.setPositiveButton("выбрать") { colorEnvelope ->
             color = colorEnvelope.color
             color = ColorUtils.setAlphaComponent(color, 100)
-            var colorCircle = colorView.background.mutate() as GradientDrawable
+            val colorCircle = colorView.background.mutate() as GradientDrawable
             colorCircle.setColor(color)
         }
-        builder.setNegativeButton("отмена") { dialogInterface, i -> dialogInterface.dismiss() }
+        builder.setNegativeButton("отмена") { dialogInterface, _ -> dialogInterface.dismiss() }
         builder.show()
     }
+
 
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
     }
-    fun checkPermission(context: Context, permissionArray: Array<String>): Boolean {
+    private fun checkPermission(permissionArray: Array<String>): Boolean {
         var allSuccess = true
         for (i in permissionArray.indices){
             if(checkCallingOrSelfPermission(permissionArray[i]) == PackageManager.PERMISSION_DENIED)
@@ -485,7 +496,7 @@ class MainDetailEditor : AppCompatActivity() {
         if(requestCode == PERMISSION_REQUEST){
             for(i in permissions.indices){
                 if(grantResults[i] == PackageManager.PERMISSION_DENIED){
-                    var requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
+                    val requestAgain = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && shouldShowRequestPermissionRationale(permissions[i])
                     if(requestAgain){
                         Toast.makeText(this,"Недостаточно прав",Toast.LENGTH_SHORT).show()
                     }else{

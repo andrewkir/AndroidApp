@@ -31,6 +31,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         frog.colorId2 = R.color.material_grey_200
     }
 
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when(position){
             0 -> {
@@ -63,10 +64,12 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     var name = "test"
     var date = "1.1.1.1"
-    var frog = dailyFrog()
+    private var frog = dailyFrog()
     lateinit var sPref: SharedPreferences
     var stat: String = ""
     lateinit var db: DBdaily
+
+
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -78,14 +81,16 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             "BLUE" -> setTheme(R.style.AppThemeBlue)
         }
         setContentView(R.layout.activity_daily_editor)
+
         db = DBdaily(this)
         recyclerCheckBox.addItemDecoration(DividerItemDecoration(this,1))
         recyclerFrogs.addItemDecoration(DividerItemDecoration(this,1))
         spinnerDaily!!.onItemSelectedListener = this
-        var list_colors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый","Фиолетовый")
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,list_colors)
+        val listColors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый","Фиолетовый")
+        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,listColors)
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerDaily!!.adapter = aa
+
         refresh()
         spinnerDaily.setSelection(3)
         dailyAddBtn.setOnClickListener {
@@ -95,11 +100,10 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 try {
                     frog.isDone.add(false)
                 } catch (e: Exception) {
-                    var tmp = ArrayList<Boolean>()
+                    val tmp = ArrayList<Boolean>()
                     tmp.add(false)
                     frog.isDone = tmp
                 }
-                println(frog.tasks)
                 db.updateFrog(frog)
                 refresh()
                 taskEdit.setText("")
@@ -107,20 +111,21 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 Toast.makeText(this, "Пожалуйста, введите корректные данные", Toast.LENGTH_SHORT).show()
             }
         }
+
         dailyDelBtn.setOnClickListener {
             if (frog.count >= 1) {
-                var tasks = frog.tasks.split(";;;")
+                val tasks = frog.tasks.split(";;;")
                 frog.tasks = ""
                 for (i in 0 until frog.count-1) {
                     frog.tasks += tasks[i] + ";;;"
                 }
-                println(frog.tasks)
                 frog.count--
                 frog.isDone.removeAt(frog.isDone.lastIndex)
                 db.updateFrog(frog)
                 refresh()
             }
         }
+
         addFrog.setOnClickListener {
             if(frog.date != "") {
                 if (dailyName.text.toString() != "") {
@@ -135,7 +140,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                             try {
                                 frog.isDone.add(false)
                             } catch (e: Exception) {
-                                var tmp = ArrayList<Boolean>()
+                                val tmp = ArrayList<Boolean>()
                                 tmp.add(false)
                                 frog.isDone = tmp
                             }
@@ -154,6 +159,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 Toast.makeText(this, "Пожалуйста, выберите дни повтора", Toast.LENGTH_SHORT).show()
             }
         }
+
         clearFrog.setOnClickListener {
             frog = dailyFrog()
             dailyName.setText("")
@@ -164,6 +170,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             frog.colorId1 = R.color.material_deep_orange_400
             frog.colorId2 = R.color.material_deep_orange_200
         }
+
         dailyDeleteBtn.setOnClickListener {
             if(frog.id != 0){
                 db.deleteFrog(frog)
@@ -181,6 +188,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         }
     }
 
+
     private fun refresh(){
         recyclerCheckBox.adapter = DailyCheckBoxAdapter(context = this,frog = frog)
         recyclerFrogs.adapter = DailyEditorFrogs(context = this, itemClick = { Frog ->
@@ -188,8 +196,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             dailyName.setText(Frog.name)
             dailyDesc.setText(Frog.description)
             if(frog.date!="") {
-                var tmp = frog.date.split(";;;") as ArrayList
-                println(tmp)
+                val tmp = frog.date.split(";;;") as ArrayList
                 tmp.removeAt(tmp.lastIndex)
                 var res = ""
                 for (i in tmp) {
@@ -220,9 +227,13 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         recyclerFrogs.layoutManager = layoutManagerFrog
         recyclerFrogs.setHasFixedSize(true)
     }
-    fun daysView(view: View?){
+
+
+    fun daysView(view: View) {
         showDialog()
     }
+
+
     private fun showDialog(){
         val listItems = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
         val resList = arrayOf("Пн","Вт","Ср","Чт","Пт","Сб","Вс")
@@ -230,11 +241,11 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         checkedItems.fill(false)
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Выберите дни повтора")
-        builder.setMultiChoiceItems(listItems,checkedItems) { dialog:DialogInterface, which:Int, isChecked:Boolean->
+        builder.setMultiChoiceItems(listItems,checkedItems) { _:DialogInterface, _:Int, _:Boolean->
         }
         builder.setCancelable(false)
         if(frog.date!=""){
-            var tmp = frog.date.split(";;;")
+            val tmp = frog.date.split(";;;")
             var res = ""
             for(i in resList){
                 if(i in tmp){
@@ -244,7 +255,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             }
             editDays.text = res.removeRange(0, 2)
         }
-        builder.setPositiveButton("Ок"){ dialog:DialogInterface, which:Int->
+        builder.setPositiveButton("Ок"){ _:DialogInterface, _:Int->
             frog.date = ""
             editDays.text = ""
             var res = ""
@@ -263,10 +274,11 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         dialog.show()
     }
 
+
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))

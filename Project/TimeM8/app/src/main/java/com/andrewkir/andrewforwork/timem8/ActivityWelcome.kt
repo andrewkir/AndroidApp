@@ -1,27 +1,21 @@
 package com.andrewkir.andrewforwork.timem8
 
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-import android.os.Build
-import android.preference.PreferenceManager
-import android.view.ViewGroup
-import android.content.Context.LAYOUT_INFLATER_SERVICE
-import android.view.LayoutInflater
-import android.view.WindowManager
-import android.support.v4.view.ViewPager
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
+import android.os.Bundle
 import android.support.v4.view.PagerAdapter
+import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.text.Html
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
-import android.widget.LinearLayout
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-import android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
@@ -59,6 +53,7 @@ class ActivityWelcome : AppCompatActivity() {
         override fun onPageScrollStateChanged(arg0: Int) {}
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppThemeWelcome)
@@ -85,7 +80,7 @@ class ActivityWelcome : AppCompatActivity() {
 
             setContentView(R.layout.activity_welcome)
 
-            viewPager = view_pager
+            viewPager = viewPager
             dotsLayout = layoutDots
             btnSkip = findViewById<View>(R.id.btn_skip) as Button
             btnNext = findViewById<View>(R.id.btn_next) as Button
@@ -115,6 +110,7 @@ class ActivityWelcome : AppCompatActivity() {
         }
     }
 
+
     private fun addBottomDots(currentPage: Int) {
         dots = arrayOfNulls(layouts!!.size)
 
@@ -122,27 +118,30 @@ class ActivityWelcome : AppCompatActivity() {
         val colorsInactive = resources.getIntArray(R.array.array_dot_inactive)
 
         dotsLayout!!.removeAllViews()
-        for (i in dots!!.indices) {
+        for (i in dots.indices) {
             dots[i] = TextView(this)
             dots[i]!!.text = Html.fromHtml("&#8226;")
             dots[i]!!.textSize = 35f
             dots[i]!!.setTextColor(colorsInactive[currentPage])
-            dotsLayout!!.addView(dots!![i])
+            dotsLayout!!.addView(dots[i])
         }
 
         if (dots.isNotEmpty())
             dots[currentPage]!!.setTextColor(colorsActive[currentPage])
     }
 
+
     private fun getItem(i: Int): Int {
         return viewPager!!.currentItem + i
     }
+
 
     private fun launchHomeScreen() {
         prefManager!!.setFirstTimeLaunch(false)
         startActivity(Intent(this@ActivityWelcome, MainActivity::class.java))
         finish()
     }
+
 
     private fun changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -151,6 +150,7 @@ class ActivityWelcome : AppCompatActivity() {
             window.statusBarColor = Color.TRANSPARENT
         }
     }
+
 
     inner class MyViewPagerAdapter : PagerAdapter() {
         override fun getCount(): Int {

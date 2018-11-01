@@ -14,18 +14,22 @@ import com.andrewkir.andrewforwork.timem8.Models.Sub
 
 class MainScheduleAdapter(val date: String, val context: Context, val subjects: List<Sub>, val itemClick: (Sub) -> Unit) : RecyclerView.Adapter<MainScheduleAdapter.Holder>() {
     internal lateinit var db: DBdetailinfo
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.subject_list_item, parent,false)
         //view.setBackgroundColor(Color.parseColor("#ff9966"))
         return Holder(view,itemClick)
     }
 
+
     override fun getItemCount(): Int {
         return subjects.count()
     }
 
+
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder?.bindSubject(subjects[position],context)
+        holder.bindSubject(subjects[position],context)
     }
 
 
@@ -47,7 +51,7 @@ class MainScheduleAdapter(val date: String, val context: Context, val subjects: 
 
             db = DBdetailinfo(context)
             try {
-                var sub = db.allSubDetailByDay(sub_parent = subject.name,date = date,count = subject.count)[0]
+                val sub = db.allSubDetailByDay(sub_parent = subject.name,date = date,count = subject.count)[0]
                 subjectHome?.text = sub.homework
                 itemView.setBackgroundColor(sub.color)
             }

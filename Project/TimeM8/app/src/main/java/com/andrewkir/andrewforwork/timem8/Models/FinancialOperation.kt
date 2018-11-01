@@ -1,5 +1,6 @@
 package com.andrewkir.andrewforwork.timem8.Models
 
+
 class FinancialOperation {
     var id: Int = 0
     var day: Int = 0
@@ -14,7 +15,5 @@ class FinancialOperation {
         this.type = type
         this.amount = amount
     }
-    constructor(){
-
-    }
+    constructor()
 }

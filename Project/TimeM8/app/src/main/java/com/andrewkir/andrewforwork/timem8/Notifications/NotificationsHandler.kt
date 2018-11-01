@@ -5,15 +5,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import java.util.*
 
 
 class NotificationsHandler(var context:Context) {
     internal var text = ""
-    fun makeNotification(hour: Int,minute:Int,text:String,textTitle: String,id:Int,dayOfweek:Int,cancel:Boolean,diff:Boolean=false,dayYear:Int=0,delete:Boolean=false,count:Int) {
-        var prefNotif = context.getSharedPreferences("NotifEnabled", Context.MODE_PRIVATE)
-        if (prefNotif.getBoolean("ENABLED", true)) {
+
+
+    fun makeNotification(hour: Int, minute:Int, text:String, textTitle: String, id:Int, dayOfWeek:Int, cancel:Boolean, diff:Boolean=false, dayYear:Int=0, delete:Boolean=false, count:Int) {
+        val prefNotification = context.getSharedPreferences("NotifEnabled", Context.MODE_PRIVATE)
+        if (prefNotification.getBoolean("ENABLED", true)) {
             var day = 0
             var calendar = Calendar.getInstance()
             if (diff) {
@@ -21,7 +22,7 @@ class NotificationsHandler(var context:Context) {
             } else {
                 calendar = Calendar.getInstance()
             }
-            when (dayOfweek) {
+            when (dayOfWeek) {
                 1 -> day = 2
                 2 -> day = 3
                 3 -> day = 4
@@ -31,8 +32,8 @@ class NotificationsHandler(var context:Context) {
                 7 -> day = 1
             }
 
-            var tmp = context.getSharedPreferences("NotifMin", Context.MODE_PRIVATE)
-            var minutesDiff = tmp.getInt("MINUTES", 10)
+            val tmp = context.getSharedPreferences("NotifMin", Context.MODE_PRIVATE)
+            val minutesDiff = tmp.getInt("MINUTES", 10)
 
             calendar.set(Calendar.HOUR_OF_DAY, hour)
             calendar.set(Calendar.DAY_OF_WEEK, day)
@@ -43,11 +44,11 @@ class NotificationsHandler(var context:Context) {
             if (diff) {
                 calendar.add(Calendar.WEEK_OF_YEAR, 1)
             }
-            println("curr ${Calendar.getInstance().timeInMillis}")
-            println("alarm ${calendar.timeInMillis}")
-            var intent = Intent(context, Notification_reciever::class.java)
+//            println("curr ${Calendar.getInstance().timeInMillis}")
+//            println("alarm ${calendar.timeInMillis}")
+            val intent = Intent(context, NotificationReciever::class.java)
             intent.putExtra("TEXT", text)
-            intent.putExtra("DAY", dayOfweek)
+            intent.putExtra("DAY", dayOfWeek)
             intent.putExtra("DAYOFYEAR", calendar.get(Calendar.DAY_OF_YEAR))
             intent.putExtra("HOUR", hour)
             intent.putExtra("MINUTE", minute)
@@ -55,16 +56,16 @@ class NotificationsHandler(var context:Context) {
             intent.putExtra("ID", id)
             intent.putExtra("DELETE", cancel)
             intent.putExtra("COUNT", count)
-            var pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            var alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (cancel) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && delete) {
-                    var notificationManager = context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    val channelId = "channel-" + dayOfweek.toString() + count
+                    var notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    val channelId = "channel-" + dayOfWeek.toString() + count
                     notificationManager.deleteNotificationChannel(channelId)
-                    println("deleted $channelId")
+//                    println("deleted $channelId")
                 }
-                println("deleted alarm")
+//                println("deleted alarm")
                 alarmManager.cancel(pendingIntent)
             } else {
                 if (calendar.timeInMillis < Calendar.getInstance().timeInMillis) {

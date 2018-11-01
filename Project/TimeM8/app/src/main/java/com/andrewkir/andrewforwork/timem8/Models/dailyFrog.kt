@@ -1,8 +1,5 @@
 package com.andrewkir.andrewforwork.timem8.Models
 
-import android.animation.TimeInterpolator
-
-
 
 class dailyFrog {
     var id: Int = 0
@@ -28,7 +25,5 @@ class dailyFrog {
         this.tasks = tasks
         this.done = done
     }
-    constructor(){
-
-    }
+    constructor()
 }

@@ -1,11 +1,9 @@
 package com.andrewkir.andrewforwork.timem8.MainScheduleEdit
 
-import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -16,7 +14,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.andrewkir.andrewforwork.timem8.Editors.MainDetailEditor
 import kotlinx.android.synthetic.main.activity_main_schedule_detail.*
@@ -30,20 +27,22 @@ import com.andrewkir.andrewforwork.timem8.R
 
 class MainScheduleDetail : AppCompatActivity() {
     internal lateinit var db: DBdetailinfo
-    internal lateinit var dbMain: DBHandler
+    private lateinit var dbMain: DBHandler
     var date = ""
-    var viewDate = ""
+    private var viewDate = ""
     var day = 0
-    var SubName = ""
+    private var subName = ""
     var count = 0
-    var path = ""
-    var hasimage = 0
-    var currentImage = 0
-    var photosQuantity = 0
-    var photopathMap = hashMapOf<Bitmap,String>()
+    private var path = ""
+    private var hasImage = 0
+    private var currentImage = 0
+    private var photosQuantity = 0
+    private var photopathMap = hashMapOf<Bitmap,String>()
     private var photos = ArrayList<Bitmap>()
     lateinit var sPref: SharedPreferences
     var stat: String = ""
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
@@ -58,19 +57,19 @@ class MainScheduleDetail : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setContentView(R.layout.activity_main_schedule_detail)
-        SubName = intent.getStringExtra("NAME_SUB")
+        subName = intent.getStringExtra("NAME_SUB")
         date = intent.getStringExtra("DATE")
         viewDate = date.split(".")[0]+"."+(Integer.parseInt(date.split(".")[1])+1).toString()+"."+date.split(".")[2]
         count = intent.getIntExtra("COUNT_SUB",0)
         day = intent.getIntExtra("DAY",0)
-        println(day)
-        detailTextSubName.text = SubName
+        detailTextSubName.text = subName
         detailTextDate.text = viewDate
+
         db = DBdetailinfo(this)
         dbMain = DBHandler(this)
         try {
-            var currSub = db.allSubDetailByDay(SubName, date,count)[0]
-            var schSub = dbMain.SubByDayCount(day,count)[0]
+            val currSub = db.allSubDetailByDay(subName, date,count)[0]
+            val schSub = dbMain.subByDayCount(day,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
             detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
@@ -81,7 +80,7 @@ class MainScheduleDetail : AppCompatActivity() {
                 detailImageView.visibility = View.VISIBLE
                 photopathMap = decodePath(currSub.path)
                 path = currSub.path
-                hasimage = currSub.hasimage
+                hasImage = currSub.hasimage
             } else {
                 detailImageView.visibility = View.GONE
             }
@@ -106,29 +105,26 @@ class MainScheduleDetail : AppCompatActivity() {
             }
         }
     }
-    fun onDetailImage(view: View){
-        if(hasimage == 1) {
-            println("onDetail=")
-            println(photopathMap)
-            println(photos[currentImage])
+
+
+    fun onDetailImage(view: View) {
+        if(hasImage == 1) {
             val file = File(photopathMap[photos[currentImage]])
             val callCameraIntent = Intent(Intent.ACTION_VIEW)
             if (callCameraIntent.resolveActivity(packageManager) != null) {
                 val authorities = "$packageName.fileprovider"
                 val imageUri = FileProvider.getUriForFile(this, authorities, file)
                 callCameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                callCameraIntent.setDataAndType(imageUri, "image/*");
+                callCameraIntent.setDataAndType(imageUri, "image/*")
                 startActivity(callCameraIntent)
             }
-
         }
     }
-    fun decodePath(d_path:String): HashMap<Bitmap, String> {
-        var resultPath = ArrayList<String>()
-        resultPath = d_path.split(";;;") as ArrayList<String>
+
+
+    private fun decodePath(d_path:String): HashMap<Bitmap, String> {
+        val resultPath: ArrayList<String> = d_path.split(";;;") as ArrayList<String>
         resultPath.removeAt(resultPath.lastIndex)
-        println("fun res path=")
-        println(resultPath)
         photosQuantity = resultPath.size
         if(photosQuantity == 1){
             buttonDetForw.visibility = View.GONE
@@ -137,59 +133,58 @@ class MainScheduleDetail : AppCompatActivity() {
             buttonDetForw.visibility = View.VISIBLE
             buttonDetBack.visibility = View.VISIBLE
         }
-        var map_res = hashMapOf<Bitmap, String>()
+        val mapRes = hashMapOf<Bitmap, String>()
         val file = File(resultPath[0])
-        var exif = ExifInterface(file.absolutePath)
+        val exif = ExifInterface(file.absolutePath)
         val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-        var rotationInDegrees =
+        val rotationInDegrees =
                 when (rotation) {
                     ExifInterface.ORIENTATION_ROTATE_90 -> 90
                     ExifInterface.ORIENTATION_ROTATE_180 -> 180
                     ExifInterface.ORIENTATION_ROTATE_270 -> 270
                     else -> 0
                 }
-        var matrix = Matrix()
+        val matrix = Matrix()
         if (rotation.toFloat() != 0f) {
             matrix.preRotate(rotationInDegrees.toFloat())
         }
-        var btmp = BitmapFactory.decodeFile(file.path)
-        var adjustedBitmap = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
+        val btmp = BitmapFactory.decodeFile(file.path)
+        val adjustedBitmap = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
         detailImageView.setImageBitmap(adjustedBitmap)
-        //map_res.put(adjustedBitmap, resultPath[0])
-
         for (p in resultPath) {
             val fileTmp = File(p)
-            var exif = ExifInterface(fileTmp.absolutePath)
+            val exif = ExifInterface(fileTmp.absolutePath)
             val rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)
-            var rotationInDegrees =
+            val rotationInDegrees =
                     when (rotation) {
                         ExifInterface.ORIENTATION_ROTATE_90 -> 90
                         ExifInterface.ORIENTATION_ROTATE_180 -> 180
                         ExifInterface.ORIENTATION_ROTATE_270 -> 270
                         else -> 0
                     }
-            var matrix = Matrix()
+            val matrix = Matrix()
             if (rotation.toFloat() != 0f) {
                 matrix.preRotate(rotationInDegrees.toFloat())
             }
-            var btmp = BitmapFactory.decodeFile(fileTmp.path)
-            var adjustedBitmaptmp = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
-            photos.add(adjustedBitmaptmp)
-            map_res.put(adjustedBitmaptmp, p)
+            val btmp = BitmapFactory.decodeFile(fileTmp.path)
+            val adjustedBitmapTmp = Bitmap.createBitmap(btmp, 0, 0, btmp.width, btmp.height, matrix, true)
+            photos.add(adjustedBitmapTmp)
+            mapRes[adjustedBitmapTmp] = p
         }
-        println("fun map res=")
-        println(map_res)
-        return map_res
+        return mapRes
     }
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        getMenuInflater().inflate(R.menu.activity_main_schedule_menu,menu)
+        menuInflater.inflate(R.menu.activity_main_schedule_menu,menu)
         return true
     }
+
 
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var typedValue = TypedValue()
+            val typedValue = TypedValue()
             theme.resolveAttribute(R.attr.colorPrimary, typedValue, true)
             val bm = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
@@ -197,8 +192,8 @@ class MainScheduleDetail : AppCompatActivity() {
         try {
             db = DBdetailinfo(this)
             dbMain = DBHandler(this)
-            var currSub = db.allSubDetailByDay(SubName, date,count)[0]
-            var schSub = dbMain.SubByDayCount(day,count)[0]
+            val currSub = db.allSubDetailByDay(subName, date,count)[0]
+            val schSub = dbMain.subByDayCount(day,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
             detailTextTips.text = if(currSub.tips.isEmpty()) "" else currSub.tips
             detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
@@ -209,7 +204,7 @@ class MainScheduleDetail : AppCompatActivity() {
                 buttonDetBack.visibility = View.VISIBLE
                 photopathMap = decodePath(currSub.path)
                 path = currSub.path
-                hasimage = currSub.hasimage
+                hasImage = currSub.hasimage
                 detailImageView.visibility = View.VISIBLE
                 detailImageView.setImageBitmap(photos[currentImage])
             } else {
@@ -219,7 +214,7 @@ class MainScheduleDetail : AppCompatActivity() {
             }
         }
         catch(e: Exception) {
-            var schSub = dbMain.SubByDayCount(day,count)[0]
+            val schSub = dbMain.subByDayCount(day,count)[0]
             detailRoom.text = if(schSub.room.isEmpty()) "" else schSub.room
             detailTeacher.text = if(schSub.teacher.isEmpty()) "" else schSub.teacher
             detailTextHomework.text = ""
@@ -232,11 +227,11 @@ class MainScheduleDetail : AppCompatActivity() {
                 val ed = pr.edit()
                 ed.putBoolean("FIRST"+schSub.id.toString(), false)
                 ed.apply()
-                val DetailEditor = Intent(this, MainDetailEditor::class.java)
-                DetailEditor.putExtra("NAME_SUB", SubName)
-                DetailEditor.putExtra("DATE", date)
-                DetailEditor.putExtra("COUNT_SUB", count)
-                startActivity(DetailEditor)
+                val detailEditor = Intent(this, MainDetailEditor::class.java)
+                detailEditor.putExtra("NAME_SUB", subName)
+                detailEditor.putExtra("DATE", date)
+                detailEditor.putExtra("COUNT_SUB", count)
+                startActivity(detailEditor)
             } else {
                 val ed = pr.edit()
                 ed.putBoolean("FIRST"+schSub.id.toString(), true)
@@ -246,13 +241,14 @@ class MainScheduleDetail : AppCompatActivity() {
         }
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == R.id.edit_menu) {
-            val DetailEditor = Intent(this, MainDetailEditor::class.java)
-            DetailEditor.putExtra("NAME_SUB", SubName)
-            DetailEditor.putExtra("DATE", date)
-            DetailEditor.putExtra("COUNT_SUB", count)
-            startActivity(DetailEditor)
+            val detailEditor = Intent(this, MainDetailEditor::class.java)
+            detailEditor.putExtra("NAME_SUB", subName)
+            detailEditor.putExtra("DATE", date)
+            detailEditor.putExtra("COUNT_SUB", count)
+            startActivity(detailEditor)
         } else {
             this.finish()
         }

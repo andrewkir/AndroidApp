@@ -14,6 +14,7 @@ class WaveHelper(private val mWaveView: WaveView) {
     private var mAnimatorSet: AnimatorSet? = null
     private var level =0.5f
 
+
     fun start(level:Float) {
         this.level = level
         initAnimation()
@@ -22,6 +23,7 @@ class WaveHelper(private val mWaveView: WaveView) {
             mAnimatorSet!!.start()
         }
     }
+
 
     private fun initAnimation() {
         val animators = ArrayList<Animator>()
@@ -56,6 +58,7 @@ class WaveHelper(private val mWaveView: WaveView) {
         mAnimatorSet = AnimatorSet()
         mAnimatorSet!!.playTogether(animators)
     }
+
 
     fun cancel() {
         if (mAnimatorSet != null) {
