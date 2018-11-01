@@ -43,22 +43,6 @@ class FinancialActivity : AppCompatActivity() {
             setTaskDescription(ActivityManager.TaskDescription("TimeM8", bm, typedValue.data))
         }
         setContentView(R.layout.activity_financial)
-        var Dpref = getSharedPreferences("isFirstDel", Context.MODE_PRIVATE)
-        val isDel = Dpref.getBoolean("isFirstDel",true)
-        if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel){
-            DBfinance(this).deleteAllData()
-            var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
-            val ed = pref.edit()
-            ed.putInt("MAX_FIN", 0)
-            ed.apply()
-            val edDel = Dpref.edit()
-            edDel.putBoolean("isFirstDel",false)
-            edDel.apply()
-        } else if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
-            val edDel = Dpref.edit()
-            edDel.putBoolean("isFirstDel",true)
-            edDel.apply()
-        }
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -85,22 +69,15 @@ class FinancialActivity : AppCompatActivity() {
             ed.putBoolean("FIRST", true)
             ed.apply()
             var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
-            val isDel = Dpref.getBoolean("isFirstLaunch",true)
+            val isDel = Dpref.getBoolean("isFirstLaunch",false)
             if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel) {
-                val ResIntent = Intent(this, FinanceResult::class.java)
                 Dpref.edit().putBoolean("isFirstLaunch",false).apply()
+                val ResIntent = Intent(this, FinanceResult::class.java)
                 ResIntent.putExtra("MAX", max.toInt())
                 ResIntent.putExtra("SUM", len.toInt())
                 startActivity(ResIntent)
             } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
                 Dpref.edit().putBoolean("isFirstLaunch",true).apply()
-            }
-
-            debug_res.setOnClickListener {
-                val ResIntent = Intent(this, FinanceResult::class.java)
-                ResIntent.putExtra("MAX", max.toInt())
-                ResIntent.putExtra("SUM", len.toInt())
-                startActivity(ResIntent)
             }
         }
         waveView.setSpeed(WaveView.SPEED_NORMAL)
@@ -124,7 +101,7 @@ class FinancialActivity : AppCompatActivity() {
                     }else if(dayOfWeek in 3..5 && waveView.progress >= max*0.7){
                         FinAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
                     }else if (dayOfWeek <= 3 && waveView.progress >= max*0.5){
-                        if (dayOfWeek == 1) {
+                        if (dayOfWeek != 1) {
                             FinAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
                         } else {
                             FinAdvices.text = "Прошёл только 1 день,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"

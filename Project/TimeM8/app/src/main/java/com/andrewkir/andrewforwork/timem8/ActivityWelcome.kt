@@ -40,19 +40,15 @@ class ActivityWelcome : AppCompatActivity() {
     private var btnNext: Button? = null
     private var prefManager: FirstLaungPrefs? = null
 
-    //  viewpager change listener
-    internal var viewPagerPageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
+    private var viewPagerPageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
 
         override fun onPageSelected(position: Int) {
             addBottomDots(position)
 
-            // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts!!.size - 1) {
-                // last page. make button text to GOT IT
                 btnNext!!.text = "НАЧАТЬ"
                 btnSkip!!.visibility = View.GONE
             } else {
-                // still pages are left
                 btnNext!!.text = "ДАЛЕЕ"
                 btnSkip!!.visibility = View.VISIBLE
             }
@@ -66,7 +62,7 @@ class ActivityWelcome : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppThemeWelcome)
-        // Checking for first time launch - before calling setContentView()
+        // Checking for first time launch
         prefManager = FirstLaungPrefs(this)
         if (!prefManager!!.isFirstTimeLaunch()) {
             launchHomeScreen()
@@ -74,16 +70,15 @@ class ActivityWelcome : AppCompatActivity() {
         } else {
 
             //creating all tables
-            var db = DBHandler(this)
+            val db = DBHandler(this)
             db.deleteAllData()
-            var db2 = DBdaily(this)
+            val db2 = DBdaily(this)
             db2.deleteAllData()
-            var db3 = DBdetailinfo(this)
+            val db3 = DBdetailinfo(this)
             db3.deleteAllData()
-            var db4 = DBfinance(this)
+            val db4 = DBfinance(this)
             db4.deleteAllData()
 
-            // Making notification bar transparent
             if (Build.VERSION.SDK_INT >= 21) {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             }
@@ -95,18 +90,14 @@ class ActivityWelcome : AppCompatActivity() {
             btnSkip = findViewById<View>(R.id.btn_skip) as Button
             btnNext = findViewById<View>(R.id.btn_next) as Button
 
-            // layouts of all welcome sliders
-            // add few more layouts if you want
             layouts = intArrayOf(R.layout.welcome_activity_1, R.layout.welcome_activity_2, R.layout.welcome_activity_3)
 
-            // adding bottom dots
             addBottomDots(0)
 
-            // making notification bar transparent
             changeStatusBarColor()
 
             myViewPagerAdapter = MyViewPagerAdapter()
-            viewPager!!.setAdapter(myViewPagerAdapter)
+            viewPager!!.adapter = myViewPagerAdapter
             viewPager!!.addOnPageChangeListener(viewPagerPageChangeListener)
 
             btnSkip!!.setOnClickListener {
@@ -114,11 +105,8 @@ class ActivityWelcome : AppCompatActivity() {
             }
 
             btnNext!!.setOnClickListener {
-                // checking for last page
-                // if last page home screen will be launched
                 val current = getItem(+1)
                 if (current < layouts!!.size) {
-                    // move to next screen
                     viewPager!!.currentItem = current
                 } else {
                     launchHomeScreen()
@@ -128,7 +116,7 @@ class ActivityWelcome : AppCompatActivity() {
     }
 
     private fun addBottomDots(currentPage: Int) {
-        dots = arrayOfNulls<TextView>(layouts!!.size)
+        dots = arrayOfNulls(layouts!!.size)
 
         val colorsActive = resources.getIntArray(R.array.array_dot_active)
         val colorsInactive = resources.getIntArray(R.array.array_dot_inactive)
@@ -156,9 +144,6 @@ class ActivityWelcome : AppCompatActivity() {
         finish()
     }
 
-    /**
-     * Making notification bar transparent
-     */
     private fun changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
@@ -167,9 +152,6 @@ class ActivityWelcome : AppCompatActivity() {
         }
     }
 
-    /**
-     * View pager adapter
-     */
     inner class MyViewPagerAdapter : PagerAdapter() {
         override fun getCount(): Int {
             return layouts!!.size
@@ -177,10 +159,6 @@ class ActivityWelcome : AppCompatActivity() {
 
         private var layoutInflater: LayoutInflater? = null
 
-//        val count: Int
-//            get() {
-//                return layouts!!.size
-//            }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {
             layoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

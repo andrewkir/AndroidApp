@@ -1,5 +1,6 @@
 package com.andrewkir.andrewforwork.timem8.ActivityFin
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -41,6 +42,17 @@ class FinanceResult : AppCompatActivity() {
         } else {
             resTip.text = "К сожалению, вы превысили свой максимум расходов на эту неделю :C"
         }
+
+        var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
+        val isDel = Dpref.getBoolean("isFirstLaunch",true)
+        DBfinance(this).deleteAllData()
+        var pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+        val ed = pref.edit()
+        ed.putInt("MAX_FIN", 0)
+        ed.apply()
+        val edDel = Dpref.edit()
+        edDel.putBoolean("isFirstDel",false)
+        edDel.apply()
     }
     private fun changeStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
