@@ -89,8 +89,10 @@ class FinancialActivity : AppCompatActivity() {
             if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel) {
                 val ResIntent = Intent(this, FinanceResult::class.java)
                 Dpref.edit().putBoolean("isFirstLaunch",false).apply()
+                ResIntent.putExtra("MAX", max.toInt())
+                ResIntent.putExtra("SUM", len.toInt())
                 startActivity(ResIntent)
-            } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2){
+            } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
                 Dpref.edit().putBoolean("isFirstLaunch",true).apply()
             }
 
@@ -100,7 +102,6 @@ class FinancialActivity : AppCompatActivity() {
                 ResIntent.putExtra("SUM", len.toInt())
                 startActivity(ResIntent)
             }
-
         }
         waveView.setSpeed(WaveView.SPEED_NORMAL)
         if(max != 0.toLong()){

@@ -14,8 +14,14 @@ import android.os.Build
 import android.util.TypedValue
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.ActivityFin.FinancialActivity
+import com.andrewkir.andrewforwork.timem8.Services.App
+import com.andrewkir.andrewforwork.timem8.Services.WebData
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {

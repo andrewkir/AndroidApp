@@ -29,8 +29,13 @@ import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.andrewkir.andrewforwork.timem8.Models.Sub
 import com.andrewkir.andrewforwork.timem8.Notifications.NotificationsHandler
+import com.andrewkir.andrewforwork.timem8.Services.App
+import com.andrewkir.andrewforwork.timem8.Services.WebData
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_settings.*
+import java.io.IOException
+import java.net.InetSocketAddress
+import java.net.Socket
 import java.nio.charset.StandardCharsets
 
 
@@ -228,63 +233,93 @@ class SettingsActivity : AppCompatActivity() {
         exportButton.setOnClickListener {
             val gson = Gson()
             val json = gson.toJson(DBHandler(this).allSub)
-            //val res = Base64.encodeToString(json.toByteArray(),Base64.DEFAULT)
-            setClipboard(this,json)
-        }
-        importButton.setOnClickListener {
             var input = EditText(this)
             input.height = 50.toPx()
             input.width = 150.toPx()
             input.gravity = Gravity.LEFT;
             var text = ""
             AlertDialog.Builder(this@SettingsActivity)
-                    .setMessage("Введите полученный текст")
+                    .setMessage("Введите уникальное имя (на латинице)")
                     .setCancelable(false)
                     .setView(input)
                     .setPositiveButton("Ок") { _, _ ->
                         try {
                             text = input.text.toString()
-                            val gson = Gson()
-                            val obj = gson.fromJson(text, Array<Sub>::class.java)
-                            var db = DBHandler(this)
-                            var tmp = db.allSub
-                            //удаление уведомлений
-                            for(sub in tmp){
-                                NotificationsHandler(context = this).makeNotification(
-                                        hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
-                                        minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
-                                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
-                                        textTitle = sub.name,
-                                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
-                                        dayOfweek = sub.day,
-                                        cancel = true,
-                                        delete = true,
-                                        count = sub.count
-                                )
+                            try {
+                                val bytes = json.toByteArray()
+                                var encodedData = String(android.util.Base64.encode(bytes, android.util.Base64.DEFAULT))
+                                encodedData = encodedData.trim()
+                                encodedData = encodedData.replace("[\n]".toRegex(), "")
+                                println(encodedData)
+                                WebData.AddSchedule(this, text, encodedData) { success ->
+                                    if (success) {
+                                        Toast.makeText(this, "Успешно, вы можете импортировать расписание по этому имени: $text", Toast.LENGTH_LONG).show()
+                                    } else {
+                                        Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_SHORT).show()
+                                        setClipboard(this,json)
+                                    }
+                                }
+                            } catch (e:Exception){
+                                Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
                             }
-                            db.deleteAllData()
-                            for(sub in obj){
-                                db.addSub(sub)
-                                NotificationsHandler(context = this).makeNotification(
-                                        hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
-                                        minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
-                                        text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
-                                        textTitle = sub.name,
-                                        id = Integer.parseInt(sub.day.toString()+sub.count.toString()),
-                                        dayOfweek = sub.day,
-                                        delete = false,
-                                        cancel = false,
-                                        count = sub.count
-                                )
-                            }
-                            Toast.makeText(this,"Готово",Toast.LENGTH_SHORT).show()
+                        }
+                        catch (e:Exception){
+                            Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle("Экспорт основного расписания")
+                    .setNegativeButton("Отмена"){ _, _ ->
+
+                    }
+                    .show()
+        }
+        importButton.setOnClickListener {
+            var input = EditText(this)
+            input.height = 50.toPx()
+            input.width = 150.toPx()
+            input.gravity = Gravity.LEFT
+            var text: String
+            AlertDialog.Builder(this@SettingsActivity)
+                    .setMessage("Введите уникальное имя / полученный текст")
+                    .setCancelable(false)
+                    .setView(input)
+                    .setPositiveButton("Ок") { _, _ ->
+                        try {
+                            text = input.text.toString()
+                                try {
+                                    WebData.getSchedule(this, input.text.toString()) { success: Boolean ->
+                                        if (success) {
+                                            val decodedData = String(android.util.Base64.decode(App.prefs.data, android.util.Base64.DEFAULT))
+                                            text = decodedData
+                                            try {
+                                                applyData(text)
+                                            } catch (e:Exception){
+                                                Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
+                                            }
+                                        } else {
+                                            Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, попытка обработать введённый текст", Toast.LENGTH_LONG).show()
+                                            try {
+                                                applyData(text)
+                                            } catch (e:Exception){
+                                                Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    }
+                                } catch (e: Exception) {
+                                    try {
+                                        applyData(text)
+                                    } catch (e:Exception){
+                                        Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                         }
                         catch (e:Exception){
                             Toast.makeText(this,"Что-то пошло нет так :c",Toast.LENGTH_SHORT).show()
                         }
 
                     }
-                    .setIcon(R.mipmap.ic_launcher)
+                     .setIcon(R.mipmap.ic_launcher)
                     .setTitle("Импорт основного расписания")
                     .setNegativeButton("Отмена"){ _, _ ->
 
@@ -350,6 +385,42 @@ class SettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         this.finish()
         return true
+    }
+    fun applyData(text: String){
+        val gson = Gson()
+        val obj = gson.fromJson(text, Array<Sub>::class.java)
+        var db = DBHandler(this)
+        var tmp = db.allSub
+        //удаление уведомлений
+        for (sub in tmp) {
+            NotificationsHandler(context = this).makeNotification(
+                    hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                    minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                    text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                    textTitle = sub.name,
+                    id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
+                    dayOfweek = sub.day,
+                    cancel = true,
+                    delete = true,
+                    count = sub.count
+            )
+        }
+        db.deleteAllData()
+        for (sub in obj) {
+            db.addSub(sub)
+            NotificationsHandler(context = this).makeNotification(
+                    hour = Integer.parseInt(sub.timeBegin.split(":")[0]),
+                    minute = Integer.parseInt(sub.timeBegin.split(":")[1]),
+                    text = "${sub.timeBegin};;;${sub.teacher};;;${sub.room}",
+                    textTitle = sub.name,
+                    id = Integer.parseInt(sub.day.toString() + sub.count.toString()),
+                    dayOfweek = sub.day,
+                    delete = false,
+                    cancel = false,
+                    count = sub.count
+            )
+        }
+        Toast.makeText(this, "Готово", Toast.LENGTH_SHORT).show()
     }
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }
