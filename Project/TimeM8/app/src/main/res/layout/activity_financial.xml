@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ActivityFin.FinancialActivity">
 
-    <com.yuan.waveview.WaveView
-        android:id="@+id/waveView"
+    <com.gelitenight.waveview.library.WaveView
+        android:id="@+id/newWave"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginEnd="8dp"
@@ -42,24 +42,10 @@
         android:padding="5dp"
         android:text="@string/lorem"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/waveView"
-        app:layout_constraintEnd_toEndOf="@+id/waveView"
-        app:layout_constraintStart_toStartOf="@+id/waveView"
-        app:layout_constraintTop_toTopOf="@+id/waveView" />
-
-    <TextView
-        android:id="@+id/trans"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/circle_fin_transparent"
-        android:fontFamily="@font/rubik_light"
-        android:gravity="center"
-        android:padding="5dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="@+id/waveView"
-        app:layout_constraintEnd_toEndOf="@+id/waveView"
-        app:layout_constraintStart_toStartOf="@+id/waveView"
-        app:layout_constraintTop_toTopOf="@+id/waveView" />
+        app:layout_constraintBottom_toBottomOf="@+id/newWave"
+        app:layout_constraintEnd_toEndOf="@+id/newWave"
+        app:layout_constraintStart_toStartOf="@+id/newWave"
+        app:layout_constraintTop_toTopOf="@+id/newWave" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainFinRecycler"
@@ -97,6 +83,20 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/waveView" />
+        app:layout_constraintTop_toBottomOf="@+id/newWave" />
+
+    <TextView
+        android:id="@+id/staticToAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/rubik_light"
+        android:text="@string/hint_finance"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mainFinRecycler" />
 
 </android.support.constraint.ConstraintLayout>

@@ -30,19 +30,34 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Русский язык / литература" />
 
-            <ImageView
-                android:id="@+id/detailImageView"
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/detailPhotoLin"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
                 android:layout_marginTop="24dp"
-                android:adjustViewBounds="true"
-                android:cropToPadding="true"
-                android:onClick="onDetailImage"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_add_new_photo_50dp" />
+                app:layout_constraintTop_toTopOf="parent">
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="5dp"
+                    android:layout_margin="5dp">
 
+                    <ImageView
+                        android:contentDescription="@string/detail_image"
+                        android:id="@+id/detailImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:cropToPadding="true"
+                        android:onClick="onDetailImage"
+                        app:srcCompat="@drawable/ic_add_new_photo_50dp" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="0dp"
@@ -90,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/rubik_light"
-                android:text="Домашнее задание:"
+                android:text="@string/homework_main_sch_det"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/scrollView2"
@@ -103,7 +118,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/rubik_light"
-                android:text="Заметки:"
+                android:text="@string/tips_main_sch_det"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,29 +164,29 @@
                 android:background="@color/background_material_light"
                 android:drawableStart="@drawable/ic_action_chevron_left"
                 android:minWidth="0dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="0dp"
+                android:paddingEnd="0dp"
                 android:scaleType="center"
                 android:text=""
-                app:layout_constraintStart_toStartOf="@+id/detailImageView"
-                app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+                app:layout_constraintStart_toStartOf="@+id/detailPhotoLin"
+                app:layout_constraintTop_toBottomOf="@+id/detailPhotoLin" />
 
             <Button
                 android:id="@+id/buttonDetForw"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:background="@color/background_material_light"
                 android:drawableStart="@drawable/ic_action_chevron_right"
                 android:minWidth="0dp"
-                android:paddingEnd="0dp"
                 android:paddingStart="0dp"
+                android:paddingEnd="0dp"
                 android:scaleType="center"
                 android:text=""
-                app:layout_constraintEnd_toEndOf="@+id/detailImageView"
-                app:layout_constraintTop_toBottomOf="@+id/detailImageView" />
+                app:layout_constraintEnd_toEndOf="@+id/detailPhotoLin"
+                app:layout_constraintTop_toBottomOf="@+id/detailPhotoLin" />
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="wrap_content"
@@ -199,7 +214,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="0dp"
                     android:fontFamily="@font/rubik_light"
-                    android:text="Мария Ивановна"
+                    android:text="@string/example_name_main_sch_det"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detailTextDate" />
             </android.support.v4.widget.NestedScrollView>
@@ -218,11 +233,12 @@
                     android:layout_height="20dp"
                     android:layout_marginStart="0dp"
                     android:fontFamily="@font/rubik_light"
-                    android:text="202a"
+                    android:text="@string/example_class_main_sch_det"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:layout_editor_absoluteY="120dp" />
             </android.support.v4.widget.NestedScrollView>
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
+
 </android.support.constraint.ConstraintLayout>

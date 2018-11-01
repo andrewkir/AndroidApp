@@ -239,7 +239,7 @@ class SettingsActivity : AppCompatActivity() {
             input.gravity = Gravity.LEFT;
             var text = ""
             AlertDialog.Builder(this@SettingsActivity)
-                    .setMessage("Введите уникальное имя (на латинице)")
+                    .setMessage("Введите уникальное имя")
                     .setCancelable(false)
                     .setView(input)
                     .setPositiveButton("Ок") { _, _ ->
@@ -255,7 +255,7 @@ class SettingsActivity : AppCompatActivity() {
                                     if (success) {
                                         Toast.makeText(this, "Успешно, вы можете импортировать расписание по этому имени: $text", Toast.LENGTH_LONG).show()
                                     } else {
-                                        Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_LONG).show()
                                         setClipboard(this,json)
                                     }
                                 }

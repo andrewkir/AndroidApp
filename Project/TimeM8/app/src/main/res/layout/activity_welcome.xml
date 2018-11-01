@@ -29,17 +29,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:background="@null"
-        android:text="ДАЛЕЕ"
+        android:text="@string/next_welcome_activity"
         android:textColor="@android:color/white" />
     <Button
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:background="@null"
-        android:text="ПРОПУСК"
+        android:text="@string/skip_welcome_activity"
         android:textColor="@android:color/white" />
 </RelativeLayout>

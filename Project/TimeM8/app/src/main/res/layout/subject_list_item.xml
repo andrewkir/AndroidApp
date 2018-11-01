@@ -29,7 +29,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/rubik_light"
-        android:text="10.00-13.00"
+        android:text="@string/example_time_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -52,7 +52,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/rubik_light"
-        android:text="Пара"
+        android:text="@string/example_type_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/subjectTime" />
 
@@ -63,7 +63,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/rubik_light"
-        android:text="каб. 222"
+        android:text="@string/example_class_list"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subjectName" />
@@ -75,7 +75,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/rubik_light"
-        android:text="Мария Ивановна"
+        android:text="@string/example_name_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/subjectType" />
 

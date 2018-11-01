@@ -15,10 +15,10 @@
             android:id="@+id/txt_row_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_light"
-            android:text="1"
+            android:text="@string/example_day_row_main"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -26,10 +26,10 @@
             android:id="@+id/txt_row_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_light"
-            android:text="1."
+            android:text="@string/example_count_row_main"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -37,10 +37,10 @@
             android:id="@+id/txt_row_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_light"
-            android:text="Алгебра"
+            android:text="@string/example_name_row_main"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Алгебра" />
@@ -58,10 +58,10 @@
             android:id="@+id/txt_row_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="2"
             android:fontFamily="@font/rubik_light"
-            android:text="00:00" />
+            android:text="@string/example_time_row_main" />
 
         <TextView
             android:id="@+id/txt_row_type"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_light"
-            android:text="Пара" />
+            android:text="@string/example_type_row_main" />
 
         <TextView
             android:id="@+id/txt_row_teacher"
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:fontFamily="@font/rubik_light"
-            android:text="Мария Ивановна" />
+            android:text="@string/example_teacher_name_row_main" />
 
         <TextView
             android:id="@+id/txt_row_room"
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/rubik_light"
-            android:text="222a" />
+            android:text="@string/example_class_row_main" />
     </LinearLayout>
 
 </LinearLayout>

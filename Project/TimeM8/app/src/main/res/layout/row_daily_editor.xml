@@ -12,7 +12,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/rubik_light"
-        android:text="Название"
+        android:text="@string/example_name_daily_editor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/rubik_light"
         android:maxLines="1"
-        android:text="Описание"
+        android:text="@string/example_desc_daily_editor"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rowDailyEditorName" />
@@ -39,7 +39,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/rubik_light"
-        android:text="Задач:"
+        android:text="@string/example_task_daily_editor"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/rowDailyEditorDesc"
         app:layout_constraintTop_toBottomOf="@+id/rowDailyEditorName" />

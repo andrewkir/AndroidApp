@@ -16,7 +16,7 @@
             android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Основное расписание"
+            android:text="@string/welcome1static"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -25,7 +25,8 @@
             android:layout_height="100dp"
             android:src="@drawable/ic_all_inclusive_welcome"
             android:paddingLeft="0dp"
-            android:paddingRight="0dp"/>
+            android:paddingRight="0dp"
+            android:contentDescription="@string/welcome_logo_pic" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,10 +35,9 @@
             android:fontFamily="@font/rubik_light"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Составьте себе недельное расписание
-и максимально удобно работайте с ним"
+            android:text="@string/welcome1staticDetail"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </RelativeLayout>

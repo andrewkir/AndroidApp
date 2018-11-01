@@ -17,7 +17,7 @@
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
             android:paddingBottom="20dp"
-            android:text="Кастомизируемый внешний вид"
+            android:text="@string/welcome3static"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -58,10 +58,9 @@
             android:fontFamily="@font/rubik_light"
             android:paddingLeft="40dp"
             android:paddingRight="40dp"
-            android:text="Возможность подобрать цвета
-приложения по вкусу"
+            android:text="@string/welcome3staticDetail"
             android:textAlignment="center"
             android:textColor="@android:color/white"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
     </LinearLayout>
 </RelativeLayout>

@@ -8,24 +8,26 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import com.andrewkir.andrewforwork.timem8.Adapters.FinancialAdapter
 import com.andrewkir.andrewforwork.timem8.DataBase.DBfinance
 import com.andrewkir.andrewforwork.timem8.Editors.FinanceEditor
-import com.yuan.waveview.WaveView
 import kotlinx.android.synthetic.main.activity_financial.*
 import android.support.v7.widget.RecyclerView
 import android.util.TypedValue
 import android.view.MenuItem
-import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.R
 import java.util.*
+import android.content.res.Resources
+import android.graphics.Color
+import android.view.View
+import com.andrewkir.andrewforwork.timem8.Services.WaveHelper
 
 
 class FinancialActivity : AppCompatActivity() {
     lateinit var sPref: SharedPreferences
     var stat: String = ""
+    private lateinit var waveHelper: WaveHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
@@ -45,46 +47,44 @@ class FinancialActivity : AppCompatActivity() {
         setContentView(R.layout.activity_financial)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        newWave.setWaveColor(
+                Color.parseColor("#88b8f1ed"),
+                Color.parseColor("#b8f1ed"))
+        waveHelper = WaveHelper(newWave)
+        newWave.setBorder(1.toPx(), Color.DKGRAY)
+        newWave.setShapeType(com.gelitenight.waveview.library.WaveView.ShapeType.CIRCLE)
+        newWave.waterLevelRatio = 0f
+        newWave.amplitudeRatio = 0.05f
+        var spent = DBfinance(this).Sum()
+        val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
+        val max = pref.getInt("MAX_FIN",0)
+
+        // check for fin result
+        var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
+        val isDel = Dpref.getBoolean("isFirstLaunch",false)
+        if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel) {
+            Dpref.edit().putBoolean("isFirstLaunch",false).apply()
+            val ResIntent = Intent(this, FinanceResult::class.java)
+            ResIntent.putExtra("MAX", max)
+            ResIntent.putExtra("SUM", spent)
+            startActivity(ResIntent)
+        } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
+            Dpref.edit().putBoolean("isFirstLaunch",true).apply()
+        }
     }
 
+    override fun onPause() {
+        super.onPause()
+        waveHelper.cancel()
+    }
     override fun onResume() {
         super.onResume()
-        val pr = getPreferences(MODE_PRIVATE)
-        var len = DBfinance(this).Sum().toLong()
+        var spent = DBfinance(this).Sum()
         val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
-        val max = pref.getInt("MAX_FIN",0).toLong()
-        if(pr.getBoolean("FIRST",true)) {
-            val ed = pr.edit()
-            ed.putBoolean("FIRST", false)
-            ed.apply()
-            println("_______________RECREATED_______________")
-            //recreate()
-            //finish()
-            //overridePendingTransition(0, 0)
-            //startActivity(intent)
-            recreate()
-            //overridePendingTransition(0, 0)
-        } else {
-            val ed = pr.edit()
-            ed.putBoolean("FIRST", true)
-            ed.apply()
-            var Dpref = getSharedPreferences("isFirstResLaunch", Context.MODE_PRIVATE)
-            val isDel = Dpref.getBoolean("isFirstLaunch",false)
-            if(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == 2 && isDel) {
-                Dpref.edit().putBoolean("isFirstLaunch",false).apply()
-                val ResIntent = Intent(this, FinanceResult::class.java)
-                ResIntent.putExtra("MAX", max.toInt())
-                ResIntent.putExtra("SUM", len.toInt())
-                startActivity(ResIntent)
-            } else if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) != 2 && !isDel){
-                Dpref.edit().putBoolean("isFirstLaunch",true).apply()
-            }
-        }
-        waveView.setSpeed(WaveView.SPEED_NORMAL)
-        if(max != 0.toLong()){
-            waveView.max = max
-            waveView.max = max
-            waveView.progress = if(len>=max) max else len
+        val max = pref.getInt("MAX_FIN",0)
+        if(max != 0){
+            staticToAdd.visibility = View.GONE
+            newWave.waterLevelRatio = if(spent>=max) 1f else spent/max.toFloat()
             val dsum = if(DBfinance(this).Sum()<0) 0 else DBfinance(this).Sum()
             tipsFin.text = "Потрачено: \n$dsum\u20BD из $max\u20BD"
             val calendar = Calendar.getInstance()
@@ -92,23 +92,23 @@ class FinancialActivity : AppCompatActivity() {
             if (dayOfWeek == 0) {
                 dayOfWeek = 7
             }
-            if (waveView.progress >= max && dayOfWeek<7){
+            if (newWave.waterLevelRatio >= 1f && dayOfWeek<7){
                 FinAdvices.text = "К сожалению вы превысили максимум расходов этой недели"
             } else  when((0..1).shuffled().last()){
                 0 ->{
-                    if (dayOfWeek <= 6 && waveView.progress >= max*0.8) {
+                    if (dayOfWeek <= 6 && newWave.waterLevelRatio >= 0.8f) {
                         FinAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы хотите уложиться в максимум!"
-                    }else if(dayOfWeek in 3..5 && waveView.progress >= max*0.7){
+                    }else if(dayOfWeek in 3..5 && newWave.waterLevelRatio >= 0.7f){
                         FinAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
-                    }else if (dayOfWeek <= 3 && waveView.progress >= max*0.5){
+                    }else if (dayOfWeek <= 3 && newWave.waterLevelRatio >= 0.5f){
                         if (dayOfWeek != 1) {
                             FinAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
                         } else {
                             FinAdvices.text = "Прошёл только 1 день,а вы уже потратили $dsum\u20BD. Старайтесь избегать ненужных покупок"
                         }
-                    }else if (dayOfWeek <= 2 && waveView.progress > max*0.3) {
+                    }else if (dayOfWeek <= 2 && newWave.waterLevelRatio > 0.3f) {
                         FinAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в указанный максимум"
-                    }else if (dayOfWeek <= 2 && waveView.progress >= max*0.2) {
+                    }else if (dayOfWeek <= 2 && newWave.waterLevelRatio >= 0.2f) {
                         FinAdvices.text = "Старайтесь избегать ненужных покупок!"
                     }else {
                         FinAdvices.text = "Так держать! Такими темпами вы уложитесь в максимум"
@@ -125,31 +125,26 @@ class FinancialActivity : AppCompatActivity() {
                 }
             }
         } else {
-            waveView.max = 100.toLong()
-            waveView.progress = 49.toLong()
             tipsFin.text="Самое время установить максимальную сумму!"
+            staticToAdd.visibility = View.VISIBLE
         }
         fab.setOnClickListener { view ->
-            //            Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null)
-//                    .show()
             val edIntent = Intent(this,FinanceEditor::class.java)
             startActivity(edIntent)
         }
-        waveView.setMode(WaveView.MODE_CIRCLE)
-        waveView.setWaveColor(resources.getColor(R.color.material_green_500))
-        if(waveView.progress >= max*0.4){
-                waveView.setWaveColor(resources.getColor(R.color.material_yellow_500))
+        newWave.setWaveColor(resources.getColor(R.color.material_green_200),resources.getColor(R.color.material_green_300))
+        if(newWave.waterLevelRatio >= 0.4f){
+            newWave.setWaveColor(resources.getColor(R.color.material_yellow_200), resources.getColor(R.color.material_yellow_300))
         }
-        if(waveView.progress >= max*0.8){
-            waveView.setWaveColor(resources.getColor(R.color.material_red_500))
+        if(newWave.waterLevelRatio >= 0.8f){
+            newWave.setWaveColor(resources.getColor(R.color.material_red_200), resources.getColor(R.color.material_red_300))
         }
         mainFinRecycler.adapter = FinancialAdapter(this){_->}
         val layoutManagerFinance = LinearLayoutManager(this)
         mainFinRecycler.layoutManager = layoutManagerFinance
         mainFinRecycler.setHasFixedSize(true)
         showHideWhenScroll()
-
+        waveHelper.start(if(max == 0) 0.5f else if(spent>=max) 1f else spent/max.toFloat())
     }
 
     private fun showHideWhenScroll() {
@@ -167,4 +162,5 @@ class FinancialActivity : AppCompatActivity() {
         this.finish()
         return true
     }
+    fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }

@@ -14,7 +14,7 @@
         android:layout_height="43dp"
         android:background="@drawable/rounded_btn"
         android:fontFamily="@font/rubik"
-        android:text="1:00"
+        android:text="@string/time_end_main_editor"
         android:textColor="@color/Txt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -47,7 +47,7 @@
         android:layout_width="80dp"
         android:layout_height="45dp"
         android:fontFamily="@font/rubik_light"
-        android:hint="номер"
+        android:hint="@string/count_main_editor"
         android:inputType="number"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/type"
@@ -64,10 +64,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/rubik_light"
-        android:hint="название"
+        android:hint="@string/count_main_edit"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/teacher"
@@ -76,8 +77,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/rubik_light"
-        android:hint="учитель"
+        android:hint="@string/teacher_main_edit"
         android:padding="10dp"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -89,8 +91,9 @@
         android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:fontFamily="@font/rubik_light"
-        android:hint="тип"
+        android:hint="@string/type_main_edit"
         android:padding="10dp"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/count"
@@ -104,7 +107,7 @@
         android:layout_marginTop="8dp"
         android:fontFamily="@font/rubik"
         android:padding="10dp"
-        android:text="Добавить"
+        android:text="@string/add_btn_main_edit"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btn_update"
         app:layout_constraintHorizontal_bias="0.5"
@@ -119,7 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/rubik"
-        android:text="Обновить"
+        android:text="@string/update_btn_main_edit"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_insert"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete"
@@ -134,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:fontFamily="@font/rubik"
-        android:text="Удалить"
+        android:text="@string/del_btn_main_edit"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btn_update"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,7 +155,7 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/rounded_btn"
         android:fontFamily="@font/rubik"
-        android:text="00:00"
+        android:text="@string/timeBegin_main_edit"
         android:textColor="@color/Txt"
         app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -168,7 +171,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text=":"
+        android:text="@string/double_dots"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/timeBeginBtn"
         app:layout_constraintEnd_toStartOf="@+id/timeEndBtn"
@@ -184,10 +187,11 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:fontFamily="@font/rubik_light"
-        android:hint="кабинет"
+        android:hint="@string/class_main_edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/teacher"
-        app:layout_constraintTop_toBottomOf="@+id/type" />
+        app:layout_constraintTop_toBottomOf="@+id/type"
+        android:inputType="text" />
 
     <!--<Spinner-->
     <!--android:id="@+id/spinner"-->
