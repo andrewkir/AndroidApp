@@ -103,9 +103,9 @@ class FinancialActivity : AppCompatActivity() {
             } else  when((0..1).shuffled().last()){
                 0 ->{
                     if (dayOfWeek <= 6 && newWave.waterLevelRatio >= 0.8f) {
-                        finAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы хотите уложиться в максимум!"
+                        finAdvices.text = "Вы уже в красной зоне, исключите ненужные покупки, если вы не хотите превысить максимум!"
                     }else if(dayOfWeek in 3..5 && newWave.waterLevelRatio >= 0.7f){
-                        finAdvices.text = "Такими темпами вы не уложитесь в максимум, старайтесь тратить деньги только на нужные вещи"
+                        finAdvices.text = "Такими темпами вы не уложитесь в запланированную сумму, старайтесь тратить деньги только на нужные вещи"
                     }else if (dayOfWeek <= 3 && newWave.waterLevelRatio >= 0.5f){
                         if (dayOfWeek != 1) {
                             finAdvices.text = "Прошло только $dayOfWeek дня,а вы уже потратили $dSum\u20BD. Старайтесь избегать ненужных покупок"
@@ -113,18 +113,18 @@ class FinancialActivity : AppCompatActivity() {
                             finAdvices.text = "Прошёл только 1 день,а вы уже потратили $dSum\u20BD. Старайтесь избегать ненужных покупок"
                         }
                     }else if (dayOfWeek <= 2 && newWave.waterLevelRatio > 0.3f) {
-                        finAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в указанный максимум"
+                        finAdvices.text = "Постарайтесь меньше тратить, если вы хотите уложиться в запланированный бюджет"
                     }else if (dayOfWeek <= 2 && newWave.waterLevelRatio >= 0.2f) {
                         finAdvices.text = "Старайтесь избегать ненужных покупок!"
                     }else {
-                        finAdvices.text = "Так держать! Такими темпами вы уложитесь в максимум"
+                        finAdvices.text = "Так держать! Такими темпами вы уложитесь в рамки установленного бюджета"
                     }
                 }
                 1 ->{
                     when((0..4).shuffled().last()) {
                         0 -> finAdvices.text = "Перед покупкой всегда задавайте себе вопрос необходимости данной вещи"
                         1 -> finAdvices.text = "Старайтесь откладывать с каждого дохода часть(10%-30%) средств"
-                        2 -> finAdvices.text = "Отслеживаете ваши затраты, именно для этого хорошо подойдёт данное приложение :)"
+                        2 -> finAdvices.text = "Отслеживайте ваши затраты, именно для этого хорошо подойдёт данное приложение :)"
                         3 -> finAdvices.text = "Старайтесь ходить по магазинам со списком, так вы с меньшей вероятностью купите ненужную вещь"
                         4 -> finAdvices.text = "Старайтесь держать не больше 30% от всех ваших средств в одном месте"
                     }
@@ -134,14 +134,14 @@ class FinancialActivity : AppCompatActivity() {
             tipsFin.text="Самое время установить максимальную сумму!"
             finAdvices.visibility = View.GONE
             staticToAdd.visibility = View.VISIBLE
-    }
+        }
         fab.setOnClickListener {
             val edIntent = Intent(this,FinanceEditor::class.java)
             startActivity(edIntent)
         }
         newWave.setWaveColor(resources.getColor(R.color.material_green_200),resources.getColor(R.color.material_green_300))
         if(newWave.waterLevelRatio >= 0.4f){
-            newWave.setWaveColor(resources.getColor(R.color.material_yellow_100), resources.getColor(R.color.material_yellow_A200))
+            newWave.setWaveColor(resources.getColor(R.color.material_yellow_100), resources.getColor(R.color.material_yellow_200))
         }
         if(newWave.waterLevelRatio >= 0.8f){
             newWave.setWaveColor(resources.getColor(R.color.material_red_200), resources.getColor(R.color.material_red_300))
@@ -151,7 +151,7 @@ class FinancialActivity : AppCompatActivity() {
         mainFinRecycler.layoutManager = layoutManagerFinance
         mainFinRecycler.setHasFixedSize(true)
         showHideWhenScroll()
-        waveHelper.start(if(max == 0) 0.5f else if(spent>=max) 1f else spent/max.toFloat())
+        waveHelper.start(if(max == 0) 0.39f else if(spent>=max) 1f else spent/max.toFloat())
     }
 
 

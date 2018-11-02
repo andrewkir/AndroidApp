@@ -14,12 +14,10 @@ class PagerAdapter(fragmentManager: FragmentManager, var day:Int) :
     override fun getItem(position: Int): Fragment {
         val bundle = Bundle()
         val fragment = MainScheduleFragment.newInstance()
-
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.YEAR,2018)
         calendar.set(Calendar.MONTH,0)
         calendar.set(Calendar.DAY_OF_YEAR,0)
-
         calendar.add(Calendar.DATE,position)
 
         val tmp = calendar.get(Calendar.DAY_OF_WEEK)

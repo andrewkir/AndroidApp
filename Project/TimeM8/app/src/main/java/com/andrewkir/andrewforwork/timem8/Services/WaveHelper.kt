@@ -41,7 +41,7 @@ class WaveHelper(private val mWaveView: WaveView) {
         // water level increases from 0 to center of WaveView
         val waterLevelAnim = ObjectAnimator.ofFloat(
                 mWaveView, "waterLevelRatio", 0f, level)
-        waterLevelAnim.duration = 8000
+        waterLevelAnim.duration = 6000
         waterLevelAnim.interpolator = DecelerateInterpolator()
         animators.add(waterLevelAnim)
 
@@ -62,7 +62,6 @@ class WaveHelper(private val mWaveView: WaveView) {
 
     fun cancel() {
         if (mAnimatorSet != null) {
-            //            mAnimatorSet.cancel();
             mAnimatorSet!!.end()
         }
     }

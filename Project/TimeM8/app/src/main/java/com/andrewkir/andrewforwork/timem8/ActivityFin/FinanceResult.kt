@@ -1,5 +1,6 @@
 package com.andrewkir.andrewforwork.timem8.ActivityFin
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -13,6 +14,7 @@ import kotlin.math.abs
 
 class FinanceResult : AppCompatActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppThemeWelcome)
@@ -36,7 +38,8 @@ class FinanceResult : AppCompatActivity() {
             gainStatic.text = ""
         }
         when {
-            sum<max -> resTip.text = "Так держать! Вы смогли сэкономить ${max-sum}\u20BD. В таком духе через год у вас накопится ${52*(max-sum)}\u20BD"
+            sum == max -> resTip.text = "Неплохо, вы ровно уложились в свой максимум"
+            sum < max -> resTip.text = "Так держать! Вы смогли сэкономить ${max-sum}\u20BD. Такими темпами через год у вас накопится ${52*(max-sum)}\u20BD"
             sum - max <= max*0.05 -> resTip.text = "Чуть - чуть не вышло, вы превысили установленный максимум на ${sum-max}\u20BD"
             else -> resTip.text = "К сожалению, вы превысили свой максимум расходов на эту неделю :C"
         }

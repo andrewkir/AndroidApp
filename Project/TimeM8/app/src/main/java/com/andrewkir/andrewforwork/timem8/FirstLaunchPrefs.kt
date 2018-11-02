@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-class FirstLaungPrefs(context: Context) {
+class FirstLaunchPrefs(context: Context) {
     private var pref: SharedPreferences
     private var editor: SharedPreferences.Editor
     private var _context: Context = context

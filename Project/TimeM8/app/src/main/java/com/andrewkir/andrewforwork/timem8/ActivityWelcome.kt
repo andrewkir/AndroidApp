@@ -25,14 +25,13 @@ import kotlinx.android.synthetic.main.activity_welcome.*
 
 class ActivityWelcome : AppCompatActivity() {
 
-    private var viewPager: ViewPager? = null
     private var myViewPagerAdapter: MyViewPagerAdapter? = null
     private var dotsLayout: LinearLayout? = null
     private lateinit var dots: Array<TextView?>
     private var layouts: IntArray? = null
     private var btnSkip: Button? = null
     private var btnNext: Button? = null
-    private var prefManager: FirstLaungPrefs? = null
+    private var prefManager: FirstLaunchPrefs? = null
 
     private var viewPagerPageChangeListener: ViewPager.OnPageChangeListener = object : ViewPager.OnPageChangeListener {
 
@@ -58,7 +57,7 @@ class ActivityWelcome : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setTheme(R.style.AppThemeWelcome)
         // Checking for first time launch
-        prefManager = FirstLaungPrefs(this)
+        prefManager = FirstLaunchPrefs(this)
         if (!prefManager!!.isFirstTimeLaunch()) {
             launchHomeScreen()
             finish()
@@ -80,7 +79,6 @@ class ActivityWelcome : AppCompatActivity() {
 
             setContentView(R.layout.activity_welcome)
 
-            viewPager = viewPager
             dotsLayout = layoutDots
             btnSkip = findViewById<View>(R.id.btn_skip) as Button
             btnNext = findViewById<View>(R.id.btn_next) as Button

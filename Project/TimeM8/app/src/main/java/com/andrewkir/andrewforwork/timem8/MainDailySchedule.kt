@@ -1,5 +1,6 @@
 package com.andrewkir.andrewforwork.timem8
 
+import android.annotation.SuppressLint
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
@@ -31,6 +32,7 @@ class MainDailySchedule : AppCompatActivity(){
     var stat: String = ""
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sPref = getSharedPreferences("ThemePrefs",Context.MODE_PRIVATE)
@@ -69,7 +71,9 @@ class MainDailySchedule : AppCompatActivity(){
             expandRecycler.adapter = expandAdapter(data = db.allFrogByDay(day) as ArrayList<dailyFrog>)
             hintToAddSmthDaily.text = ""
         } else {
-            hintToAddSmthDaily.text = "Вы ещё не добавили задания на этот день"
+            hintToAddSmthDaily.text = "Лягушки - необходимые, неприятные ежедневные дела. Из-за постоянного откладывания мы часто забываем про них." +
+                    " В данном разделе вы можете добавить неограниченное количество лягушек, затем отметить выполненные задания. Добавление\\обновление информации происходит в окне редактора," +
+                    " для перехода в него нажмите на карандаш в нижнем правом углу"
         }
 
         val swipeHandler = object : SwipeToDeleteAdapter(this) {
@@ -104,6 +108,7 @@ class MainDailySchedule : AppCompatActivity(){
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -117,7 +122,9 @@ class MainDailySchedule : AppCompatActivity(){
             hintToAddSmthDaily.text = ""
             expandRecycler.adapter = expandAdapter(db.allFrogByDay(day) as ArrayList<dailyFrog>)
         } else {
-            hintToAddSmthDaily.text = "Вы ещё не добавили задания на этот день"
+            hintToAddSmthDaily.text = "Лягушки - необходимые, неприятные ежедневные дела. Из-за постоянного откладывания мы часто забываем про них." +
+                    " В данном разделе вы можете добавить неограниченное количество лягушек, затем отметить выполненные задания. Добавление\\обновление информации происходит в окне редактора," +
+                    " для перехода в него нажмите на карандаш в нижнем правом углу"
         }
         showHideWhenScroll()
     }

@@ -103,6 +103,7 @@ class SettingsActivity : AppCompatActivity() {
                             )
                         }
                         db.deleteAllData()
+                        DBdetailinfo(this).deleteAllData()
                         Toast.makeText(this,"Основное расписание удалено",Toast.LENGTH_SHORT).show()
                     }
                     .setNegativeButton("Отмена") { _, _ ->
@@ -254,7 +255,7 @@ class SettingsActivity : AppCompatActivity() {
                                         if (success) {
                                             Toast.makeText(this, "Успешно, вы можете импортировать расписание по этому имени: $scheduleName", Toast.LENGTH_LONG).show()
                                         } else {
-                                            Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this, "Неправильное уникальное имя или отсутствует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_LONG).show()
                                             setClipboard(this, json)
                                         }
                                     }
@@ -299,7 +300,7 @@ class SettingsActivity : AppCompatActivity() {
                                                 errorMsg()
                                             }
                                         } else {
-                                            Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, попытка обработать введённый текст", Toast.LENGTH_LONG).show()
+                                            Toast.makeText(this, "Неправильное уникальное имя или отсутствует подключение к интернету, попытка обработать введённый текст", Toast.LENGTH_LONG).show()
                                             try {
                                                 applyData(text)
                                             } catch (e:Exception) {
