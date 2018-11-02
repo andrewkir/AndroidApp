@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.DataBase.DBhandler
 import com.andrewkir.andrewforwork.timem8.R
 import com.andrewkir.andrewforwork.timem8.Models.Sub
 import kotlinx.android.synthetic.main.activity_editable.*
@@ -16,6 +16,9 @@ import kotlinx.android.synthetic.main.activity_editable.*
 class MainScheduleFragment : Fragment() {
     var day = 0
     var date = "1.1.2018"
+    internal lateinit var db: DBhandler
+    private var lstSubs:List<Sub> = ArrayList()
+    lateinit var adapter: com.andrewkir.andrewforwork.timem8.Adapters.MainScheduleAdapter
 
 
     internal lateinit var context: Context
@@ -45,7 +48,7 @@ class MainScheduleFragment : Fragment() {
             day = bundle.getInt("DAY", 0)+1
             date = bundle.getString("DATE","1.1.2018")
         }
-        db = DBHandler(context)
+        db = DBhandler(context)
         subjectListFragment.addItemDecoration(DividerItemDecoration(context,1))
         if(db.allSubByDay(day).isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"
@@ -68,11 +71,6 @@ class MainScheduleFragment : Fragment() {
     }
 
 
-    internal lateinit var db: DBHandler
-    private var lstSubs:List<Sub> = ArrayList<Sub>()
-    lateinit var adapter: com.andrewkir.andrewforwork.timem8.Adapters.MainScheduleAdapter
-
-
     override fun onResume() {
         super.onResume()
         refreshData()
@@ -80,7 +78,7 @@ class MainScheduleFragment : Fragment() {
 
 
     private fun refreshData(){
-        val dbTmp = DBHandler(context)
+        val dbTmp = DBhandler(context)
         lstSubs = dbTmp.allSubByDay(day)
         if(lstSubs.isEmpty()){
             hintToAddSmth.text="Вы ещё не добавили расписание на этот день"

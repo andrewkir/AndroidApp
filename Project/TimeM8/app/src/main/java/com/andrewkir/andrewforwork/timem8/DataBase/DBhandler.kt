@@ -20,7 +20,7 @@ const val COL_TYPE="type"
 const val COL_TEACHER="teacher"
 
 
-class DBHandler(context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null , DATABASE_VERSION){
+class DBhandler(context: Context):SQLiteOpenHelper(context, DATABASE_NAME,null , DATABASE_VERSION){
     override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +" ("+ COL_ID+" INTEGER PRIMARY KEY," +
                 COL_NAME + " text," +

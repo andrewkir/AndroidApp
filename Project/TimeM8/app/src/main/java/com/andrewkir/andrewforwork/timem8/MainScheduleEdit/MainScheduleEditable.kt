@@ -82,6 +82,7 @@ class MainScheduleEditable : AppCompatActivity() {
                 day = calendar.get(Calendar.DAY_OF_WEEK)
                 supportActionBar?.title = getMonth()
                 applyDay()
+                println(calendar.get(Calendar.YEAR))
             }
         })
     }
@@ -120,6 +121,7 @@ class MainScheduleEditable : AppCompatActivity() {
             10 ->return  "Ноябрь"
             11 ->return  "Декабрь"
         }
+        println(calendar.get(Calendar.YEAR))
         return ""
     }
 

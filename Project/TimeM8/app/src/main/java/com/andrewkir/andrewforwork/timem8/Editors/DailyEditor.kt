@@ -8,13 +8,16 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import com.andrewkir.andrewforwork.timem8.Adapters.DailyCheckBoxAdapter
 import com.andrewkir.andrewforwork.timem8.Adapters.DailyEditorFrogs
@@ -87,9 +90,24 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         recyclerFrogs.addItemDecoration(DividerItemDecoration(this,1))
         spinnerDaily!!.onItemSelectedListener = this
         val listColors = arrayOf("Красный","Синий","Зелёный","Оранжевый","Серый","Фиолетовый")
-        val aa = ArrayAdapter(this, android.R.layout.simple_spinner_item,listColors)
-        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerDaily!!.adapter = aa
+        val adapterSpinner = object : ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, listColors) {
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getView(position, convertView, parent)
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
+                (v as TextView).typeface = externalFont
+                return v
+            }
+
+
+            override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+                val v = super.getDropDownView(position, convertView, parent)
+                val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
+                (v as TextView).typeface = externalFont
+                return v
+            }
+        }
+        spinnerDaily!!.adapter = adapterSpinner
 
         refresh()
         spinnerDaily.setSelection(3)
@@ -167,6 +185,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             taskEdit.setText("")
             editDays.text = "Дни повтора"
             refresh()
+            spinnerDaily.setSelection(3)
             frog.colorId1 = R.color.material_deep_orange_400
             frog.colorId2 = R.color.material_deep_orange_200
         }
@@ -229,7 +248,7 @@ class DailyEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
 
-    fun daysView(view: View) {
+    fun onDaysView(view: View) {
         showDialog()
     }
 

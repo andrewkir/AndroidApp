@@ -16,7 +16,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.DataBase.DBhandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.andrewkir.andrewforwork.timem8.DataBase.DBfinance
@@ -65,7 +65,7 @@ class ActivityWelcome : AppCompatActivity() {
         } else {
 
             //creating all tables
-            val db = DBHandler(this)
+            val db = DBhandler(this)
             db.deleteAllData()
             val db2 = DBdaily(this)
             db2.deleteAllData()

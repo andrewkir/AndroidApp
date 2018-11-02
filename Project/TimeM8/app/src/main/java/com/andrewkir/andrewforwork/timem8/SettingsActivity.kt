@@ -11,14 +11,13 @@ import android.os.Bundle
 import android.os.Handler
 import com.ramotion.circlemenu.CircleMenuView
 import android.support.v7.app.AlertDialog
-import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.DataBase.DBhandler
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdaily
 import com.andrewkir.andrewforwork.timem8.DataBase.DBdetailinfo
 import com.andrewkir.andrewforwork.timem8.Models.Sub
@@ -88,7 +87,7 @@ class SettingsActivity : AppCompatActivity() {
                     .setMessage("Вы точно хотите удалить эту информацию?\n(Отменить это действие будет невозможно)")
                     .setCancelable(false)
                     .setPositiveButton("Удалить") { _, _ ->
-                        val db = DBHandler(this)
+                        val db = DBhandler(this)
                         val subs = db.allSub
                         for(sub in subs) {
                             NotificationsHandler(context = this).makeNotification(
@@ -148,7 +147,7 @@ class SettingsActivity : AppCompatActivity() {
                 ed.putInt("MINUTES", min)
                 ed.apply()
 
-                val db = DBHandler(this)
+                val db = DBhandler(this)
                 val subs = db.allSub
                 for(sub in subs) {
                     NotificationsHandler(context = this).makeNotification(
@@ -189,7 +188,7 @@ class SettingsActivity : AppCompatActivity() {
                 staticNotif.text = "выключить уведомления"
                 minutesSettings.isEnabled = true
                 saveMinutes.isEnabled = true
-                val db = DBHandler(this)
+                val db = DBhandler(this)
                 val subs = db.allSub
                 for(sub in subs) {
                     NotificationsHandler(context = this).makeNotification(
@@ -208,7 +207,7 @@ class SettingsActivity : AppCompatActivity() {
                 staticNotif.text = "включить уведомления"
                 minutesSettings.isEnabled = false
                 saveMinutes.isEnabled = false
-                val db = DBHandler(this)
+                val db = DBhandler(this)
                 val subs = db.allSub
                 for(sub in subs) {
                     NotificationsHandler(context = this).makeNotification(
@@ -231,46 +230,49 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         exportButton.setOnClickListener {
-            val gson = Gson()
-            val json = gson.toJson(DBHandler(this).allSub)
-            val input = EditText(this)
-            input.height = 50.toPx()
-            input.width = 150.toPx()
-            input.gravity = Gravity.LEFT
-            var text: String
-            AlertDialog.Builder(this@SettingsActivity)
-                    .setMessage("Введите уникальное имя")
-                    .setCancelable(false)
-                    .setView(input)
-                    .setPositiveButton("Ок") { _, _ ->
-                        try {
-                            text = input.text.toString()
+            if (DBhandler(this).allSub.isNotEmpty()) {
+                val gson = Gson()
+                val json = gson.toJson(DBhandler(this).allSub)
+                val input = EditText(this)
+                input.height = 50.toPx()
+                input.width = 150.toPx()
+                input.gravity = Gravity.LEFT
+                var scheduleName: String
+                AlertDialog.Builder(this@SettingsActivity)
+                        .setMessage("Введите уникальное имя")
+                        .setCancelable(false)
+                        .setView(input)
+                        .setPositiveButton("Ок") { _, _ ->
                             try {
-                                val bytes = json.toByteArray()
-                                var encodedData = String(android.util.Base64.encode(bytes, android.util.Base64.DEFAULT))
-                                encodedData = encodedData.trim()
-                                encodedData = encodedData.replace("[\n]".toRegex(), "")
-                                WebData.addSchedule(this, text, encodedData) { success ->
-                                    if (success) {
-                                        Toast.makeText(this, "Успешно, вы можете импортировать расписание по этому имени: $text", Toast.LENGTH_LONG).show()
-                                    } else {
-                                        Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_LONG).show()
-                                        setClipboard(this,json)
+                                scheduleName = input.text.toString()
+                                try {
+                                    val bytes = json.toByteArray()
+                                    var encodedData = String(android.util.Base64.encode(bytes, android.util.Base64.DEFAULT))
+                                    encodedData = encodedData.trim()
+                                    encodedData = encodedData.replace("[\n]".toRegex(), "")
+                                    WebData.addSchedule(this, scheduleName, encodedData) { success ->
+                                        if (success) {
+                                            Toast.makeText(this, "Успешно, вы можете импортировать расписание по этому имени: $scheduleName", Toast.LENGTH_LONG).show()
+                                        } else {
+                                            Toast.makeText(this, "Неправильное уникальное имя или отсутсвует подключение к интернету, расписание скопировано в виде текста в буфер обмена", Toast.LENGTH_LONG).show()
+                                            setClipboard(this, json)
+                                        }
                                     }
+                                } catch (e: Exception) {
+                                    errorMsg()
                                 }
-                            } catch (e:Exception) {
+                            } catch (e: Exception) {
                                 errorMsg()
                             }
                         }
-                        catch (e:Exception) {
-                            errorMsg()
+                        .setIcon(R.mipmap.ic_launcher)
+                        .setTitle("Экспорт основного расписания")
+                        .setNegativeButton("Отмена") { _, _ ->
                         }
-                    }
-                    .setIcon(R.mipmap.ic_launcher)
-                    .setTitle("Экспорт основного расписания")
-                    .setNegativeButton("Отмена") { _, _ ->
-                    }
-                    .show()
+                        .show()
+            } else {
+                Toast.makeText(this, "Вы не можете экспортировать пустое расписание", Toast.LENGTH_SHORT).show()
+            }
         }
 
         importButton.setOnClickListener {
@@ -327,26 +329,9 @@ class SettingsActivity : AppCompatActivity() {
         //menu handler
         val menu = circleMenu
         menu.eventListener = object : CircleMenuView.EventListener() {
-            override fun onMenuOpenAnimationStart(view: CircleMenuView) {
-
-            }
-
-            override fun onMenuOpenAnimationEnd(view: CircleMenuView) {
-                Log.d("D", "onMenuOpenAnimationEnd")
-                open = 1
-            }
-
-            override fun onMenuCloseAnimationStart(view: CircleMenuView) {
-                Log.d("D", "onMenuCloseAnimationStart")
-            }
-
             override fun onMenuCloseAnimationEnd(view: CircleMenuView) {
                 circleMenu.visibility = View.GONE
                 open = 0
-            }
-
-            override fun onButtonClickAnimationStart(view: CircleMenuView, index: Int) {
-                Log.d("D", "onButtonClickAnimationStart| index: $index")
             }
 
             override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
@@ -392,7 +377,7 @@ class SettingsActivity : AppCompatActivity() {
     private fun applyData(text: String) {
         val gson = Gson()
         val obj = gson.fromJson(text, Array<Sub>::class.java)
-        val db = DBHandler(this)
+        val db = DBhandler(this)
         val tmp = db.allSub
         //удаление уведомлений
         for (sub in tmp) {
@@ -423,6 +408,7 @@ class SettingsActivity : AppCompatActivity() {
                     count = sub.count
             )
         }
+        DBdetailinfo(this).deleteAllData()
         Toast.makeText(this, "Готово", Toast.LENGTH_SHORT).show()
     }
 

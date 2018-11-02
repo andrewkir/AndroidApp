@@ -15,7 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.DataBase.DBhandler
 import com.andrewkir.andrewforwork.timem8.Notifications.NotificationsHandler
 import com.andrewkir.andrewforwork.timem8.R
 import com.andrewkir.andrewforwork.timem8.Models.Sub
@@ -46,7 +46,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         }
     }
 
-    internal lateinit var db: DBHandler
+    internal lateinit var db: DBhandler
     private var lstSubs:List<Sub> = ArrayList()
     var listDays = arrayOf("Понедельник","Вторник","Среда","Четверг","Пятница","Суббота","Воскресенье")
 
@@ -130,10 +130,8 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
 
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val v = super.getView(position, convertView, parent)
-
                 val externalFont = ResourcesCompat.getFont(context, R.font.rubik_light)
                 (v as TextView).typeface = externalFont
-
                 return v
             }
 
@@ -148,7 +146,7 @@ class MainEditor : AppCompatActivity(), AdapterView.OnItemSelectedListener, Time
         spinner!!.adapter = adapterSpinner
 
         currentDaySelected = intent.getIntExtra("DAY_OF_THE_WEEK",1)+1
-        db = DBHandler(this)
+        db = DBhandler(this)
         refreshData()
 
         btnInsert.setOnClickListener{

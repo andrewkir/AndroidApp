@@ -50,9 +50,7 @@ class FinancialActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        newWave.setWaveColor(
-                Color.parseColor("#88b8f1ed"),
-                Color.parseColor("#b8f1ed"))
+        newWave.setWaveColor(resources.getColor(R.color.material_green_200),resources.getColor(R.color.material_green_300))
         waveHelper = WaveHelper(newWave)
         newWave.setBorder(1.toPx(), Color.DKGRAY)
         newWave.setShapeType(com.gelitenight.waveview.library.WaveView.ShapeType.CIRCLE)
@@ -90,6 +88,7 @@ class FinancialActivity : AppCompatActivity() {
         val pref = getSharedPreferences("maxFinValue", Context.MODE_PRIVATE)
         val max = pref.getInt("MAX_FIN",0)
         if(max != 0){
+            finAdvices.visibility = View.VISIBLE
             staticToAdd.visibility = View.GONE
             newWave.waterLevelRatio = if(spent>=max) 1f else spent/max.toFloat()
             val dSum = if(DBfinance(this).sum()<0) 0 else DBfinance(this).sum()
@@ -133,20 +132,21 @@ class FinancialActivity : AppCompatActivity() {
             }
         } else {
             tipsFin.text="Самое время установить максимальную сумму!"
+            finAdvices.visibility = View.GONE
             staticToAdd.visibility = View.VISIBLE
-        }
-        fab.setOnClickListener { view ->
+    }
+        fab.setOnClickListener {
             val edIntent = Intent(this,FinanceEditor::class.java)
             startActivity(edIntent)
         }
         newWave.setWaveColor(resources.getColor(R.color.material_green_200),resources.getColor(R.color.material_green_300))
         if(newWave.waterLevelRatio >= 0.4f){
-            newWave.setWaveColor(resources.getColor(R.color.material_yellow_200), resources.getColor(R.color.material_yellow_300))
+            newWave.setWaveColor(resources.getColor(R.color.material_yellow_100), resources.getColor(R.color.material_yellow_A200))
         }
         if(newWave.waterLevelRatio >= 0.8f){
             newWave.setWaveColor(resources.getColor(R.color.material_red_200), resources.getColor(R.color.material_red_300))
         }
-        mainFinRecycler.adapter = FinancialAdapter(this){_->}
+        mainFinRecycler.adapter = FinancialAdapter(this){}
         val layoutManagerFinance = LinearLayoutManager(this)
         mainFinRecycler.layoutManager = layoutManagerFinance
         mainFinRecycler.setHasFixedSize(true)

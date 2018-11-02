@@ -20,14 +20,14 @@ import kotlinx.android.synthetic.main.activity_main_schedule_detail.*
 import java.io.File
 import android.support.v4.content.FileProvider
 import android.util.TypedValue
-import com.andrewkir.andrewforwork.timem8.DataBase.DBHandler
+import com.andrewkir.andrewforwork.timem8.DataBase.DBhandler
 import com.andrewkir.andrewforwork.timem8.R
 
 
 
 class MainScheduleDetail : AppCompatActivity() {
     internal lateinit var db: DBdetailinfo
-    private lateinit var dbMain: DBHandler
+    private lateinit var dbMain: DBhandler
     var date = ""
     private var viewDate = ""
     var day = 0
@@ -37,7 +37,7 @@ class MainScheduleDetail : AppCompatActivity() {
     private var hasImage = 0
     private var currentImage = 0
     private var photosQuantity = 0
-    private var photopathMap = hashMapOf<Bitmap,String>()
+    private var photoPathMap = hashMapOf<Bitmap,String>()
     private var photos = ArrayList<Bitmap>()
     lateinit var sPref: SharedPreferences
     var stat: String = ""
@@ -66,7 +66,7 @@ class MainScheduleDetail : AppCompatActivity() {
         detailTextDate.text = viewDate
 
         db = DBdetailinfo(this)
-        dbMain = DBHandler(this)
+        dbMain = DBhandler(this)
         try {
             val currSub = db.allSubDetailByDay(subName, date,count)[0]
             val schSub = dbMain.subByDayCount(day,count)[0]
@@ -78,7 +78,7 @@ class MainScheduleDetail : AppCompatActivity() {
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
                 detailImageView.visibility = View.VISIBLE
-                photopathMap = decodePath(currSub.path)
+                photoPathMap = decodePath(currSub.path)
                 path = currSub.path
                 hasImage = currSub.hasimage
             } else {
@@ -109,7 +109,7 @@ class MainScheduleDetail : AppCompatActivity() {
 
     fun onDetailImage(view: View) {
         if(hasImage == 1) {
-            val file = File(photopathMap[photos[currentImage]])
+            val file = File(photoPathMap[photos[currentImage]])
             val callCameraIntent = Intent(Intent.ACTION_VIEW)
             if (callCameraIntent.resolveActivity(packageManager) != null) {
                 val authorities = "$packageName.fileprovider"
@@ -191,7 +191,7 @@ class MainScheduleDetail : AppCompatActivity() {
         }
         try {
             db = DBdetailinfo(this)
-            dbMain = DBHandler(this)
+            dbMain = DBhandler(this)
             val currSub = db.allSubDetailByDay(subName, date,count)[0]
             val schSub = dbMain.subByDayCount(day,count)[0]
             detailTextHomework.text = if(currSub.homework.isEmpty()) "" else currSub.homework
@@ -202,7 +202,7 @@ class MainScheduleDetail : AppCompatActivity() {
             if(currSub.hasimage == 1){
                 buttonDetForw.visibility = View.VISIBLE
                 buttonDetBack.visibility = View.VISIBLE
-                photopathMap = decodePath(currSub.path)
+                photoPathMap = decodePath(currSub.path)
                 path = currSub.path
                 hasImage = currSub.hasimage
                 detailImageView.visibility = View.VISIBLE
